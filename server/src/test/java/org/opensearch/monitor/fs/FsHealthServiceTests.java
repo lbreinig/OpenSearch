@@ -178,7 +178,11 @@ public class FsHealthServiceTests extends OpenSearchTestCase {
             }
 
             // disrupt file system
+<<<<<<< HEAD
             disruptFileSystemProvider.injectIODelay.set(true);
+=======
+            disruptFileSystemProvider.injectIOException.set(true);
+>>>>>>> origin/1.2
             fsHealthService.new FsHealthMonitor().run();
             assertEquals(env.nodeDataPaths().length, disruptFileSystemProvider.getInjectedPathCount());
             assertBusy(mockAppender::assertAllExpectationsMatched);
@@ -430,12 +434,15 @@ public class FsHealthServiceTests extends OpenSearchTestCase {
             this.threadPool = threadPool;
         }
 
+<<<<<<< HEAD
         FileSystemFsyncHungProvider(FileSystem inner, ThreadPool threadPool) {
             super("disrupt_fs_health://", inner);
             this.threadPool = threadPool;
             this.delay = Long.MAX_VALUE;
         }
 
+=======
+>>>>>>> origin/1.2
         public int getInjectedPathCount() {
             return injectedPaths.get();
         }

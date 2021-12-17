@@ -324,7 +324,13 @@ public class NodeStats extends BaseNodeResponse implements ToXContentFragment {
         out.writeOptionalWriteable(scriptStats);
         out.writeOptionalWriteable(discoveryStats);
         out.writeOptionalWriteable(ingestStats);
+<<<<<<< HEAD
         out.writeOptionalWriteable(adaptiveSelectionStats);
+=======
+        if (out.getVersion().onOrAfter(LegacyESVersion.V_6_1_0)) {
+            out.writeOptionalWriteable(adaptiveSelectionStats);
+        }
+>>>>>>> origin/1.2
         if (out.getVersion().onOrAfter(LegacyESVersion.V_7_8_0) && out.getVersion().before(LegacyESVersion.V_7_9_0)) {
             out.writeOptionalWriteable(scriptCacheStats);
         }

@@ -87,7 +87,15 @@ public class Queries {
      * @param indexVersionCreated the index version created since newer indices can identify a parent field more efficiently
      */
     public static Query newNonNestedFilter(Version indexVersionCreated) {
+<<<<<<< HEAD
         return new DocValuesFieldExistsQuery(SeqNoFieldMapper.PRIMARY_TERM_NAME);
+=======
+        if (indexVersionCreated.onOrAfter(LegacyESVersion.V_6_1_0)) {
+            return new DocValuesFieldExistsQuery(SeqNoFieldMapper.PRIMARY_TERM_NAME);
+        } else {
+            return new BooleanQuery.Builder().add(new MatchAllDocsQuery(), Occur.FILTER).add(newNestedFilter(), Occur.MUST_NOT).build();
+        }
+>>>>>>> origin/1.2
     }
 
     public static BooleanQuery filtered(@Nullable Query query, @Nullable Query filter) {

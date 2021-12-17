@@ -45,6 +45,12 @@ import java.util.function.Function;
  * Provides pre-configured, shared {@link TokenFilter}s.
  */
 public final class PreConfiguredTokenFilter extends PreConfiguredAnalysisComponent<TokenFilterFactory> {
+<<<<<<< HEAD
+=======
+
+    private static final DeprecationLogger DEPRECATION_LOGGER = DeprecationLogger.getLogger(PreConfiguredTokenFilter.class);
+
+>>>>>>> origin/1.2
     /**
      * Create a pre-configured token filter that may not vary at all.
      */
@@ -175,7 +181,19 @@ public final class PreConfiguredTokenFilter extends PreConfiguredAnalysisCompone
                     if (allowForSynonymParsing) {
                         return this;
                     }
+<<<<<<< HEAD
                     throw new IllegalArgumentException("Token filter [" + name() + "] cannot be used to parse synonyms");
+=======
+                    if (version.onOrAfter(LegacyESVersion.V_7_0_0)) {
+                        throw new IllegalArgumentException("Token filter [" + name() + "] cannot be used to parse synonyms");
+                    } else {
+                        DEPRECATION_LOGGER.deprecate(
+                            name(),
+                            "Token filter [" + name() + "] will not be usable to parse synonyms after v7.0"
+                        );
+                        return this;
+                    }
+>>>>>>> origin/1.2
                 }
             };
         }
@@ -195,7 +213,16 @@ public final class PreConfiguredTokenFilter extends PreConfiguredAnalysisCompone
                 if (allowForSynonymParsing) {
                     return this;
                 }
+<<<<<<< HEAD
                 throw new IllegalArgumentException("Token filter [" + name() + "] cannot be used to parse synonyms");
+=======
+                if (version.onOrAfter(LegacyESVersion.V_7_0_0)) {
+                    throw new IllegalArgumentException("Token filter [" + name() + "] cannot be used to parse synonyms");
+                } else {
+                    DEPRECATION_LOGGER.deprecate(name(), "Token filter [" + name() + "] will not be usable to parse synonyms after v7.0");
+                    return this;
+                }
+>>>>>>> origin/1.2
             }
         };
     }

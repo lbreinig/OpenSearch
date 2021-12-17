@@ -72,6 +72,13 @@ import static org.hamcrest.Matchers.notNullValue;
 public class ZenDiscoveryIT extends OpenSearchIntegTestCase {
 
     public void testNoShardRelocationsOccurWhenElectedMasterNodeFails() throws Exception {
+<<<<<<< HEAD
+=======
+        Settings defaultSettings = Settings.builder()
+            .put(FaultDetection.PING_TIMEOUT_SETTING.getKey(), "1s")
+            .put(FaultDetection.PING_RETRIES_SETTING.getKey(), "1")
+            .build();
+>>>>>>> origin/1.2
 
         Settings masterNodeSettings = masterOnlyNode();
         internalCluster().startNodes(2, masterNodeSettings);

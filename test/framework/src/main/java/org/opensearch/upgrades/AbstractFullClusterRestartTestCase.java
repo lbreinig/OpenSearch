@@ -44,6 +44,33 @@ public abstract class AbstractFullClusterRestartTestCase extends OpenSearchRestT
 
     private static final boolean runningAgainstOldCluster = Booleans.parseBoolean(System.getProperty("tests.is_old_cluster"));
 
+<<<<<<< HEAD
+=======
+    @Before
+    public void init() throws IOException {
+        assertThat(
+            "we don't need this branch if we aren't compatible with 6.0",
+            Version.CURRENT.minimumIndexCompatibilityVersion().onOrBefore(LegacyESVersion.V_6_0_0),
+            equalTo(true)
+        );
+        if (isRunningAgainstOldCluster() && getOldClusterVersion().before(LegacyESVersion.V_7_0_0)) {
+            XContentBuilder template = jsonBuilder();
+            template.startObject();
+            {
+                template.field("index_patterns", "*");
+                template.field("order", "0");
+                template.startObject("settings");
+                template.field("number_of_shards", 5);
+                template.endObject();
+            }
+            template.endObject();
+            Request createTemplate = new Request("PUT", "/_template/template");
+            createTemplate.setJsonEntity(Strings.toString(template));
+            client().performRequest(createTemplate);
+        }
+    }
+
+>>>>>>> origin/1.2
     public static boolean isRunningAgainstOldCluster() {
         return runningAgainstOldCluster;
     }

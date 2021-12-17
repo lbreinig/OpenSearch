@@ -32,7 +32,10 @@
 
 package org.opensearch.client;
 
+<<<<<<< HEAD
 import org.opensearch.OpenSearchStatusException;
+=======
+>>>>>>> origin/1.2
 import org.opensearch.action.ActionListener;
 import org.opensearch.action.admin.cluster.node.tasks.list.ListTasksResponse;
 import org.opensearch.action.bulk.BulkItemResponse;

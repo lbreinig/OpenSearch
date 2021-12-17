@@ -2202,9 +2202,13 @@ public class IndexNameExpressionResolverTests extends OpenSearchTestCase {
         List<String> indexNames = resolveConcreteIndexNameList(state, request);
         assertThat(indexNames, containsInAnyOrder("some-other-index", ".ml-stuff", ".ml-meta"));
         assertWarnings(
+<<<<<<< HEAD
             "this request accesses system indices: [.ml-meta], but in a future major version, "
                 + "direct access to system indices will be prevented by default",
             "this request accesses system indices: [.ml-stuff], but in a future major version, "
+=======
+            "this request accesses system indices: [.ml-meta, .ml-stuff], but in a future major version, "
+>>>>>>> origin/1.2
                 + "direct access to system indices will be prevented by default"
         );
 
@@ -2232,9 +2236,13 @@ public class IndexNameExpressionResolverTests extends OpenSearchTestCase {
         List<String> indexNames = resolveConcreteIndexNameList(state, request);
         assertThat(indexNames, containsInAnyOrder(".ml-meta", ".ml-stuff"));
         assertWarnings(
+<<<<<<< HEAD
             "this request accesses system indices: [.ml-meta], but in a future major version, direct access "
                 + "to system indices will be prevented by default",
             "this request accesses system indices: [.ml-stuff], but in a future major version, direct access "
+=======
+            "this request accesses system indices: [.ml-meta, .ml-stuff], but in a future major version, direct access "
+>>>>>>> origin/1.2
                 + "to system indices will be prevented by default"
         );
 

@@ -76,9 +76,15 @@ public class VersionUtilsTests extends OpenSearchTestCase {
         assertTrue(got.onOrBefore(Version.CURRENT));
 
         // sub range
+<<<<<<< HEAD
         got = VersionUtils.randomVersionBetween(random(), LegacyESVersion.fromId(7000099), LegacyESVersion.fromId(7010099));
         assertTrue(got.onOrAfter(LegacyESVersion.fromId(7000099)));
         assertTrue(got.onOrBefore(LegacyESVersion.fromId(7010099)));
+=======
+        got = VersionUtils.randomVersionBetween(random(), LegacyESVersion.V_6_0_0_alpha1, LegacyESVersion.V_6_2_4);
+        assertTrue(got.onOrAfter(LegacyESVersion.V_6_0_0_alpha1));
+        assertTrue(got.onOrBefore(LegacyESVersion.V_6_2_4));
+>>>>>>> origin/1.2
 
         // unbounded lower
         got = VersionUtils.randomVersionBetween(random(), null, LegacyESVersion.fromId(7000099));
@@ -101,8 +107,13 @@ public class VersionUtilsTests extends OpenSearchTestCase {
         assertEquals(got, VersionUtils.getFirstVersion());
         got = VersionUtils.randomVersionBetween(random(), Version.CURRENT, Version.CURRENT);
         assertEquals(got, Version.CURRENT);
+<<<<<<< HEAD
         got = VersionUtils.randomVersionBetween(random(), LegacyESVersion.fromId(7000099), LegacyESVersion.fromId(7000099));
         assertEquals(got, LegacyESVersion.fromId(7000099));
+=======
+        got = VersionUtils.randomVersionBetween(random(), LegacyESVersion.V_6_0_0_beta1, LegacyESVersion.V_6_0_0_beta1);
+        assertEquals(got, LegacyESVersion.V_6_0_0_beta1);
+>>>>>>> origin/1.2
 
         // implicit range of one
         got = VersionUtils.randomVersionBetween(random(), null, VersionUtils.getFirstVersion());
@@ -139,6 +150,7 @@ public class VersionUtilsTests extends OpenSearchTestCase {
             released,
             equalTo(
                 Arrays.asList(
+<<<<<<< HEAD
                     TestReleaseBranch.V_2_0_0,
                     TestReleaseBranch.V_3_3_0,
                     TestReleaseBranch.V_3_3_1,
@@ -148,6 +160,17 @@ public class VersionUtilsTests extends OpenSearchTestCase {
             )
         );
         assertThat(unreleased, equalTo(Arrays.asList(TestReleaseBranch.V_2_0_1, TestReleaseBranch.V_3_4_1)));
+=======
+                    TestReleaseBranch.V_4_0_0,
+                    TestReleaseBranch.V_5_3_0,
+                    TestReleaseBranch.V_5_3_1,
+                    TestReleaseBranch.V_5_3_2,
+                    TestReleaseBranch.V_5_4_0
+                )
+            )
+        );
+        assertThat(unreleased, equalTo(Arrays.asList(TestReleaseBranch.V_4_0_1, TestReleaseBranch.V_5_4_1)));
+>>>>>>> origin/1.2
     }
 
     public static class TestStableBranch {
@@ -165,8 +188,13 @@ public class VersionUtilsTests extends OpenSearchTestCase {
         List<Version> released = t.v1();
         List<Version> unreleased = t.v2();
 
+<<<<<<< HEAD
         assertThat(released, equalTo(Arrays.asList(TestStableBranch.V_2_0_0, TestStableBranch.V_3_0_0, TestStableBranch.V_3_0_1)));
         assertThat(unreleased, equalTo(Arrays.asList(TestStableBranch.V_2_0_1, TestStableBranch.V_3_0_2, TestStableBranch.V_3_1_0)));
+=======
+        assertThat(released, equalTo(Arrays.asList(TestStableBranch.V_4_0_0, TestStableBranch.V_5_0_0, TestStableBranch.V_5_0_1)));
+        assertThat(unreleased, equalTo(Arrays.asList(TestStableBranch.V_4_0_1, TestStableBranch.V_5_0_2, TestStableBranch.V_5_1_0)));
+>>>>>>> origin/1.2
     }
 
     public static class TestStableBranchBehindStableBranch {
@@ -192,9 +220,15 @@ public class VersionUtilsTests extends OpenSearchTestCase {
             released,
             equalTo(
                 Arrays.asList(
+<<<<<<< HEAD
                     TestStableBranchBehindStableBranch.V_2_0_0,
                     TestStableBranchBehindStableBranch.V_3_3_0,
                     TestStableBranchBehindStableBranch.V_3_3_1
+=======
+                    TestStableBranchBehindStableBranch.V_4_0_0,
+                    TestStableBranchBehindStableBranch.V_5_3_0,
+                    TestStableBranchBehindStableBranch.V_5_3_1
+>>>>>>> origin/1.2
                 )
             )
         );
@@ -202,10 +236,17 @@ public class VersionUtilsTests extends OpenSearchTestCase {
             unreleased,
             equalTo(
                 Arrays.asList(
+<<<<<<< HEAD
                     TestStableBranchBehindStableBranch.V_2_0_1,
                     TestStableBranchBehindStableBranch.V_3_3_2,
                     TestStableBranchBehindStableBranch.V_3_4_0,
                     TestStableBranchBehindStableBranch.V_3_5_0
+=======
+                    TestStableBranchBehindStableBranch.V_4_0_1,
+                    TestStableBranchBehindStableBranch.V_5_3_2,
+                    TestStableBranchBehindStableBranch.V_5_4_0,
+                    TestStableBranchBehindStableBranch.V_5_5_0
+>>>>>>> origin/1.2
                 )
             )
         );
@@ -228,8 +269,13 @@ public class VersionUtilsTests extends OpenSearchTestCase {
         List<Version> released = t.v1();
         List<Version> unreleased = t.v2();
 
+<<<<<<< HEAD
         assertThat(released, equalTo(Arrays.asList(TestNewMajorRelease.V_2_6_0, TestNewMajorRelease.V_2_6_1, TestNewMajorRelease.V_3_0_0)));
         assertThat(unreleased, equalTo(Arrays.asList(TestNewMajorRelease.V_2_6_2, TestNewMajorRelease.V_3_0_1)));
+=======
+        assertThat(released, equalTo(Arrays.asList(TestNewMajorRelease.V_4_6_0, TestNewMajorRelease.V_4_6_1, TestNewMajorRelease.V_5_0_0)));
+        assertThat(unreleased, equalTo(Arrays.asList(TestNewMajorRelease.V_4_6_2, TestNewMajorRelease.V_5_0_1)));
+>>>>>>> origin/1.2
     }
 
     public static class TestVersionBumpIn2x {
@@ -250,10 +296,17 @@ public class VersionUtilsTests extends OpenSearchTestCase {
         List<Version> released = t.v1();
         List<Version> unreleased = t.v2();
 
+<<<<<<< HEAD
         assertThat(released, equalTo(Arrays.asList(TestVersionBumpIn2x.V_2_6_0, TestVersionBumpIn2x.V_2_6_1, TestVersionBumpIn2x.V_3_0_0)));
         assertThat(
             unreleased,
             equalTo(Arrays.asList(TestVersionBumpIn2x.V_2_6_2, TestVersionBumpIn2x.V_3_0_1, TestVersionBumpIn2x.V_3_1_0))
+=======
+        assertThat(released, equalTo(Arrays.asList(TestVersionBumpIn2x.V_1_6_0, TestVersionBumpIn2x.V_1_6_1, TestVersionBumpIn2x.V_2_0_0)));
+        assertThat(
+            unreleased,
+            equalTo(Arrays.asList(TestVersionBumpIn2x.V_1_6_2, TestVersionBumpIn2x.V_2_0_1, TestVersionBumpIn2x.V_2_1_0))
+>>>>>>> origin/1.2
         );
     }
 
@@ -270,7 +323,11 @@ public class VersionUtilsTests extends OpenSearchTestCase {
         public static final Version CURRENT = V_2_2_0;
     }
 
+<<<<<<< HEAD
     public void testResolveReleasedVersionsAtNewMinorBranchIn2x() {
+=======
+    public void testResolveReleasedVersionsAtNewMinorBranchIn6x() {
+>>>>>>> origin/1.2
         Tuple<List<Version>, List<Version>> t = VersionUtils.resolveReleasedVersions(
             TestNewMinorBranchIn6x.CURRENT,
             TestNewMinorBranchIn6x.class
@@ -284,7 +341,10 @@ public class VersionUtilsTests extends OpenSearchTestCase {
                 Arrays.asList(
                     TestNewMinorBranchIn6x.V_1_6_0,
                     TestNewMinorBranchIn6x.V_1_6_1,
+<<<<<<< HEAD
                     TestNewMinorBranchIn6x.V_1_6_2,
+=======
+>>>>>>> origin/1.2
                     TestNewMinorBranchIn6x.V_2_0_0,
                     TestNewMinorBranchIn6x.V_2_0_1,
                     TestNewMinorBranchIn6x.V_2_1_0,
@@ -292,7 +352,14 @@ public class VersionUtilsTests extends OpenSearchTestCase {
                 )
             )
         );
+<<<<<<< HEAD
         assertThat(unreleased, equalTo(Arrays.asList(TestNewMinorBranchIn6x.V_2_1_2, TestNewMinorBranchIn6x.V_2_2_0)));
+=======
+        assertThat(
+            unreleased,
+            equalTo(Arrays.asList(TestNewMinorBranchIn6x.V_1_6_2, TestNewMinorBranchIn6x.V_2_1_2, TestNewMinorBranchIn6x.V_2_2_0))
+        );
+>>>>>>> origin/1.2
     }
 
     /**

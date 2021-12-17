@@ -53,6 +53,7 @@ public class DeprecationLoggerTests extends OpenSearchTestCase {
         int numberOfLoggersAfter = context.getLoggers().size();
 
         assertThat(numberOfLoggersAfter, equalTo(numberOfLoggersBefore + 1));
+<<<<<<< HEAD
     }
 
     public void testDuplicateLogMessages() {
@@ -68,5 +69,7 @@ public class DeprecationLoggerTests extends OpenSearchTestCase {
         deprecationLogger.deprecate("deprecated-message-2", "Deprecated message 2");
         // assert that only unique warnings are logged
         assertWarnings("Deprecated message 1", "Deprecated message 2", "Deprecated message 3");
+=======
+>>>>>>> origin/1.2
     }
 }

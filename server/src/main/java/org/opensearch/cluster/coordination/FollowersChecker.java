@@ -149,6 +149,18 @@ public class FollowersChecker {
             FollowerCheckRequest::new,
             (request, transportChannel, task) -> handleFollowerCheck(request, transportChannel)
         );
+<<<<<<< HEAD
+=======
+        transportService.registerRequestHandler(
+            NodesFaultDetection.PING_ACTION_NAME,
+            Names.SAME,
+            false,
+            false,
+            NodesFaultDetection.PingRequest::new,
+            (request, channel, task) -> // TODO: check that we're a follower of the requesting node?
+            channel.sendResponse(new NodesFaultDetection.PingResponse())
+        );
+>>>>>>> origin/1.2
         transportService.addConnectionListener(new TransportConnectionListener() {
             @Override
             public void onNodeDisconnected(DiscoveryNode node, Transport.Connection connection) {
@@ -336,10 +348,31 @@ public class FollowersChecker {
             final FollowerCheckRequest request = new FollowerCheckRequest(fastResponseState.term, transportService.getLocalNode());
             logger.trace("handleWakeUp: checking {} with {}", discoveryNode, request);
 
+<<<<<<< HEAD
             transportService.sendRequest(
                 discoveryNode,
                 FOLLOWER_CHECK_ACTION_NAME,
                 request,
+=======
+            final String actionName;
+            final TransportRequest transportRequest;
+            if (Coordinator.isZen1Node(discoveryNode)) {
+                actionName = NodesFaultDetection.PING_ACTION_NAME;
+                transportRequest = new NodesFaultDetection.PingRequest(
+                    discoveryNode,
+                    ClusterName.CLUSTER_NAME_SETTING.get(settings),
+                    transportService.getLocalNode(),
+                    ClusterState.UNKNOWN_VERSION
+                );
+            } else {
+                actionName = FOLLOWER_CHECK_ACTION_NAME;
+                transportRequest = request;
+            }
+            transportService.sendRequest(
+                discoveryNode,
+                actionName,
+                transportRequest,
+>>>>>>> origin/1.2
                 TransportRequestOptions.builder().withTimeout(followerCheckTimeout).withType(Type.PING).build(),
                 new TransportResponseHandler<Empty>() {
                     @Override
@@ -370,7 +403,11 @@ public class FollowersChecker {
 
                         final String reason;
                         if (exp instanceof ConnectTransportException || exp.getCause() instanceof ConnectTransportException) {
+<<<<<<< HEAD
                             logger.info(() -> new ParameterizedMessage("{} disconnected", FollowerChecker.this), exp);
+=======
+                            logger.debug(() -> new ParameterizedMessage("{} disconnected", FollowerChecker.this), exp);
+>>>>>>> origin/1.2
                             reason = "disconnected";
                         } else if (exp.getCause() instanceof NodeHealthCheckFailureException) {
                             logger.info(() -> new ParameterizedMessage("{} health check failed", FollowerChecker.this), exp);

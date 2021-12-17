@@ -205,10 +205,13 @@ Note that this will also run the unit tests and precommit tasks first. If you wa
 
     ./gradlew internalClusterTest
 
+<<<<<<< HEAD
 To run a specific set of tests.
 
     ./gradlew :server:internalClusterTest --tests "org.opensearch.common.settings.FallbackSettingsIT.*"
 
+=======
+>>>>>>> origin/1.2
 If you want to just run the precommit checks:
 
     ./gradlew precommit
@@ -443,6 +446,7 @@ Multi-threaded tests are often not reproducible due to the fact that there is no
 
 # Test coverage analysis
 
+<<<<<<< HEAD
 The code coverage report can be generated through Gradle with [JaCoCo plugin](https://docs.gradle.org/current/userguide/jacoco_plugin.html).
 
 For unit test:
@@ -474,6 +478,9 @@ For example, to generate code coverage report in HTML format and not in XML form
     ./gradlew codeCoverageReport -Dtests.coverage.report.html=true -Dtests.coverage.report.xml=false
 
 Apart from using Gradle, it is also possible to gain insight in code coverage using IntelliJ’s built-in coverage analysis tool that can measure coverage upon executing specific tests. Eclipse may also be able to do the same using the EclEmma plugin.
+=======
+Generating test coverage reports for OpenSearch is currently not possible through Gradle. However, it *is* possible to gain insight in code coverage using IntelliJ’s built-in coverage analysis tool that can measure coverage upon executing specific tests. Eclipse may also be able to do the same using the EclEmma plugin.
+>>>>>>> origin/1.2
 
 Please read your IDE documentation for how to attach a debugger to a JVM process.
 

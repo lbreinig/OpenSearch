@@ -59,6 +59,12 @@ import java.util.HashSet;
 import java.util.List;
 
 public class PhoneticTokenFilterFactory extends AbstractTokenFilterFactory {
+<<<<<<< HEAD
+=======
+
+    private static final DeprecationLogger DEPRECATION_LOGGER = DeprecationLogger.getLogger(PhoneticTokenFilterFactory.class);
+
+>>>>>>> origin/1.2
     private final Encoder encoder;
     private final boolean replace;
     private int maxcodelength;
@@ -153,6 +159,18 @@ public class PhoneticTokenFilterFactory extends AbstractTokenFilterFactory {
 
     @Override
     public TokenFilterFactory getSynonymFilter() {
+<<<<<<< HEAD
         throw new IllegalArgumentException("Token filter [" + name() + "] cannot be used to parse synonyms");
+=======
+        if (indexSettings.getIndexVersionCreated().onOrAfter(LegacyESVersion.V_7_0_0)) {
+            throw new IllegalArgumentException("Token filter [" + name() + "] cannot be used to parse synonyms");
+        } else {
+            DEPRECATION_LOGGER.deprecate(
+                "synonym_tokenfilters",
+                "Token filter [" + name() + "] will not be usable to parse synonyms after v7.0"
+            );
+            return this;
+        }
+>>>>>>> origin/1.2
     }
 }

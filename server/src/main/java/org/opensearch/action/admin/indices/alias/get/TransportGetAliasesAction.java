@@ -153,7 +153,11 @@ public class TransportGetAliasesAction extends TransportMasterNodeReadAction<Get
         ClusterState state,
         ImmutableOpenMap<String, List<AliasMetadata>> aliasesMap
     ) {
+<<<<<<< HEAD
         Set<String> systemIndicesNames = new HashSet<>();
+=======
+        List<String> systemIndicesNames = new ArrayList<>();
+>>>>>>> origin/1.2
         for (Iterator<String> it = aliasesMap.keysIt(); it.hasNext();) {
             String indexName = it.next();
             IndexMetadata index = state.metadata().index(indexName);
@@ -162,6 +166,7 @@ public class TransportGetAliasesAction extends TransportMasterNodeReadAction<Get
             }
         }
         if (systemIndicesNames.isEmpty() == false) {
+<<<<<<< HEAD
             systemIndicesNames.forEach(
                 systemIndexName -> deprecationLogger.deprecate(
                     "open_system_index_access_" + systemIndexName,
@@ -169,6 +174,13 @@ public class TransportGetAliasesAction extends TransportMasterNodeReadAction<Get
                         + "indices will be prevented by default",
                     systemIndexName
                 )
+=======
+            deprecationLogger.deprecate(
+                "open_system_index_access",
+                "this request accesses system indices: {}, but in a future major version, direct access to system "
+                    + "indices will be prevented by default",
+                systemIndicesNames
+>>>>>>> origin/1.2
             );
         } else {
             checkSystemAliasAccess(request, systemIndices);

@@ -690,7 +690,16 @@ public class ThreadPool implements ReportingService<ThreadPoolInfo>, Scheduler {
         @Override
         public void writeTo(StreamOutput out) throws IOException {
             out.writeString(name);
+<<<<<<< HEAD
             out.writeString(type.getType());
+=======
+            if (type == ThreadPoolType.FIXED_AUTO_QUEUE_SIZE && out.getVersion().before(LegacyESVersion.V_6_0_0_alpha1)) {
+                // 5.x doesn't know about the "fixed_auto_queue_size" thread pool type, just write fixed.
+                out.writeString(ThreadPoolType.FIXED.getType());
+            } else {
+                out.writeString(type.getType());
+            }
+>>>>>>> origin/1.2
             out.writeInt(min);
             out.writeInt(max);
             out.writeOptionalTimeValue(keepAlive);

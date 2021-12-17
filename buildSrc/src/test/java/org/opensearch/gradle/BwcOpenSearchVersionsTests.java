@@ -37,10 +37,13 @@ public class BwcOpenSearchVersionsTests extends GradleUnitTestCase {
     static {
         sampleVersions.put("1.0.0", asList("5_6_13", "6_6_1", "6_8_15", "7_0_0", "7_9_1", "7_10_0", "7_10_1", "7_10_2", "1_0_0"));
         sampleVersions.put("1.1.0", asList("5_6_13", "6_6_1", "6_8_15", "7_0_0", "7_9_1", "7_10_0", "7_10_1", "7_10_2", "1_0_0", "1_1_0"));
+<<<<<<< HEAD
         sampleVersions.put(
             "2.0.0",
             asList("5_6_13", "6_6_1", "6_8_15", "7_0_0", "7_9_1", "7_10_0", "7_10_1", "7_10_2", "1_0_0", "1_1_0", "2_0_0")
         );
+=======
+>>>>>>> origin/1.2
     }
 
     public void testWireCompatible() {

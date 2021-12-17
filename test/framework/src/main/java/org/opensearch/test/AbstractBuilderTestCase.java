@@ -218,7 +218,13 @@ public abstract class AbstractBuilderTestCase extends OpenSearchTestCase {
 
     protected Settings createTestIndexSettings() {
         // we have to prefer CURRENT since with the range of versions we support it's rather unlikely to get the current actually.
+<<<<<<< HEAD
         Version indexVersionCreated = randomBoolean() ? Version.CURRENT : VersionUtils.randomIndexCompatibleVersion(random());
+=======
+        Version indexVersionCreated = randomBoolean()
+            ? Version.CURRENT
+            : VersionUtils.randomVersionBetween(random(), LegacyESVersion.V_6_0_0, Version.CURRENT);
+>>>>>>> origin/1.2
         return Settings.builder().put(IndexMetadata.SETTING_VERSION_CREATED, indexVersionCreated).build();
     }
 

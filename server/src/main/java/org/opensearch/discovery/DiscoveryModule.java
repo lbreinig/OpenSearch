@@ -205,6 +205,23 @@ public class DiscoveryModule {
                 electionStrategy,
                 nodeHealthService
             );
+<<<<<<< HEAD
+=======
+        } else if (Assertions.ENABLED && ZEN_DISCOVERY_TYPE.equals(discoveryType)) {
+            discovery = new ZenDiscovery(
+                settings,
+                threadPool,
+                transportService,
+                namedWriteableRegistry,
+                masterService,
+                clusterApplier,
+                clusterSettings,
+                seedHostsProvider,
+                allocationService,
+                joinValidators,
+                rerouteService
+            );
+>>>>>>> origin/1.2
         } else {
             throw new IllegalArgumentException("Unknown discovery type [" + discoveryType + "]");
         }

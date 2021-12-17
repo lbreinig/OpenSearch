@@ -746,10 +746,17 @@ public class PercolatorFieldMapperTests extends OpenSearchSingleNodeTestCase {
                 .endObject()
                 .startObject("query_field2")
                 .field("type", "percolator")
+<<<<<<< HEAD
                 .endObject()
                 .endObject()
                 .endObject()
                 .endObject()
+=======
+                .endObject()
+                .endObject()
+                .endObject()
+                .endObject()
+>>>>>>> origin/1.2
         );
         mapperService.merge(typeName, new CompressedXContent(percolatorMapper), MapperService.MergeReason.MAPPING_UPDATE);
 
@@ -789,10 +796,17 @@ public class PercolatorFieldMapperTests extends OpenSearchSingleNodeTestCase {
                 .field("type", "percolator")
                 .endObject()
                 .endObject()
+<<<<<<< HEAD
                 .endObject()
                 .endObject()
                 .endObject()
                 .endObject()
+=======
+                .endObject()
+                .endObject()
+                .endObject()
+                .endObject()
+>>>>>>> origin/1.2
         );
         mapperService.merge(typeName, new CompressedXContent(percolatorMapper), MapperService.MergeReason.MAPPING_UPDATE);
 

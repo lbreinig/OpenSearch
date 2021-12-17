@@ -2,7 +2,11 @@
 name: 🐛 Bug report
 about: Create a report to help us improve
 title: "[BUG]"
+<<<<<<< HEAD
 labels: 'bug, untriaged'
+=======
+labels: 'bug, untriaged, Beta'
+>>>>>>> origin/1.2
 assignees: ''
 ---
 

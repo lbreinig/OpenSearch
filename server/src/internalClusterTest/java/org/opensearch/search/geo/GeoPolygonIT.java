@@ -62,7 +62,11 @@ public class GeoPolygonIT extends OpenSearchIntegTestCase {
 
     @Override
     protected void setupSuiteScopeCluster() throws Exception {
+<<<<<<< HEAD
         Version version = VersionUtils.randomIndexCompatibleVersion(random());
+=======
+        Version version = VersionUtils.randomVersionBetween(random(), LegacyESVersion.V_6_0_0, Version.CURRENT);
+>>>>>>> origin/1.2
         Settings settings = Settings.builder().put(IndexMetadata.SETTING_VERSION_CREATED, version).build();
 
         assertAcked(

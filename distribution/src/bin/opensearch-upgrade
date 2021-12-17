@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/usr/bin/env bash
+=======
+#!/bin/bash
+>>>>>>> origin/1.2
 
 OPENSEARCH_MAIN_CLASS=org.opensearch.upgrade.UpgradeCli \
   OPENSEARCH_ADDITIONAL_CLASSPATH_DIRECTORIES=lib/tools/upgrade-cli \

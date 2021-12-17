@@ -32,8 +32,14 @@
 
 package org.opensearch.plugin.store.smb;
 
+import org.opensearch.common.logging.DeprecationLogger;
+import org.opensearch.index.IndexModule;
 import org.opensearch.index.store.smbmmapfs.SmbMmapFsDirectoryFactory;
 import org.opensearch.index.store.smbniofs.SmbNIOFsDirectoryFactory;
+<<<<<<< HEAD
+=======
+import org.opensearch.index.store.smbsimplefs.SmbSimpleFsDirectoryFactory;
+>>>>>>> origin/1.2
 import org.opensearch.plugins.IndexStorePlugin;
 import org.opensearch.plugins.Plugin;
 
@@ -43,10 +49,20 @@ import java.util.Map;
 
 public class SMBStorePlugin extends Plugin implements IndexStorePlugin {
 
+    private static final DeprecationLogger DEPRECATION_LOGGER = DeprecationLogger.getLogger(SMBStorePlugin.class);
+
     @Override
     public Map<String, DirectoryFactory> getDirectoryFactories() {
         final Map<String, DirectoryFactory> indexStoreFactories = new HashMap<>(2);
         indexStoreFactories.put("smb_mmap_fs", new SmbMmapFsDirectoryFactory());
+<<<<<<< HEAD
+=======
+        DEPRECATION_LOGGER.deprecate(
+            IndexModule.Type.SIMPLEFS.getSettingsKey(),
+            IndexModule.Type.SIMPLEFS.getSettingsKey() + " is deprecated and will be removed in 2.0"
+        );
+        indexStoreFactories.put("smb_simple_fs", new SmbSimpleFsDirectoryFactory());
+>>>>>>> origin/1.2
         indexStoreFactories.put("smb_nio_fs", new SmbNIOFsDirectoryFactory());
         return Collections.unmodifiableMap(indexStoreFactories);
     }

@@ -42,6 +42,10 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.store.Directory;
 import org.mockito.Mockito;
+<<<<<<< HEAD
+=======
+import org.opensearch.LegacyESVersion;
+>>>>>>> origin/1.2
 import org.opensearch.Version;
 import org.opensearch.cluster.metadata.IndexMetadata;
 import org.opensearch.common.CheckedFunction;

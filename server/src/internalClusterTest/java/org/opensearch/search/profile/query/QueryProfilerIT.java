@@ -50,9 +50,12 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.not;
+<<<<<<< HEAD
 import static org.hamcrest.Matchers.emptyOrNullString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.opensearch.search.profile.query.RandomQueryGenerator.randomQueryBuilder;
+=======
+>>>>>>> origin/1.2
 
 public class QueryProfilerIT extends OpenSearchIntegTestCase {
 

@@ -92,6 +92,10 @@ public class ClusterSerializationTests extends OpenSearchAllocationTestCase {
             .nodes(nodes)
             .metadata(metadata)
             .routingTable(routingTable)
+<<<<<<< HEAD
+=======
+            .minimumMasterNodesOnPublishingMaster(randomIntBetween(-1, 10))
+>>>>>>> origin/1.2
             .build();
 
         AllocationService strategy = createAllocationService();
@@ -106,6 +110,14 @@ public class ClusterSerializationTests extends OpenSearchAllocationTestCase {
         assertThat(serializedClusterState.getClusterName().value(), equalTo(clusterState.getClusterName().value()));
 
         assertThat(serializedClusterState.routingTable().toString(), equalTo(clusterState.routingTable().toString()));
+<<<<<<< HEAD
+=======
+
+        assertThat(
+            serializedClusterState.getMinimumMasterNodesOnPublishingMaster(),
+            equalTo(clusterState.getMinimumMasterNodesOnPublishingMaster())
+        );
+>>>>>>> origin/1.2
     }
 
     public void testRoutingTableSerialization() throws Exception {

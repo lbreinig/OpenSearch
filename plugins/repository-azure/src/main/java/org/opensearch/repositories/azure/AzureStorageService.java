@@ -46,7 +46,10 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.ProxyOptions.Type;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+<<<<<<< HEAD
 import com.azure.core.util.Configuration;
+=======
+>>>>>>> origin/1.2
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClient;
@@ -68,7 +71,12 @@ import org.opensearch.common.unit.ByteSizeValue;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URISyntaxException;
+import java.security.AccessController;
 import java.security.InvalidKeyException;
+<<<<<<< HEAD
+=======
+import java.security.PrivilegedAction;
+>>>>>>> origin/1.2
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -101,6 +109,7 @@ public class AzureStorageService implements AutoCloseable {
     // 'package' for testing
     volatile Map<String, AzureStorageSettings> storageSettings = emptyMap();
     private final Map<AzureStorageSettings, ClientState> clients = new ConcurrentHashMap<>();
+<<<<<<< HEAD
 
     static {
         // See please:
@@ -109,6 +118,8 @@ public class AzureStorageService implements AutoCloseable {
         // - https://github.com/Azure/azure-sdk-for-java/pull/24374
         Configuration.getGlobalConfiguration().put("AZURE_JACKSON_ADAPTER_USE_ACCESS_HELPER", "true");
     }
+=======
+>>>>>>> origin/1.2
 
     public AzureStorageService(Settings settings) {
         // eagerly load client settings so that secure settings are read
@@ -123,6 +134,7 @@ public class AzureStorageService implements AutoCloseable {
      *
      * @param clientName client name
      * @return the {@code BlobServiceClient} instance and context
+<<<<<<< HEAD
      */
     public Tuple<BlobServiceClient, Supplier<Context>> client(String clientName) {
         return client(clientName, (request, response) -> {});
@@ -138,6 +150,23 @@ public class AzureStorageService implements AutoCloseable {
      * @param statsCollector statistics collector
      * @return the {@code BlobServiceClient} instance and context
      */
+=======
+     */
+    public Tuple<BlobServiceClient, Supplier<Context>> client(String clientName) {
+        return client(clientName, (request, response) -> {});
+
+    }
+
+    /**
+     * Obtains a {@code BlobServiceClient} on each invocation using the current client
+     * settings. BlobServiceClient is thread safe and and could be cached but the settings
+     * can change, therefore the instance might be recreated from scratch.
+
+     * @param clientName client name
+     * @param statsCollector statistics collector
+     * @return the {@code BlobServiceClient} instance and context
+     */
+>>>>>>> origin/1.2
     public Tuple<BlobServiceClient, Supplier<Context>> client(String clientName, BiConsumer<HttpRequest, HttpResponse> statsCollector) {
         final AzureStorageSettings azureStorageSettings = this.storageSettings.get(clientName);
         if (azureStorageSettings == null) {
@@ -222,6 +251,7 @@ public class AzureStorageService implements AutoCloseable {
         }
 
         return builder;
+<<<<<<< HEAD
     }
 
     private static BlobServiceClientBuilder createClientBuilder(AzureStorageSettings settings) throws InvalidKeyException,
@@ -238,6 +268,24 @@ public class AzureStorageService implements AutoCloseable {
         return Context.NONE;
     }
 
+=======
+    }
+
+    private static BlobServiceClientBuilder createClientBuilder(AzureStorageSettings settings) throws InvalidKeyException,
+        URISyntaxException {
+        return new BlobServiceClientBuilder().connectionString(settings.getConnectString());
+    }
+
+    /**
+     * For the time being, create an empty context but the implementation could be extended.
+     * @param azureStorageSettings azure seetings
+     * @return context instance
+     */
+    private static Context buildOperationContext(AzureStorageSettings azureStorageSettings) {
+        return Context.NONE;
+    }
+
+>>>>>>> origin/1.2
     // non-static, package private for testing
     RequestRetryOptions createRetryPolicy(final AzureStorageSettings azureStorageSettings, String secondaryHost) {
         // We define a default exponential retry policy{
@@ -373,7 +421,18 @@ public class AzureStorageService implements AutoCloseable {
         }
 
         public Thread newThread(Runnable r) {
+<<<<<<< HEAD
             final Thread t = new Thread(group, r, namePrefix + threadNumber.getAndIncrement(), 0);
+=======
+            // See please: https://github.com/Azure/azure-sdk-for-java/pull/24374
+            final Runnable priviledged = () -> {
+                AccessController.doPrivileged((PrivilegedAction<?>) () -> {
+                    r.run();
+                    return null;
+                });
+            };
+            final Thread t = new Thread(group, priviledged, namePrefix + threadNumber.getAndIncrement(), 0);
+>>>>>>> origin/1.2
 
             if (t.isDaemon()) {
                 t.setDaemon(false);

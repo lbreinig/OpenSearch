@@ -98,6 +98,11 @@ public final class SnapshotInfo implements Comparable<SnapshotInfo>, ToXContent,
     private static final String INCLUDE_GLOBAL_STATE = "include_global_state";
     private static final String USER_METADATA = "metadata";
 
+<<<<<<< HEAD
+=======
+    private static final Version INCLUDE_GLOBAL_STATE_INTRODUCED = LegacyESVersion.V_6_2_0;
+
+>>>>>>> origin/1.2
     private static final Comparator<SnapshotInfo> COMPARATOR = Comparator.comparing(SnapshotInfo::startTime)
         .thenComparing(SnapshotInfo::snapshotId);
 

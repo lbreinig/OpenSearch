@@ -163,10 +163,49 @@ public class PluginsServiceTests extends OpenSearchTestCase {
         Files.createDirectories(hidden);
         @SuppressWarnings("unchecked")
         final IllegalStateException e = expectThrows(IllegalStateException.class, () -> newPluginsService(settings));
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/1.2
         final String expected = "Could not load plugin descriptor for plugin directory [.hidden]";
         assertThat(e, hasToString(containsString(expected)));
     }
 
+<<<<<<< HEAD
+=======
+    public void testDesktopServicesStoreFiles() throws IOException {
+        final Path home = createTempDir();
+        final Settings settings = Settings.builder().put(Environment.PATH_HOME_SETTING.getKey(), home).build();
+        final Path plugins = home.resolve("plugins");
+        Files.createDirectories(plugins);
+        final Path desktopServicesStore = plugins.resolve(".DS_Store");
+        Files.createFile(desktopServicesStore);
+        if (Constants.MAC_OS_X) {
+            @SuppressWarnings("unchecked")
+            final PluginsService pluginsService = newPluginsService(settings);
+            assertNotNull(pluginsService);
+        } else {
+            final IllegalStateException e = expectThrows(IllegalStateException.class, () -> newPluginsService(settings));
+            assertThat(e.getMessage(), containsString("Could not load plugin descriptor for plugin directory [.DS_Store]"));
+            assertNotNull(e.getCause());
+            assertThat(e.getCause(), instanceOf(FileSystemException.class));
+            if (Constants.WINDOWS) {
+                assertThat(e.getCause(), instanceOf(NoSuchFileException.class));
+            } else {
+                // force a "Not a directory" exception to be thrown so that we can extract the locale-dependent message
+                final String expected;
+                try (InputStream ignored = Files.newInputStream(desktopServicesStore.resolve("not-a-directory"))) {
+                    throw new AssertionError();
+                } catch (final FileSystemException inner) {
+                    // locale-dependent translation of "Not a directory"
+                    expected = inner.getReason();
+                }
+                assertThat(e.getCause(), hasToString(containsString(expected)));
+            }
+        }
+    }
+
+>>>>>>> origin/1.2
     public void testStartupWithRemovingMarker() throws IOException {
         final Path home = createTempDir();
         final Settings settings = Settings.builder().put(Environment.PATH_HOME_SETTING.getKey(), home).build();
@@ -709,7 +748,11 @@ public class PluginsServiceTests extends OpenSearchTestCase {
             "my_plugin",
             "desc",
             "1.0",
+<<<<<<< HEAD
             LegacyESVersion.fromId(6000099),
+=======
+            LegacyESVersion.V_6_0_0,
+>>>>>>> origin/1.2
             "1.8",
             "FakePlugin",
             Collections.emptyList(),

@@ -318,4 +318,18 @@ public class MasterDisruptionIT extends AbstractDisruptionTestCase {
         });
 
     }
+<<<<<<< HEAD
+=======
+
+    private void assertDiscoveryCompleted(List<String> nodes) throws Exception {
+        for (final String node : nodes) {
+            assertBusy(() -> {
+                final Discovery discovery = internalCluster().getInstance(Discovery.class, node);
+                if (discovery instanceof ZenDiscovery) {
+                    assertFalse("node [" + node + "] is still joining master", ((ZenDiscovery) discovery).joiningCluster());
+                }
+            }, 30, TimeUnit.SECONDS);
+        }
+    }
+>>>>>>> origin/1.2
 }

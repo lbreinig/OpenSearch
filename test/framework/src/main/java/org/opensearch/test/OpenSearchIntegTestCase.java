@@ -603,6 +603,27 @@ public abstract class OpenSearchIntegTestCase extends OpenSearchTestCase {
                     ensureClusterSizeConsistency();
                     ensureClusterStateConsistency();
                     ensureClusterStateCanBeReadByNodeTool();
+<<<<<<< HEAD
+=======
+                    if (isInternalCluster()) {
+                        // check no pending cluster states are leaked
+                        for (Discovery discovery : internalCluster().getInstances(Discovery.class)) {
+                            if (discovery instanceof ZenDiscovery) {
+                                final ZenDiscovery zenDiscovery = (ZenDiscovery) discovery;
+                                assertBusy(() -> {
+                                    final ClusterState[] states = zenDiscovery.pendingClusterStates();
+                                    assertThat(
+                                        zenDiscovery.clusterState().nodes().getLocalNode().getName()
+                                            + " still having pending states:\n"
+                                            + Stream.of(states).map(ClusterState::toString).collect(Collectors.joining("\n")),
+                                        states,
+                                        emptyArray()
+                                    );
+                                });
+                            }
+                        }
+                    }
+>>>>>>> origin/1.2
                     beforeIndexDeletion();
                     cluster().wipe(excludeTemplates()); // wipe after to make sure we fail in the test that didn't ack the delete
                     if (afterClass || currentClusterScope == Scope.TEST) {

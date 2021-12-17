@@ -93,15 +93,33 @@ public class DiscoveryDisruptionIT extends AbstractDisruptionTestCase {
             discoveryNodes.getLocalNode().getName()
         );
         if (randomBoolean()) {
+<<<<<<< HEAD
             masterTransportService.addFailToSendNoConnectRule(localTransportService, PublicationTransportHandler.PUBLISH_STATE_ACTION_NAME);
         } else {
             masterTransportService.addFailToSendNoConnectRule(localTransportService, PublicationTransportHandler.COMMIT_STATE_ACTION_NAME);
+=======
+            masterTransportService.addFailToSendNoConnectRule(
+                localTransportService,
+                PublishClusterStateAction.SEND_ACTION_NAME,
+                PublicationTransportHandler.PUBLISH_STATE_ACTION_NAME
+            );
+        } else {
+            masterTransportService.addFailToSendNoConnectRule(
+                localTransportService,
+                PublishClusterStateAction.COMMIT_ACTION_NAME,
+                PublicationTransportHandler.COMMIT_STATE_ACTION_NAME
+            );
+>>>>>>> origin/1.2
         }
 
         logger.info("allowing requests from non master [{}] to master [{}], waiting for two join request", nonMasterNode, masterNode);
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         nonMasterTransportService.addSendBehavior(masterTransportService, (connection, requestId, action, request, options) -> {
+<<<<<<< HEAD
             if (action.equals(JoinHelper.JOIN_ACTION_NAME)) {
+=======
+            if (action.equals(MembershipAction.DISCOVERY_JOIN_ACTION_NAME) || action.equals(JoinHelper.JOIN_ACTION_NAME)) {
+>>>>>>> origin/1.2
                 countDownLatch.countDown();
             }
             connection.sendRequest(requestId, action, request, options);

@@ -147,6 +147,22 @@ public final class IndexSortConfig {
         final Settings settings = indexSettings.getSettings();
         List<String> fields = INDEX_SORT_FIELD_SETTING.get(settings);
         this.sortSpecs = fields.stream().map((name) -> new FieldSortSpec(name)).toArray(FieldSortSpec[]::new);
+<<<<<<< HEAD
+=======
+
+        if (sortSpecs.length > 0 && indexSettings.getIndexVersionCreated().before(LegacyESVersion.V_6_0_0_alpha1)) {
+            /**
+             * This index might be assigned to a node where the index sorting feature is not available
+             * (ie. versions prior to {@link LegacyESVersion.V_6_0_0_alpha1_UNRELEASED}) so we must fail here rather than later.
+             */
+            throw new IllegalArgumentException(
+                "unsupported index.version.created:"
+                    + indexSettings.getIndexVersionCreated()
+                    + ", can't set index.sort on versions prior to "
+                    + LegacyESVersion.V_6_0_0_alpha1
+            );
+        }
+>>>>>>> origin/1.2
 
         if (INDEX_SORT_ORDER_SETTING.exists(settings)) {
             List<SortOrder> orders = INDEX_SORT_ORDER_SETTING.get(settings);

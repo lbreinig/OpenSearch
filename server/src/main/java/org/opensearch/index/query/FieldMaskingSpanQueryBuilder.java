@@ -138,7 +138,11 @@ public class FieldMaskingSpanQueryBuilder extends AbstractQueryBuilder<FieldMask
                 } else {
                     throw new ParsingException(
                         parser.getTokenLocation(),
+<<<<<<< HEAD
                         "[" + SPAN_FIELD_MASKING_FIELD.getPreferredName() + "] query does not support [" + currentFieldName + "]"
+=======
+                        "[field_masking_span] query does not support [" + currentFieldName + "]"
+>>>>>>> origin/1.2
                     );
                 }
             } else {
@@ -151,7 +155,11 @@ public class FieldMaskingSpanQueryBuilder extends AbstractQueryBuilder<FieldMask
                 } else {
                     throw new ParsingException(
                         parser.getTokenLocation(),
+<<<<<<< HEAD
                         "[" + SPAN_FIELD_MASKING_FIELD.getPreferredName() + "] query does not support [" + currentFieldName + "]"
+=======
+                        "[field_masking_span] query does not support [" + currentFieldName + "]"
+>>>>>>> origin/1.2
                     );
                 }
             }

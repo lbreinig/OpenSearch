@@ -115,10 +115,14 @@ public class RestGetSourceActionTests extends RestActionTestCase {
                     .withParams(params)
                     .build();
                 dispatchRequest(request);
+<<<<<<< HEAD
                 if (assertWarnings) {
                     assertWarnings(RestGetSourceAction.TYPES_DEPRECATION_MESSAGE);
                     assertWarnings = false;
                 }
+=======
+                assertWarnings(RestGetSourceAction.TYPES_DEPRECATION_MESSAGE);
+>>>>>>> origin/1.2
             }
         }
     }

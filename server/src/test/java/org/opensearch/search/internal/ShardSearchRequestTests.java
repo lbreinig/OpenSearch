@@ -90,6 +90,29 @@ public class ShardSearchRequestTests extends AbstractSearchTestCase {
         }
     }
 
+<<<<<<< HEAD
+=======
+    public void testAllowPartialResultsSerializationPre7_0_0() throws IOException {
+        Version version = VersionUtils.randomVersionBetween(
+            random(),
+            LegacyESVersion.V_6_0_0,
+            VersionUtils.getPreviousVersion(LegacyESVersion.V_7_0_0)
+        );
+        ShardSearchRequest shardSearchTransportRequest = createShardSearchRequest();
+        ShardSearchRequest deserializedRequest = copyWriteable(
+            shardSearchTransportRequest,
+            namedWriteableRegistry,
+            ShardSearchRequest::new,
+            version
+        );
+        if (version.before(LegacyESVersion.V_6_3_0)) {
+            assertFalse(deserializedRequest.allowPartialSearchResults());
+        } else {
+            assertEquals(shardSearchTransportRequest.allowPartialSearchResults(), deserializedRequest.allowPartialSearchResults());
+        }
+    }
+
+>>>>>>> origin/1.2
     private ShardSearchRequest createShardSearchRequest() throws IOException {
         SearchRequest searchRequest = createSearchRequest();
         ShardId shardId = new ShardId(randomAlphaOfLengthBetween(2, 10), randomAlphaOfLengthBetween(2, 10), randomInt());

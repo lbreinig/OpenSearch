@@ -114,7 +114,11 @@ public class GlobalBuildInfoPlugin implements Plugin<Project> {
             params.setRuntimeJavaHome(runtimeJavaHome);
             params.setRuntimeJavaVersion(determineJavaVersion("runtime java.home", runtimeJavaHome, minimumRuntimeVersion));
             params.setIsRutimeJavaHomeSet(runtimeJavaHomeOpt.isPresent());
+<<<<<<< HEAD
             params.setRuntimeJavaDetails(getJavaInstallation(runtimeJavaHome).getDisplayName());
+=======
+            params.setRuntimeJavaDetails(getJavaInstallation(runtimeJavaHome).getImplementationName());
+>>>>>>> origin/1.2
             params.setJavaVersions(getAvailableJavaVersions(minimumCompilerVersion));
             params.setMinimumCompilerVersion(minimumCompilerVersion);
             params.setMinimumRuntimeVersion(minimumRuntimeVersion);

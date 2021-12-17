@@ -237,8 +237,12 @@ public class ClusterModuleTests extends ModuleTestCase {
             DiskThresholdDecider.class,
             ThrottlingAllocationDecider.class,
             ShardsLimitAllocationDecider.class,
+<<<<<<< HEAD
             AwarenessAllocationDecider.class,
             NodeLoadAwareAllocationDecider.class
+=======
+            AwarenessAllocationDecider.class
+>>>>>>> origin/1.2
         );
         Collection<AllocationDecider> deciders = ClusterModule.createAllocationDeciders(
             Settings.EMPTY,

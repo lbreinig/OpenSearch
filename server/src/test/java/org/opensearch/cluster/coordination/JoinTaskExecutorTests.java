@@ -217,10 +217,17 @@ public class JoinTaskExecutorTests extends OpenSearchTestCase {
         String node_5 = UUIDs.base64UUID();  // ES node 7.10.2 in cluster but missing channel version
         String node_6 = UUIDs.base64UUID();  // ES node 7.9.0
         String node_7 = UUIDs.base64UUID();  // ES node 7.9.0 in cluster but missing channel version
+<<<<<<< HEAD
         channelVersions.put(node_1, Version.CURRENT);
         channelVersions.put(node_2, Version.CURRENT);
         channelVersions.put(node_4, LegacyESVersion.V_7_10_2);
         channelVersions.put(node_6, LegacyESVersion.V_7_10_0);
+=======
+        channelVersions.put(node_1, LegacyESVersion.CURRENT);
+        channelVersions.put(node_2, LegacyESVersion.CURRENT);
+        channelVersions.put(node_4, LegacyESVersion.V_7_10_2);
+        channelVersions.put(node_6, LegacyESVersion.V_7_9_0);
+>>>>>>> origin/1.2
 
         final TransportService transportService = mock(TransportService.class);
         when(transportService.getChannelVersion(any())).thenReturn(channelVersions);
@@ -230,8 +237,13 @@ public class JoinTaskExecutorTests extends OpenSearchTestCase {
         nodes.add(new DiscoveryNode(node_3, buildNewFakeTransportAddress(), LegacyESVersion.V_7_10_2));
         nodes.add(new DiscoveryNode(node_4, buildNewFakeTransportAddress(), LegacyESVersion.V_7_10_2));
         nodes.add(new DiscoveryNode(node_5, buildNewFakeTransportAddress(), LegacyESVersion.V_7_10_2));
+<<<<<<< HEAD
         nodes.add(new DiscoveryNode(node_6, buildNewFakeTransportAddress(), LegacyESVersion.V_7_10_1));
         nodes.add(new DiscoveryNode(node_7, buildNewFakeTransportAddress(), LegacyESVersion.V_7_10_0));
+=======
+        nodes.add(new DiscoveryNode(node_6, buildNewFakeTransportAddress(), LegacyESVersion.V_7_9_0));
+        nodes.add(new DiscoveryNode(node_7, buildNewFakeTransportAddress(), LegacyESVersion.V_7_9_0));
+>>>>>>> origin/1.2
         final ClusterState clusterState = ClusterState.builder(ClusterName.DEFAULT).nodes(nodes).build();
         final JoinTaskExecutor joinTaskExecutor = new JoinTaskExecutor(
             Settings.EMPTY,
@@ -264,6 +276,7 @@ public class JoinTaskExecutorTests extends OpenSearchTestCase {
         final ClusterStateTaskExecutor.TaskResult taskResult = result.executionResults.values().iterator().next();
         assertTrue(taskResult.isSuccess());
         DiscoveryNodes resultNodes = result.resultingState.getNodes();
+<<<<<<< HEAD
         assertEquals(Version.CURRENT, resultNodes.get(node_1).getVersion());
         assertEquals(Version.CURRENT, resultNodes.get(node_2).getVersion());
         assertEquals(Version.CURRENT, resultNodes.get(node_3).getVersion()); // 7.10.2 in old state but sent new join and processed
@@ -272,5 +285,15 @@ public class JoinTaskExecutorTests extends OpenSearchTestCase {
         assertEquals(LegacyESVersion.V_7_10_0, resultNodes.get(node_6).getVersion());
         // 7.9.0 node without active channel but shouldn't get removed
         assertEquals(LegacyESVersion.V_7_10_0, resultNodes.get(node_7).getVersion());
+=======
+        assertEquals(resultNodes.get(node_1).getVersion(), Version.CURRENT);
+        assertEquals(resultNodes.get(node_2).getVersion(), Version.CURRENT);
+        assertEquals(resultNodes.get(node_3).getVersion(), Version.CURRENT); // 7.10.2 in old state but sent new join and processed
+        assertEquals(resultNodes.get(node_4).getVersion(), LegacyESVersion.V_7_10_2);
+        assertFalse(resultNodes.nodeExists(node_5));  // 7.10.2 node without active channel will be removed and should rejoin
+        assertEquals(resultNodes.get(node_6).getVersion(), LegacyESVersion.V_7_9_0);
+        // 7.9.0 node without active channel but shouldn't get removed
+        assertEquals(resultNodes.get(node_7).getVersion(), LegacyESVersion.V_7_9_0);
+>>>>>>> origin/1.2
     }
 }

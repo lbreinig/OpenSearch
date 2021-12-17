@@ -130,7 +130,10 @@ public class Task {
             startTime,
             System.nanoTime() - startTimeNanos,
             this instanceof CancellableTask,
+<<<<<<< HEAD
             this instanceof CancellableTask && ((CancellableTask) this).isCancelled(),
+=======
+>>>>>>> origin/1.2
             parentTask,
             headers
         );

@@ -163,6 +163,24 @@ public class QueryAnalyzerTests extends OpenSearchTestCase {
         assertThat(terms.get(5).bytes().utf8ToString(), equalTo("_term6"));
     }
 
+<<<<<<< HEAD
+=======
+    public void testExtractQueryMetadata_multiPhraseQuery_pre6dot1() {
+        MultiPhraseQuery multiPhraseQuery = new MultiPhraseQuery.Builder().add(new Term("_field", "_long_term"))
+            .add(new Term[] { new Term("_field", "_long_term"), new Term("_field", "_term") })
+            .add(new Term[] { new Term("_field", "_long_term"), new Term("_field", "_very_long_term") })
+            .add(new Term[] { new Term("_field", "_very_long_term") })
+            .build();
+        Result result = analyze(multiPhraseQuery, LegacyESVersion.V_6_0_0);
+        assertThat(result.verified, is(false));
+        assertThat(result.minimumShouldMatch, equalTo(1));
+        List<QueryExtraction> terms = new ArrayList<>(result.extractions);
+        assertThat(terms.size(), equalTo(1));
+        assertThat(terms.get(0).field(), equalTo("_field"));
+        assertThat(terms.get(0).bytes().utf8ToString(), equalTo("_very_long_term"));
+    }
+
+>>>>>>> origin/1.2
     public void testExtractQueryMetadata_multiPhraseQuery_dups() {
         MultiPhraseQuery multiPhraseQuery = new MultiPhraseQuery.Builder().add(new Term("_field", "_term1"))
             .add(new Term[] { new Term("_field", "_term1"), new Term("_field", "_term2") })
@@ -577,6 +595,20 @@ public class QueryAnalyzerTests extends OpenSearchTestCase {
         assertTermsEqual(result.extractions, spanTermQuery1.getTerm(), spanTermQuery2.getTerm());
     }
 
+<<<<<<< HEAD
+=======
+    public void testExtractQueryMetadata_spanNearQuery_pre6dot1() {
+        SpanTermQuery spanTermQuery1 = new SpanTermQuery(new Term("_field", "_short_term"));
+        SpanTermQuery spanTermQuery2 = new SpanTermQuery(new Term("_field", "_very_long_term"));
+        SpanNearQuery spanNearQuery = new SpanNearQuery.Builder("_field", true).addClause(spanTermQuery1).addClause(spanTermQuery2).build();
+
+        Result result = analyze(spanNearQuery, LegacyESVersion.V_6_0_0);
+        assertThat(result.verified, is(false));
+        assertThat(result.minimumShouldMatch, equalTo(1));
+        assertTermsEqual(result.extractions, spanTermQuery2.getTerm());
+    }
+
+>>>>>>> origin/1.2
     public void testExtractQueryMetadata_spanOrQuery() {
         SpanTermQuery spanTermQuery1 = new SpanTermQuery(new Term("_field", "_short_term"));
         SpanTermQuery spanTermQuery2 = new SpanTermQuery(new Term("_field", "_very_long_term"));

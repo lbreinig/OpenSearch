@@ -524,6 +524,18 @@ public class DateFormattersTests extends OpenSearchTestCase {
                 assertThat(dateFormatter.pattern(), equalTo(name));
 
                 String snakeCaseName = FormatNames.forName(name).getSnakeCaseName();
+<<<<<<< HEAD
+=======
+                assertWarnings(
+                    "Camel case format name "
+                        + name
+                        + " is deprecated and will be removed in a future version. "
+                        + "Use snake case name "
+                        + snakeCaseName
+                        + " instead."
+                );
+
+>>>>>>> origin/1.2
                 dateFormatter = Joda.forPattern(snakeCaseName);
                 assertThat(dateFormatter.pattern(), equalTo(snakeCaseName));
             }

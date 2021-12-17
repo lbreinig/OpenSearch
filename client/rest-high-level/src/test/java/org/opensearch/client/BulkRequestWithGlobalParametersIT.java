@@ -210,7 +210,11 @@ public class BulkRequestWithGlobalParametersIT extends OpenSearchRestHighLevelCl
             request,
             highLevelClient()::bulk,
             highLevelClient()::bulkAsync,
+<<<<<<< HEAD
             expectWarningsOnce(RestBulkAction.TYPES_DEPRECATION_MESSAGE)
+=======
+            expectWarnings(RestBulkAction.TYPES_DEPRECATION_MESSAGE)
+>>>>>>> origin/1.2
         );
         assertFalse(bulkResponse.hasFailures());
         return bulkResponse;

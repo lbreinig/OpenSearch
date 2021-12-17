@@ -364,10 +364,14 @@ public class PluginsService implements ReportingService<PluginsAndModules> {
         if (Files.exists(rootPath)) {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(rootPath)) {
                 for (Path plugin : stream) {
+<<<<<<< HEAD
                     if (plugin.getFileName().toString().startsWith(".") && !Files.isDirectory(plugin)) {
                         logger.warn(
                             "Non-plugin file located in the plugins folder with the following name: [" + plugin.getFileName() + "]"
                         );
+=======
+                    if (FileSystemUtils.isDesktopServicesStore(plugin) || plugin.getFileName().toString().startsWith(".removing-")) {
+>>>>>>> origin/1.2
                         continue;
                     }
                     if (seen.add(plugin.getFileName().toString()) == false) {

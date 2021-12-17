@@ -60,7 +60,11 @@ public class GeoBoundingBoxQueryIT extends OpenSearchIntegTestCase {
     }
 
     public void testSimpleBoundingBoxTest() throws Exception {
+<<<<<<< HEAD
         Version version = VersionUtils.randomIndexCompatibleVersion(random());
+=======
+        Version version = VersionUtils.randomVersionBetween(random(), LegacyESVersion.V_6_0_0, Version.CURRENT);
+>>>>>>> origin/1.2
         Settings settings = Settings.builder().put(IndexMetadata.SETTING_VERSION_CREATED, version).build();
         XContentBuilder xContentBuilder = XContentFactory.jsonBuilder()
             .startObject()
@@ -184,7 +188,11 @@ public class GeoBoundingBoxQueryIT extends OpenSearchIntegTestCase {
     }
 
     public void testLimit2BoundingBox() throws Exception {
+<<<<<<< HEAD
         Version version = VersionUtils.randomIndexCompatibleVersion(random());
+=======
+        Version version = VersionUtils.randomVersionBetween(random(), LegacyESVersion.V_6_0_0, Version.CURRENT);
+>>>>>>> origin/1.2
         Settings settings = Settings.builder().put(IndexMetadata.SETTING_VERSION_CREATED, version).build();
         XContentBuilder xContentBuilder = XContentFactory.jsonBuilder()
             .startObject()
@@ -262,7 +270,11 @@ public class GeoBoundingBoxQueryIT extends OpenSearchIntegTestCase {
     }
 
     public void testCompleteLonRange() throws Exception {
+<<<<<<< HEAD
         Version version = VersionUtils.randomIndexCompatibleVersion(random());
+=======
+        Version version = VersionUtils.randomVersionBetween(random(), LegacyESVersion.V_6_0_0, Version.CURRENT);
+>>>>>>> origin/1.2
         Settings settings = Settings.builder().put(IndexMetadata.SETTING_VERSION_CREATED, version).build();
         XContentBuilder xContentBuilder = XContentFactory.jsonBuilder()
             .startObject()

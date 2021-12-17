@@ -572,10 +572,34 @@ public final class Settings implements ToXContentFragment {
     public static void writeSettingsToStream(Settings settings, StreamOutput out) throws IOException {
         // pull settings to exclude secure settings in size()
         Set<Map.Entry<String, Object>> entries = settings.settings.entrySet();
+<<<<<<< HEAD
         out.writeVInt(entries.size());
         for (Map.Entry<String, Object> entry : entries) {
             out.writeString(entry.getKey());
             out.writeGenericValue(entry.getValue());
+=======
+        if (out.getVersion().onOrAfter(LegacyESVersion.V_6_1_0)) {
+            out.writeVInt(entries.size());
+            for (Map.Entry<String, Object> entry : entries) {
+                out.writeString(entry.getKey());
+                out.writeGenericValue(entry.getValue());
+            }
+        } else {
+            int size = entries.stream().mapToInt(e -> e.getValue() instanceof List ? ((List) e.getValue()).size() : 1).sum();
+            out.writeVInt(size);
+            for (Map.Entry<String, Object> entry : entries) {
+                if (entry.getValue() instanceof List) {
+                    int idx = 0;
+                    for (String value : (List<String>) entry.getValue()) {
+                        out.writeString(entry.getKey() + "." + idx++);
+                        out.writeOptionalString(value);
+                    }
+                } else {
+                    out.writeString(entry.getKey());
+                    out.writeOptionalString(toString(entry.getValue()));
+                }
+            }
+>>>>>>> origin/1.2
         }
     }
 

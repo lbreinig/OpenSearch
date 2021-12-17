@@ -164,6 +164,16 @@ public class FsDirectoryFactoryTests extends OpenSearchTestCase {
                 case MMAPFS:
                     assertTrue(type + " " + directory.toString(), directory instanceof MMapDirectory);
                     break;
+<<<<<<< HEAD
+=======
+                case SIMPLEFS:
+                    assertWarnings(
+                        "simplefs is no longer supported and will be removed in 2.0. Use [niofs], which offers equal "
+                            + "or better performance, instead."
+                    );
+                    assertTrue(type + " " + directory.toString(), directory instanceof SimpleFSDirectory);
+                    break;
+>>>>>>> origin/1.2
                 case FS:
                     if (Constants.JRE_IS_64BIT && MMapDirectory.UNMAP_SUPPORTED) {
                         assertTrue(FsDirectoryFactory.isHybridFs(directory));

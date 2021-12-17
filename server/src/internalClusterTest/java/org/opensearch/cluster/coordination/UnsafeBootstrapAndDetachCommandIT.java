@@ -45,7 +45,10 @@ import org.opensearch.env.TestEnvironment;
 import org.opensearch.gateway.GatewayMetaState;
 import org.opensearch.gateway.PersistedClusterStateService;
 import org.opensearch.indices.IndicesService;
+<<<<<<< HEAD
 import org.opensearch.node.Node.DiscoverySettings;
+=======
+>>>>>>> origin/1.2
 import org.opensearch.test.InternalTestCluster;
 import org.opensearch.test.OpenSearchIntegTestCase;
 

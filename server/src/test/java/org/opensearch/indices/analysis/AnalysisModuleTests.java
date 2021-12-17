@@ -152,7 +152,11 @@ public class AnalysisModuleTests extends OpenSearchTestCase {
         Settings settings2 = Settings.builder()
             .loadFromStream(yaml, getClass().getResourceAsStream(yaml), false)
             .put(Environment.PATH_HOME_SETTING.getKey(), createTempDir().toString())
+<<<<<<< HEAD
             .put(IndexMetadata.SETTING_VERSION_CREATED, version)
+=======
+            .put(IndexMetadata.SETTING_VERSION_CREATED, LegacyESVersion.V_6_0_0)
+>>>>>>> origin/1.2
             .build();
         AnalysisRegistry newRegistry = getNewRegistry(settings2);
         IndexAnalyzers indexAnalyzers = getIndexAnalyzers(newRegistry, settings2);
@@ -165,8 +169,13 @@ public class AnalysisModuleTests extends OpenSearchTestCase {
 
         // analysis service has the expected version
         assertThat(indexAnalyzers.get("standard").analyzer(), is(instanceOf(StandardAnalyzer.class)));
+<<<<<<< HEAD
         assertEquals(version.luceneVersion, indexAnalyzers.get("standard").analyzer().getVersion());
         assertEquals(version.luceneVersion, indexAnalyzers.get("stop").analyzer().getVersion());
+=======
+        assertEquals(LegacyESVersion.V_6_0_0.luceneVersion, indexAnalyzers.get("standard").analyzer().getVersion());
+        assertEquals(LegacyESVersion.V_6_0_0.luceneVersion, indexAnalyzers.get("stop").analyzer().getVersion());
+>>>>>>> origin/1.2
 
         assertThat(indexAnalyzers.get("custom7").analyzer(), is(instanceOf(StandardAnalyzer.class)));
         assertEquals(org.apache.lucene.util.Version.fromBits(3, 6, 0), indexAnalyzers.get("custom7").analyzer().getVersion());

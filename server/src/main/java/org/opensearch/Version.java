@@ -75,12 +75,16 @@ public class Version implements Comparable<Version>, ToXContentFragment {
     public static final Version V_1_1_0 = new Version(1010099, org.apache.lucene.util.Version.LUCENE_8_9_0);
     public static final Version V_1_1_1 = new Version(1010199, org.apache.lucene.util.Version.LUCENE_8_9_0);
     public static final Version V_1_2_0 = new Version(1020099, org.apache.lucene.util.Version.LUCENE_8_10_1);
+<<<<<<< HEAD
     public static final Version V_1_2_1 = new Version(1020199, org.apache.lucene.util.Version.LUCENE_8_10_1);
     public static final Version V_1_2_2 = new Version(1020299, org.apache.lucene.util.Version.LUCENE_8_10_1);
     public static final Version V_1_2_3 = new Version(1020399, org.apache.lucene.util.Version.LUCENE_8_10_1);
     public static final Version V_1_3_0 = new Version(1030099, org.apache.lucene.util.Version.LUCENE_8_10_1);
     public static final Version V_2_0_0 = new Version(2000099, org.apache.lucene.util.Version.LUCENE_8_10_1);
     public static final Version CURRENT = V_2_0_0;
+=======
+    public static final Version CURRENT = V_1_2_0;
+>>>>>>> origin/1.2
 
     public static Version readVersion(StreamInput in) throws IOException {
         return fromId(in.readVInt());
@@ -330,11 +334,16 @@ public class Version implements Comparable<Version>, ToXContentFragment {
     protected Version computeMinCompatVersion() {
         if (major == 1) {
             return LegacyESVersion.V_6_8_0;
+<<<<<<< HEAD
         } else if (major == 2) {
             return LegacyESVersion.V_7_10_0;
+=======
+>>>>>>> origin/1.2
         } else if (major == 6) {
             // force the minimum compatibility for version 6 to 5.6 since we don't reference version 5 anymore
             return Version.fromId(5060099);
+        } else if (major == 2) {
+            return LegacyESVersion.V_7_10_0;
         } else if (major >= 7) {
             // all major versions from 7 onwards are compatible with last minor series of the previous major
             Version bwcVersion = null;
@@ -380,7 +389,11 @@ public class Version implements Comparable<Version>, ToXContentFragment {
         if (major == 5) {
             bwcMajor = 2; // we jumped from 2 to 5
         } else if (major == 7 || major == 1) {
+<<<<<<< HEAD
             return LegacyESVersion.fromId(6000026);
+=======
+            return LegacyESVersion.V_6_0_0_beta1;
+>>>>>>> origin/1.2
         } else if (major == 2) {
             return LegacyESVersion.V_7_0_0;
         } else {

@@ -35,7 +35,10 @@ package org.opensearch.repositories.azure;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+<<<<<<< HEAD
 import com.azure.core.http.rest.PagedResponse;
+=======
+>>>>>>> origin/1.2
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
@@ -52,7 +55,10 @@ import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.common.implementation.Constants;
 
+<<<<<<< HEAD
 import org.apache.commons.lang3.StringUtils;
+=======
+>>>>>>> origin/1.2
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.util.Throwables;
@@ -220,6 +226,7 @@ public class AzureBlobStore implements BlobStore {
         final ListBlobsOptions listBlobsOptions = new ListBlobsOptions().setPrefix(path);
 
         SocketAccess.doPrivilegedVoidException(() -> {
+<<<<<<< HEAD
             String continuationToken = null;
 
             do {
@@ -264,6 +271,35 @@ public class AzureBlobStore implements BlobStore {
                             if (len >= 0) {
                                 bytesDeleted.addAndGet(len);
                             }
+=======
+            for (final BlobItem blobItem : blobContainer.listBlobs(listBlobsOptions, timeout())) {
+                // Skipping prefixes as those are not deletable and should not be there
+                assert (blobItem.isPrefix() == null || !blobItem.isPrefix()) : "Only blobs (not prefixes) are expected";
+
+                outstanding.incrementAndGet();
+                executor.execute(new AbstractRunnable() {
+                    @Override
+                    protected void doRun() throws Exception {
+                        final long len = blobItem.getProperties().getContentLength();
+
+                        final BlobClient azureBlob = blobContainer.getBlobClient(blobItem.getName());
+                        logger.trace(
+                            () -> new ParameterizedMessage("container [{}]: blob [{}] found. removing.", container, blobItem.getName())
+                        );
+                        final Response<Void> response = azureBlob.deleteWithResponse(null, null, timeout(), client.v2().get());
+                        logger.trace(
+                            () -> new ParameterizedMessage(
+                                "container [{}]: blob [{}] deleted status [{}].",
+                                container,
+                                blobItem.getName(),
+                                response.getStatusCode()
+                            )
+                        );
+
+                        blobsDeleted.incrementAndGet();
+                        if (len >= 0) {
+                            bytesDeleted.addAndGet(len);
+>>>>>>> origin/1.2
                         }
 
                         @Override
@@ -325,6 +361,7 @@ public class AzureBlobStore implements BlobStore {
             .setPrefix(keyPath + (prefix == null ? "" : prefix));
 
         SocketAccess.doPrivilegedVoidException(() -> {
+<<<<<<< HEAD
             String continuationToken = null;
 
             do {
@@ -358,6 +395,22 @@ public class AzureBlobStore implements BlobStore {
                 // Fetch next continuation token
                 continuationToken = page.getContinuationToken();
             } while (StringUtils.isNotBlank(continuationToken));
+=======
+            for (final BlobItem blobItem : blobContainer.listBlobsByHierarchy("/", listBlobsOptions, timeout())) {
+                // Skipping over the prefixes, only look for the blobs
+                if (blobItem.isPrefix() != null && blobItem.isPrefix()) {
+                    continue;
+                }
+
+                final String name = getBlobName(blobItem.getName(), container, keyPath);
+                logger.trace(() -> new ParameterizedMessage("blob name [{}]", name));
+
+                final BlobItemProperties properties = blobItem.getProperties();
+                logger.trace(() -> new ParameterizedMessage("blob name [{}], size [{}]", name, properties.getContentLength()));
+                blobsBuilder.put(name, new PlainBlobMetadata(name, properties.getContentLength()));
+            }
+
+>>>>>>> origin/1.2
         });
 
         return MapBuilder.newMapBuilder(blobsBuilder).immutableMap();
@@ -373,6 +426,7 @@ public class AzureBlobStore implements BlobStore {
             .setPrefix(keyPath);
 
         SocketAccess.doPrivilegedVoidException(() -> {
+<<<<<<< HEAD
             String continuationToken = null;
 
             do {
@@ -403,6 +457,20 @@ public class AzureBlobStore implements BlobStore {
                 // Fetch next continuation token
                 continuationToken = page.getContinuationToken();
             } while (StringUtils.isNotBlank(continuationToken));
+=======
+            for (final BlobItem blobItem : blobContainer.listBlobsByHierarchy("/", listBlobsOptions, timeout())) {
+                // Skipping over the blobs, only look for prefixes
+                if (blobItem.isPrefix() != null && blobItem.isPrefix()) {
+                    // Expecting name in the form /container/keyPath.* and we want to strip off the /container/
+                    // this requires 1 + container.length() + 1, with each 1 corresponding to one of the /.
+                    // Lastly, we add the length of keyPath to the offset to strip this container's path.
+                    final String name = getBlobName(blobItem.getName(), container, keyPath).replaceAll("/$", "");
+                    logger.trace(() -> new ParameterizedMessage("blob name [{}]", name));
+                    blobsBuilder.add(name);
+                }
+            }
+            ;
+>>>>>>> origin/1.2
         });
 
         return Collections.unmodifiableMap(

@@ -55,6 +55,11 @@ public class Gateway {
 
     private final TransportNodesListGatewayMetaState listGatewayMetaState;
 
+<<<<<<< HEAD
+=======
+    private final int minimumMasterNodes;
+
+>>>>>>> origin/1.2
     public Gateway(
         final Settings settings,
         final ClusterService clusterService,

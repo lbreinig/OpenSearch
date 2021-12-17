@@ -163,6 +163,7 @@ public class RangeQueryBuilderTests extends AbstractQueryTestCase<RangeQueryBuil
         String expectedFieldName = expectedFieldName(queryBuilder.fieldName());
         if (queryBuilder.from() == null && queryBuilder.to() == null) {
             final Query expectedQuery;
+<<<<<<< HEAD
             if (context.getMapperService().fieldType(queryBuilder.fieldName()).hasDocValues()) {
                 expectedQuery = new ConstantScoreQuery(new DocValuesFieldExistsQuery(expectedFieldName));
             } else if (context.getMapperService().fieldType(queryBuilder.fieldName()).getTextSearchInfo().hasNorms()) {
@@ -170,6 +171,17 @@ public class RangeQueryBuilderTests extends AbstractQueryTestCase<RangeQueryBuil
             } else {
                 expectedQuery = new ConstantScoreQuery(new TermQuery(new Term(FieldNamesFieldMapper.NAME, expectedFieldName)));
             }
+=======
+            if (context.getIndexSettings().getIndexVersionCreated().onOrAfter(LegacyESVersion.V_6_1_0)
+                && context.getMapperService().fieldType(queryBuilder.fieldName()).hasDocValues()) {
+                expectedQuery = new ConstantScoreQuery(new DocValuesFieldExistsQuery(expectedFieldName));
+            } else if (context.getIndexSettings().getIndexVersionCreated().onOrAfter(LegacyESVersion.V_6_1_0)
+                && context.getMapperService().fieldType(queryBuilder.fieldName()).getTextSearchInfo().hasNorms()) {
+                    expectedQuery = new ConstantScoreQuery(new NormsFieldExistsQuery(expectedFieldName));
+                } else {
+                    expectedQuery = new ConstantScoreQuery(new TermQuery(new Term(FieldNamesFieldMapper.NAME, expectedFieldName)));
+                }
+>>>>>>> origin/1.2
             assertThat(query, equalTo(expectedQuery));
         } else if (expectedFieldName.equals(DATE_FIELD_NAME) == false
             && expectedFieldName.equals(INT_FIELD_NAME) == false
@@ -469,7 +481,12 @@ public class RangeQueryBuilderTests extends AbstractQueryTestCase<RangeQueryBuil
         // Range query with open bounds rewrite to an exists query
         Query luceneQuery = rewrittenRange.toQuery(queryShardContext);
         final Query expectedQuery;
+<<<<<<< HEAD
         if (queryShardContext.fieldMapper(query.fieldName()).hasDocValues()) {
+=======
+        if (queryShardContext.getIndexSettings().getIndexVersionCreated().onOrAfter(LegacyESVersion.V_6_1_0)
+            && queryShardContext.fieldMapper(query.fieldName()).hasDocValues()) {
+>>>>>>> origin/1.2
             expectedQuery = new ConstantScoreQuery(new DocValuesFieldExistsQuery(query.fieldName()));
         } else {
             expectedQuery = new ConstantScoreQuery(new TermQuery(new Term(FieldNamesFieldMapper.NAME, query.fieldName())));

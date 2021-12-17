@@ -92,7 +92,10 @@ forbiddenPatterns {
   exclude '**/*.p12'
 }
 
+<<<<<<< HEAD
 tasks.named("bundlePlugin").configure {
   dependsOn("copyParentJoinMetadata")
   dependsOn("copyTransportNetty4Metadata")
 }
+=======
+>>>>>>> origin/1.2

@@ -140,6 +140,12 @@ final class StoreRecovery {
             Sort indexSort = indexShard.getIndexSort();
             final boolean hasNested = indexShard.mapperService().hasNested();
             final boolean isSplit = sourceMetadata.getNumberOfShards() < indexShard.indexSettings().getNumberOfShards();
+<<<<<<< HEAD
+=======
+            assert isSplit == false
+                || sourceMetadata.getCreationVersion()
+                    .onOrAfter(LegacyESVersion.V_6_0_0_alpha1) : "for split we require a single type but the index is created before 6.0.0";
+>>>>>>> origin/1.2
             ActionListener.completeWith(recoveryListener(indexShard, listener), () -> {
                 logger.debug("starting recovery from local shards {}", shards);
                 try {

@@ -96,7 +96,11 @@ public class ClusterSearchShardsResponseTests extends OpenSearchTestCase {
         List<NamedWriteableRegistry.Entry> entries = new ArrayList<>();
         entries.addAll(searchModule.getNamedWriteables());
         NamedWriteableRegistry namedWriteableRegistry = new NamedWriteableRegistry(entries);
+<<<<<<< HEAD
         Version version = VersionUtils.randomIndexCompatibleVersion(random());
+=======
+        Version version = VersionUtils.randomVersionBetween(random(), LegacyESVersion.V_6_0_0, Version.CURRENT);
+>>>>>>> origin/1.2
         try (BytesStreamOutput out = new BytesStreamOutput()) {
             out.setVersion(version);
             clusterSearchShardsResponse.writeTo(out);

@@ -150,11 +150,18 @@ public class ExceptionSerializationTests extends OpenSearchTestCase {
         final Path startPath = PathUtils.get(OpenSearchException.class.getProtectionDomain().getCodeSource().getLocation().toURI())
             .resolve("org")
             .resolve("opensearch");
+<<<<<<< HEAD
         final Set<String> ignore = Sets.newHashSet(
             CancellableThreadsTests.CustomException.class.getName(),
             org.opensearch.rest.BytesRestResponseTests.WithHeadersException.class.getName(),
             AbstractClientHeadersTestCase.InternalException.class.getName(),
             "org.opensearch.rest.action.RestActionListenerTests$2"
+=======
+        final Set<? extends Class<?>> ignore = Sets.newHashSet(
+            CancellableThreadsTests.CustomException.class,
+            org.opensearch.rest.BytesRestResponseTests.WithHeadersException.class,
+            AbstractClientHeadersTestCase.InternalException.class
+>>>>>>> origin/1.2
         );
         FileVisitor<Path> visitor = new FileVisitor<Path>() {
             private Path pkgPrefix = PathUtils.get(path).getParent();
@@ -393,7 +400,11 @@ public class ExceptionSerializationTests extends OpenSearchTestCase {
     }
 
     public void testTooManyBucketsException() throws IOException {
+<<<<<<< HEAD
         Version version = VersionUtils.randomCompatibleVersion(random(), Version.CURRENT);
+=======
+        Version version = VersionUtils.randomVersionBetween(random(), LegacyESVersion.V_6_2_0, Version.CURRENT);
+>>>>>>> origin/1.2
         MultiBucketConsumerService.TooManyBucketsException ex = serialize(
             new MultiBucketConsumerService.TooManyBucketsException("Too many buckets", 100),
             version

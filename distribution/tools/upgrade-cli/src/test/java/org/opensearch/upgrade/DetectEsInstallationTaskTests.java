@@ -49,7 +49,11 @@ public class DetectEsInstallationTaskTests extends OpenSearchTestCase {
         task.accept(input);
 
         assertThat(taskInput.getEsConfig(), is(esConfig));
+<<<<<<< HEAD
         assertThat(taskInput.getBaseUrl(), is("http://localhost:42123"));
+=======
+        assertThat(taskInput.getBaseUrl(), is("http://localhost:9200"));
+>>>>>>> origin/1.2
         assertThat(taskInput.getPlugins(), hasSize(0));
         assertThat(taskInput.getNode(), is("node-x"));
         assertThat(taskInput.getCluster(), is("my-cluster"));

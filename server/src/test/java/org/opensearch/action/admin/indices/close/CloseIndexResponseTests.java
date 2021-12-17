@@ -170,6 +170,60 @@ public class CloseIndexResponseTests extends AbstractWireSerializingTestCase<Clo
                 + "\"reason\":\"No handler for action [test]\"}}]}}}}}",
             Strings.toString(closeIndexResponse)
         );
+<<<<<<< HEAD
+=======
+    }
+
+    public void testBwcSerialization() throws Exception {
+        {
+            final CloseIndexResponse response = randomResponse();
+            try (BytesStreamOutput out = new BytesStreamOutput()) {
+                out.setVersion(
+                    randomVersionBetween(random(), LegacyESVersion.V_6_0_0, VersionUtils.getPreviousVersion(LegacyESVersion.V_7_2_0))
+                );
+                response.writeTo(out);
+
+                try (StreamInput in = out.bytes().streamInput()) {
+                    in.setVersion(out.getVersion());
+                    final AcknowledgedResponse deserializedResponse = new AcknowledgedResponse(in);
+                    assertThat(deserializedResponse.isAcknowledged(), equalTo(response.isAcknowledged()));
+                }
+            }
+        }
+        {
+            final AcknowledgedResponse response = new AcknowledgedResponse(randomBoolean());
+            try (BytesStreamOutput out = new BytesStreamOutput()) {
+                response.writeTo(out);
+
+                try (StreamInput in = out.bytes().streamInput()) {
+                    in.setVersion(
+                        randomVersionBetween(random(), LegacyESVersion.V_6_0_0, VersionUtils.getPreviousVersion(LegacyESVersion.V_7_2_0))
+                    );
+                    final CloseIndexResponse deserializedResponse = new CloseIndexResponse(in);
+                    assertThat(deserializedResponse.isAcknowledged(), equalTo(response.isAcknowledged()));
+                }
+            }
+        }
+        {
+            final CloseIndexResponse response = randomResponse();
+            try (BytesStreamOutput out = new BytesStreamOutput()) {
+                Version version = randomVersionBetween(random(), LegacyESVersion.V_7_2_0, Version.CURRENT);
+                out.setVersion(version);
+                response.writeTo(out);
+                try (StreamInput in = out.bytes().streamInput()) {
+                    in.setVersion(version);
+                    final CloseIndexResponse deserializedResponse = new CloseIndexResponse(in);
+                    assertThat(deserializedResponse.isAcknowledged(), equalTo(response.isAcknowledged()));
+                    assertThat(deserializedResponse.isShardsAcknowledged(), equalTo(response.isShardsAcknowledged()));
+                    if (version.onOrAfter(LegacyESVersion.V_7_3_0)) {
+                        assertThat(deserializedResponse.getIndices(), hasSize(response.getIndices().size()));
+                    } else {
+                        assertThat(deserializedResponse.getIndices(), empty());
+                    }
+                }
+            }
+        }
+>>>>>>> origin/1.2
     }
 
     private CloseIndexResponse randomResponse() {

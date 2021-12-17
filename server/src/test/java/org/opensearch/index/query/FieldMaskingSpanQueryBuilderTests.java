@@ -74,9 +74,13 @@ public class FieldMaskingSpanQueryBuilderTests extends AbstractQueryTestCase<Fie
 
     public void testFromJson() throws IOException {
         String json = "{\n"
+<<<<<<< HEAD
             + "  \""
             + SPAN_FIELD_MASKING_FIELD.getPreferredName()
             + "\" : {\n"
+=======
+            + "  \"field_masking_span\" : {\n"
+>>>>>>> origin/1.2
             + "    \"query\" : {\n"
             + "      \"span_term\" : {\n"
             + "        \"value\" : {\n"

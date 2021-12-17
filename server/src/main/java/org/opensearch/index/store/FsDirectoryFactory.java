@@ -43,6 +43,7 @@ import org.apache.lucene.store.MMapDirectory;
 import org.apache.lucene.store.NIOFSDirectory;
 import org.apache.lucene.store.NativeFSLockFactory;
 import org.apache.lucene.store.SimpleFSLockFactory;
+import org.opensearch.common.logging.DeprecationLogger;
 import org.opensearch.common.settings.Setting;
 import org.opensearch.common.settings.Setting.Property;
 import org.opensearch.core.internal.io.IOUtils;
@@ -58,6 +59,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class FsDirectoryFactory implements IndexStorePlugin.DirectoryFactory {
+
+    private static final DeprecationLogger DEPRECATION_LOGGER = DeprecationLogger.getLogger(FsDirectoryFactory.class);
 
     public static final Setting<LockFactory> INDEX_LOCK_FACTOR_SETTING = new Setting<>("index.store.fs.fs_lock", "native", (s) -> {
         switch (s) {
@@ -102,6 +105,17 @@ public class FsDirectoryFactory implements IndexStorePlugin.DirectoryFactory {
                 return setPreload(new MMapDirectory(location, lockFactory), lockFactory, preLoadExtensions);
             // simplefs was removed in Lucene 9; support for enum is maintained for bwc
             case SIMPLEFS:
+<<<<<<< HEAD
+=======
+                DEPRECATION_LOGGER.deprecate(
+                    IndexModule.Type.SIMPLEFS.getSettingsKey(),
+                    IndexModule.Type.SIMPLEFS.getSettingsKey()
+                        + " is no longer supported and will be removed in 2.0. Use ["
+                        + IndexModule.Type.NIOFS.getSettingsKey()
+                        + "], which offers equal or better performance, instead."
+                );
+                return new SimpleFSDirectory(location, lockFactory);
+>>>>>>> origin/1.2
             case NIOFS:
                 return new NIOFSDirectory(location, lockFactory);
             default:

@@ -376,6 +376,30 @@ public class SliceBuilderTests extends OpenSearchTestCase {
         }
     }
 
+<<<<<<< HEAD
+=======
+    public void testSerializationBackcompat() throws IOException {
+        SliceBuilder sliceBuilder = new SliceBuilder(1, 5);
+        assertEquals(IdFieldMapper.NAME, sliceBuilder.getField());
+
+        SliceBuilder copy62 = copyWriteable(
+            sliceBuilder,
+            new NamedWriteableRegistry(Collections.emptyList()),
+            SliceBuilder::new,
+            LegacyESVersion.V_6_2_0
+        );
+        assertEquals(sliceBuilder, copy62);
+
+        SliceBuilder copy63 = copyWriteable(
+            copy62,
+            new NamedWriteableRegistry(Collections.emptyList()),
+            SliceBuilder::new,
+            LegacyESVersion.V_6_3_0
+        );
+        assertEquals(sliceBuilder, copy63);
+    }
+
+>>>>>>> origin/1.2
     public void testToFilterWithRouting() throws IOException {
         Directory dir = new ByteBuffersDirectory();
         try (IndexWriter writer = new IndexWriter(dir, newIndexWriterConfig(new MockAnalyzer(random())))) {

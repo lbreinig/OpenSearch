@@ -72,7 +72,11 @@ public class SkipSectionTests extends AbstractClientYamlTestFragmentParserTestCa
             "foobar"
         );
         assertFalse(section.skip(Version.CURRENT));
+<<<<<<< HEAD
         assertTrue(section.skip(LegacyESVersion.fromString("6.0.0")));
+=======
+        assertTrue(section.skip(LegacyESVersion.V_6_0_0));
+>>>>>>> origin/1.2
         section = new SkipSection(randomBoolean() ? null : "6.0.0 - 6.1.0", Collections.singletonList("boom"), "foobar");
         assertTrue(section.skip(Version.CURRENT));
     }
@@ -87,11 +91,15 @@ public class SkipSectionTests extends AbstractClientYamlTestFragmentParserTestCa
     }
 
     public void testParseSkipSectionVersionNoFeature() throws Exception {
+<<<<<<< HEAD
         Version version = VersionUtils.randomVersion(random());
         parser = createParser(
             YamlXContent.yamlXContent,
             "version:     \" - " + version + "\"\n" + "reason:      Delete ignores the parent param"
         );
+=======
+        parser = createParser(YamlXContent.yamlXContent, "version:     \" - 6.1.1\"\n" + "reason:      Delete ignores the parent param");
+>>>>>>> origin/1.2
 
         SkipSection skipSection = SkipSection.parse(parser);
         assertThat(skipSection, notNullValue());

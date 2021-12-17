@@ -71,6 +71,17 @@ public class NoMasterBlockService {
         EnumSet.of(ClusterBlockLevel.METADATA_WRITE)
     );
 
+<<<<<<< HEAD
+=======
+    public static final Setting<ClusterBlock> LEGACY_NO_MASTER_BLOCK_SETTING = new Setting<>(
+        "discovery.zen.no_master_block",
+        "write",
+        NoMasterBlockService::parseNoMasterBlock,
+        Property.Dynamic,
+        Property.NodeScope,
+        Property.Deprecated
+    );
+>>>>>>> origin/1.2
     public static final Setting<ClusterBlock> NO_MASTER_BLOCK_SETTING = new Setting<>(
         "cluster.no_master_block",
         "write",

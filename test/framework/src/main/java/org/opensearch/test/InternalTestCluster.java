@@ -454,6 +454,13 @@ public final class InternalTestCluster extends TestCluster {
             OpenSearchExecutors.daemonThreadFactory("test_" + clusterName),
             new ThreadContext(Settings.EMPTY)
         );
+<<<<<<< HEAD
+=======
+    }
+
+    private static boolean usingZen1(Settings settings) {
+        return ZEN_DISCOVERY_TYPE.equals(DISCOVERY_TYPE_SETTING.get(settings));
+>>>>>>> origin/1.2
     }
 
     /**
@@ -729,10 +736,37 @@ public final class InternalTestCluster extends TestCluster {
         if (usingSingleNodeDiscovery == false) {
             if (autoManageMasterNodes) {
                 assertThat(
+<<<<<<< HEAD
                     "if master nodes are automatically managed then nodes must complete a join cycle when starting",
                     updatedSettings.get(DiscoverySettings.INITIAL_STATE_TIMEOUT_SETTING.getKey()),
                     nullValue()
                 );
+=======
+                    "min master nodes may not be set when master nodes are auto managed",
+                    updatedSettings.get(DISCOVERY_ZEN_MINIMUM_MASTER_NODES_SETTING.getKey()),
+                    nullValue()
+                );
+                assertThat(
+                    "if master nodes are automatically managed then nodes must complete a join cycle when starting",
+                    updatedSettings.get(INITIAL_STATE_TIMEOUT_SETTING.getKey()),
+                    nullValue()
+                );
+
+                if (usingZen1) {
+                    updatedSettings
+                        // don't wait too long not to slow down tests
+                        .put(ZenDiscovery.MASTER_ELECTION_WAIT_FOR_JOINS_TIMEOUT_SETTING.getKey(), "5s")
+                        .put(DISCOVERY_ZEN_MINIMUM_MASTER_NODES_SETTING.getKey(), defaultMinMasterNodes);
+                }
+            } else {
+                if (usingZen1) {
+                    assertThat(
+                        DISCOVERY_ZEN_MINIMUM_MASTER_NODES_SETTING.getKey() + " must be configured",
+                        updatedSettings.get(DISCOVERY_ZEN_MINIMUM_MASTER_NODES_SETTING.getKey()),
+                        not(nullValue())
+                    );
+                }
+>>>>>>> origin/1.2
             }
         }
 
@@ -1075,6 +1109,28 @@ public final class InternalTestCluster extends TestCluster {
                 .put(newSettings)
                 .put(NodeEnvironment.NODE_ID_SEED_SETTING.getKey(), newIdSeed)
                 .build();
+<<<<<<< HEAD
+=======
+            if (usingZen1(finalSettings)) {
+                if (DISCOVERY_ZEN_MINIMUM_MASTER_NODES_SETTING.exists(finalSettings) == false) {
+                    throw new IllegalStateException(
+                        DISCOVERY_ZEN_MINIMUM_MASTER_NODES_SETTING.getKey() + " is not configured after restart of [" + name + "]"
+                    );
+                }
+            } else {
+                if (DISCOVERY_ZEN_MINIMUM_MASTER_NODES_SETTING.exists(finalSettings)) {
+                    // simulating an upgrade from Zen1 to Zen2, but there's no way to remove a setting when restarting a node, so
+                    // you have to set it to REMOVED_MINIMUM_MASTER_NODES (== Integer.MAX_VALUE) to indicate its removal:
+                    assertTrue(DISCOVERY_TYPE_SETTING.exists(finalSettings));
+                    assertThat(DISCOVERY_TYPE_SETTING.get(finalSettings), equalTo(ZEN2_DISCOVERY_TYPE));
+                    assertThat(DISCOVERY_ZEN_MINIMUM_MASTER_NODES_SETTING.get(finalSettings), equalTo(REMOVED_MINIMUM_MASTER_NODES));
+
+                    final Builder builder = Settings.builder().put(finalSettings);
+                    builder.remove(DISCOVERY_ZEN_MINIMUM_MASTER_NODES_SETTING.getKey());
+                    finalSettings = builder.build();
+                }
+            }
+>>>>>>> origin/1.2
             Collection<Class<? extends Plugin>> plugins = node.getClasspathPlugins();
             node = new MockNode(finalSettings, plugins);
             node.injector().getInstance(TransportService.class).addLifecycleListener(new LifecycleListener() {
@@ -1188,6 +1244,12 @@ public final class InternalTestCluster extends TestCluster {
             if (wipeData) {
                 wipePendingDataDirectories();
             }
+<<<<<<< HEAD
+=======
+            if (nodes.size() > 0 && autoManageMasterNodes) {
+                updateMinMasterNodes(getMasterNodesCount());
+            }
+>>>>>>> origin/1.2
             logger.debug(
                 "Cluster hasn't changed - moving out - nodes: [{}] nextNodeId: [{}] numSharedNodes: [{}]",
                 nodes.keySet(),
@@ -1829,6 +1891,16 @@ public final class InternalTestCluster extends TestCluster {
                 .filter(nac -> nodes.containsKey(nac.name) == false) // filter out old masters
                 .count();
             final int currentMasters = getMasterNodesCount();
+<<<<<<< HEAD
+=======
+            if (autoManageMasterNodes
+                && currentMasters > 0
+                && newMasters > 0
+                && getMinMasterNodes(currentMasters + newMasters) <= currentMasters) {
+                // if we're adding too many master-eligible nodes at once, we can't update the min master setting before adding the nodes.
+                updateMinMasterNodes(currentMasters + newMasters);
+            }
+>>>>>>> origin/1.2
             rebuildUnicastHostFiles(nodeAndClients); // ensure that new nodes can find the existing nodes when they start
             List<Future<?>> futures = nodeAndClients.stream().map(node -> executor.submit(node::startNode)).collect(Collectors.toList());
 
@@ -2291,6 +2363,38 @@ public final class InternalTestCluster extends TestCluster {
 
     public List<String> startDataOnlyNodes(int numNodes, Settings settings) {
         return startNodes(numNodes, Settings.builder().put(onlyRole(settings, DiscoveryNodeRole.DATA_ROLE)).build());
+<<<<<<< HEAD
+=======
+    }
+
+    /**
+     * updates the min master nodes setting in the current running cluster.
+     *
+     * @param eligibleMasterNodeCount the number of master eligible nodes to use as basis for the min master node setting
+     */
+    private void updateMinMasterNodes(int eligibleMasterNodeCount) {
+        assert autoManageMasterNodes;
+        final int minMasterNodes = getMinMasterNodes(eligibleMasterNodeCount);
+        if (getMasterNodesCount() > 0) {
+            // there should be at least one master to update
+            logger.debug("updating min_master_nodes to [{}]", minMasterNodes);
+            try {
+                assertAcked(
+                    client().admin()
+                        .cluster()
+                        .prepareUpdateSettings()
+                        .setTransientSettings(Settings.builder().put(DISCOVERY_ZEN_MINIMUM_MASTER_NODES_SETTING.getKey(), minMasterNodes))
+                );
+            } catch (Exception e) {
+                throw new OpenSearchException(
+                    "failed to update minimum master node to [{}] (current masters [{}])",
+                    e,
+                    minMasterNodes,
+                    getMasterNodesCount()
+                );
+            }
+        }
+>>>>>>> origin/1.2
     }
 
     /** calculates a min master nodes value based on the given number of master nodes */

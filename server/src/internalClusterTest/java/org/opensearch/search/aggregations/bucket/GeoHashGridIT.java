@@ -74,7 +74,11 @@ public class GeoHashGridIT extends OpenSearchIntegTestCase {
         return false;
     }
 
+<<<<<<< HEAD
     private Version version = VersionUtils.randomIndexCompatibleVersion(random());
+=======
+    private Version version = VersionUtils.randomVersionBetween(random(), LegacyESVersion.V_6_0_0, Version.CURRENT);
+>>>>>>> origin/1.2
 
     static ObjectIntMap<String> expectedDocCountsForGeoHash = null;
     static ObjectIntMap<String> multiValuedExpectedDocCountsForGeoHash = null;

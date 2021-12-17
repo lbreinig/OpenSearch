@@ -144,6 +144,25 @@ public class LeaderChecker {
                 channel.sendResponse(Empty.INSTANCE);
             }
         );
+<<<<<<< HEAD
+=======
+
+        transportService.registerRequestHandler(
+            MasterFaultDetection.MASTER_PING_ACTION_NAME,
+            Names.SAME,
+            false,
+            false,
+            MasterFaultDetection.MasterPingRequest::new,
+            (request, channel, task) -> {
+                try {
+                    handleLeaderCheck(new LeaderCheckRequest(request.sourceNode));
+                } catch (CoordinationStateRejectedException e) {
+                    throw new MasterFaultDetection.ThisIsNotTheMasterYouAreLookingForException(e.getMessage());
+                }
+                channel.sendResponse(new MasterFaultDetection.MasterPingResponseResponse());
+            }
+        );
+>>>>>>> origin/1.2
 
         transportService.addConnectionListener(new TransportConnectionListener() {
             @Override
@@ -258,10 +277,34 @@ public class LeaderChecker {
 
             logger.trace("checking {} with [{}] = {}", leader, LEADER_CHECK_TIMEOUT_SETTING.getKey(), leaderCheckTimeout);
 
+<<<<<<< HEAD
             transportService.sendRequest(
                 leader,
                 LEADER_CHECK_ACTION_NAME,
                 new LeaderCheckRequest(transportService.getLocalNode()),
+=======
+            final String actionName;
+            final TransportRequest transportRequest;
+            if (Coordinator.isZen1Node(leader)) {
+                actionName = MasterFaultDetection.MASTER_PING_ACTION_NAME;
+                transportRequest = new MasterFaultDetection.MasterPingRequest(
+                    transportService.getLocalNode(),
+                    leader,
+                    ClusterName.CLUSTER_NAME_SETTING.get(settings)
+                );
+            } else {
+                actionName = LEADER_CHECK_ACTION_NAME;
+                transportRequest = new LeaderCheckRequest(transportService.getLocalNode());
+            }
+            // TODO lag detection:
+            // In the PoC, the leader sent its current version to the follower in the response to a LeaderCheck, so the follower
+            // could detect if it was lagging. We'd prefer this to be implemented on the leader, so the response is just
+            // TransportResponse.Empty here.
+            transportService.sendRequest(
+                leader,
+                actionName,
+                transportRequest,
+>>>>>>> origin/1.2
                 TransportRequestOptions.builder().withTimeout(leaderCheckTimeout).withType(Type.PING).build(),
 
                 new TransportResponseHandler<TransportResponse.Empty>() {

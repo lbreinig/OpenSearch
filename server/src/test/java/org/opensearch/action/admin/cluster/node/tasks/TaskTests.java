@@ -48,8 +48,12 @@ public class TaskTests extends OpenSearchTestCase {
         long taskId = randomIntBetween(0, 100000);
         long startTime = randomNonNegativeLong();
         long runningTime = randomNonNegativeLong();
+<<<<<<< HEAD
         boolean cancellable = false;
         boolean cancelled = false;
+=======
+        boolean cancellable = randomBoolean();
+>>>>>>> origin/1.2
         TaskInfo taskInfo = new TaskInfo(
             new TaskId(nodeId, taskId),
             "test_type",
@@ -59,7 +63,10 @@ public class TaskTests extends OpenSearchTestCase {
             startTime,
             runningTime,
             cancellable,
+<<<<<<< HEAD
             cancelled,
+=======
+>>>>>>> origin/1.2
             TaskId.EMPTY_TASK_ID,
             Collections.singletonMap("foo", "bar")
         );

@@ -174,7 +174,11 @@ final class Ec2ClientSettings {
             } else {
                 if (key.length() == 0) {
                     deprecationLogger.deprecate(
+<<<<<<< HEAD
                         "ec2_invalid_key_settings",
+=======
+                        "ec2_invalid_settings",
+>>>>>>> origin/1.2
                         "Setting [{}] is set but [{}] is not, which will be unsupported in future",
                         SECRET_KEY_SETTING.getKey(),
                         ACCESS_KEY_SETTING.getKey()

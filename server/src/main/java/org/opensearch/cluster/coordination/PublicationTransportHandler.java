@@ -121,6 +121,21 @@ public class PublicationTransportHandler {
         );
 
         transportService.registerRequestHandler(
+<<<<<<< HEAD
+=======
+            PublishClusterStateAction.SEND_ACTION_NAME,
+            ThreadPool.Names.GENERIC,
+            false,
+            false,
+            BytesTransportRequest::new,
+            (request, channel, task) -> {
+                handleIncomingPublishRequest(request);
+                channel.sendResponse(TransportResponse.Empty.INSTANCE);
+            }
+        );
+
+        transportService.registerRequestHandler(
+>>>>>>> origin/1.2
             COMMIT_STATE_ACTION_NAME,
             ThreadPool.Names.GENERIC,
             false,
@@ -128,6 +143,30 @@ public class PublicationTransportHandler {
             ApplyCommitRequest::new,
             (request, channel, task) -> handleApplyCommit.accept(request, transportCommitCallback(channel))
         );
+<<<<<<< HEAD
+=======
+
+        transportService.registerRequestHandler(
+            PublishClusterStateAction.COMMIT_ACTION_NAME,
+            ThreadPool.Names.GENERIC,
+            false,
+            false,
+            PublishClusterStateAction.CommitClusterStateRequest::new,
+            (request, channel, task) -> {
+                final Optional<ClusterState> matchingClusterState = Optional.ofNullable(lastSeenClusterState.get())
+                    .filter(cs -> cs.stateUUID().equals(request.stateUUID));
+                if (matchingClusterState.isPresent() == false) {
+                    throw new IllegalStateException("can't resolve cluster state with uuid" + " [" + request.stateUUID + "] to commit");
+                }
+                final ApplyCommitRequest applyCommitRequest = new ApplyCommitRequest(
+                    matchingClusterState.get().getNodes().getMasterNode(),
+                    matchingClusterState.get().term(),
+                    matchingClusterState.get().version()
+                );
+                handleApplyCommit.accept(applyCommitRequest, transportCommitCallback(channel));
+            }
+        );
+>>>>>>> origin/1.2
     }
 
     private ActionListener<Void> transportCommitCallback(TransportChannel channel) {
@@ -371,10 +410,26 @@ public class PublicationTransportHandler {
             ActionListener<TransportResponse.Empty> listener
         ) {
             assert transportService.getThreadPool().getThreadContext().isSystemContext();
+<<<<<<< HEAD
             transportService.sendRequest(
                 destination,
                 COMMIT_STATE_ACTION_NAME,
                 applyCommitRequest,
+=======
+            final String actionName;
+            final TransportRequest transportRequest;
+            if (Coordinator.isZen1Node(destination)) {
+                actionName = PublishClusterStateAction.COMMIT_ACTION_NAME;
+                transportRequest = new PublishClusterStateAction.CommitClusterStateRequest(newState.stateUUID());
+            } else {
+                actionName = COMMIT_STATE_ACTION_NAME;
+                transportRequest = applyCommitRequest;
+            }
+            transportService.sendRequest(
+                destination,
+                actionName,
+                transportRequest,
+>>>>>>> origin/1.2
                 stateRequestOptions,
                 new TransportResponseHandler<TransportResponse.Empty>() {
 
@@ -469,7 +524,28 @@ public class PublicationTransportHandler {
                         return ThreadPool.Names.GENERIC;
                     }
                 };
+<<<<<<< HEAD
                 transportService.sendRequest(destination, PUBLISH_STATE_ACTION_NAME, request, stateRequestOptions, responseHandler);
+=======
+                final String actionName;
+                final TransportResponseHandler<?> transportResponseHandler;
+                if (Coordinator.isZen1Node(destination)) {
+                    actionName = PublishClusterStateAction.SEND_ACTION_NAME;
+                    transportResponseHandler = responseHandler.wrap(
+                        empty -> new PublishWithJoinResponse(
+                            new PublishResponse(newState.term(), newState.version()),
+                            Optional.of(
+                                new Join(destination, transportService.getLocalNode(), newState.term(), newState.term(), newState.version())
+                            )
+                        ),
+                        in -> TransportResponse.Empty.INSTANCE
+                    );
+                } else {
+                    actionName = PUBLISH_STATE_ACTION_NAME;
+                    transportResponseHandler = responseHandler;
+                }
+                transportService.sendRequest(destination, actionName, request, stateRequestOptions, transportResponseHandler);
+>>>>>>> origin/1.2
             } catch (Exception e) {
                 logger.warn(() -> new ParameterizedMessage("error sending cluster state to {}", destination), e);
                 listener.onFailure(e);

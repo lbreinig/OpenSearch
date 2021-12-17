@@ -398,7 +398,11 @@ public class SplitIndexIT extends OpenSearchIntegTestCase {
 
     public void testCreateSplitIndex() throws Exception {
         internalCluster().ensureAtLeastNumDataNodes(2);
+<<<<<<< HEAD
         Version version = VersionUtils.randomIndexCompatibleVersion(random());
+=======
+        Version version = VersionUtils.randomVersionBetween(random(), LegacyESVersion.V_6_0_0_rc2, Version.CURRENT);
+>>>>>>> origin/1.2
         prepareCreate("source").setSettings(
             Settings.builder().put(indexSettings()).put("number_of_shards", 1).put("index.version.created", version)
         ).get();

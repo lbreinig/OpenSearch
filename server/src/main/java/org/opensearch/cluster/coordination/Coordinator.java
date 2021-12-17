@@ -264,6 +264,17 @@ public class Coordinator extends AbstractLifecycleComponent implements Discovery
             this::isInitialConfigurationSet,
             this::setInitialConfiguration
         );
+<<<<<<< HEAD
+=======
+        this.discoveryUpgradeService = new DiscoveryUpgradeService(
+            settings,
+            transportService,
+            this::isInitialConfigurationSet,
+            joinHelper,
+            peerFinder::getFoundPeers,
+            this::setInitialConfiguration
+        );
+>>>>>>> origin/1.2
         this.lagDetector = new LagDetector(
             settings,
             transportService.getThreadPool(),

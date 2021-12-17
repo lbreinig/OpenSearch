@@ -82,8 +82,11 @@ public class CancelTasksResponseTests extends AbstractResponseTestCase<
         }
 
         for (int i = 0; i < 4; i++) {
+<<<<<<< HEAD
             boolean cancellable = randomBoolean();
             boolean cancelled = cancellable == true ? randomBoolean() : false;
+=======
+>>>>>>> origin/1.2
             tasks.add(
                 new org.opensearch.tasks.TaskInfo(
                     new TaskId(NODE_ID, (long) i),
@@ -93,8 +96,12 @@ public class CancelTasksResponseTests extends AbstractResponseTestCase<
                     new FakeTaskStatus(randomAlphaOfLength(4), randomInt()),
                     randomLongBetween(1, 3),
                     randomIntBetween(5, 10),
+<<<<<<< HEAD
                     cancellable,
                     cancelled,
+=======
+                    false,
+>>>>>>> origin/1.2
                     new TaskId("node1", randomLong()),
                     Collections.singletonMap("x-header-of", "some-value")
                 )

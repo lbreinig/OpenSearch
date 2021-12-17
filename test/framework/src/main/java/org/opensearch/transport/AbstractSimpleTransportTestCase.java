@@ -2187,7 +2187,11 @@ public abstract class AbstractSimpleTransportTestCase extends OpenSearchTestCase
 
     public void testHandshakeWithIncompatVersion() {
         assumeTrue("only tcp transport has a handshake method", serviceA.getOriginalTransport() instanceof TcpTransport);
+<<<<<<< HEAD
         Version version = LegacyESVersion.fromString("6.0.0");
+=======
+        Version version = Version.fromString("2.0.0");
+>>>>>>> origin/1.2
         try (MockTransportService service = buildService("TS_C", version, Settings.EMPTY)) {
             service.start();
             service.acceptIncomingRequests();
@@ -2231,11 +2235,16 @@ public abstract class AbstractSimpleTransportTestCase extends OpenSearchTestCase
                 TransportRequestOptions.Type.STATE
             );
             try (Transport.Connection connection = serviceA.openConnection(node, builder.build())) {
+<<<<<<< HEAD
                 // OpenSearch [1.0:2.0) in bwc mode should only "upgrade" to Legacy v7.10.2
                 assertEquals(
                     connection.getVersion(),
                     version.onOrAfter(Version.V_1_0_0) && version.before(Version.V_2_0_0) ? LegacyESVersion.V_7_10_2 : version
                 );
+=======
+                // OpenSearch 1.0+ in bwc mode should only "upgrade" to Legacy v7.10.2
+                assertEquals(connection.getVersion(), version.onOrAfter(Version.V_1_0_0) ? LegacyESVersion.V_7_10_2 : version);
+>>>>>>> origin/1.2
             }
         }
     }
@@ -2280,7 +2289,13 @@ public abstract class AbstractSimpleTransportTestCase extends OpenSearchTestCase
             PlainActionFuture<Transport.Connection> future = PlainActionFuture.newFuture();
             serviceA.getOriginalTransport().openConnection(node, connectionProfile, future);
             try (Transport.Connection connection = future.actionGet()) {
+<<<<<<< HEAD
                 assertEquals(Version.V_2_0_0, connection.getVersion());
+=======
+                // OpenSearch sends a handshake version spoofed as Legacy version 7_10_2
+                // todo change for OpenSearch 2.0.0
+                assertEquals(LegacyESVersion.V_7_10_2, connection.getVersion());
+>>>>>>> origin/1.2
             }
         }
     }

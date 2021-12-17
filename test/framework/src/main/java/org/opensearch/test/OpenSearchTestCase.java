@@ -492,6 +492,7 @@ public abstract class OpenSearchTestCase extends LuceneTestCase {
                 Arrays.stream(warnings)
             ).toArray(String[]::new)
         );
+<<<<<<< HEAD
     }
 
     /**
@@ -501,6 +502,8 @@ public abstract class OpenSearchTestCase extends LuceneTestCase {
     protected final void assertNoDeprecationWarnings() {
         final List<String> actualWarnings = threadContext.getResponseHeaders().get("Warning");
         assertTrue("Found duplicate warnings logged", actualWarnings == null);
+=======
+>>>>>>> origin/1.2
     }
 
     protected final void assertWarnings(String... expectedWarnings) {

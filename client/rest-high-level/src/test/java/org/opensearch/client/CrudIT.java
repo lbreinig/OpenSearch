@@ -222,7 +222,11 @@ public class CrudIT extends OpenSearchRestHighLevelClientTestCase {
             deleteRequest,
             highLevelClient()::delete,
             highLevelClient()::deleteAsync,
+<<<<<<< HEAD
             expectWarningsOnce(RestDeleteAction.TYPES_DEPRECATION_MESSAGE)
+=======
+            expectWarnings(RestDeleteAction.TYPES_DEPRECATION_MESSAGE)
+>>>>>>> origin/1.2
         );
 
         assertEquals("index", deleteResponse.getIndex());
@@ -433,7 +437,11 @@ public class CrudIT extends OpenSearchRestHighLevelClientTestCase {
             getRequest,
             highLevelClient()::get,
             highLevelClient()::getAsync,
+<<<<<<< HEAD
             expectWarningsOnce(RestGetAction.TYPES_DEPRECATION_MESSAGE)
+=======
+            expectWarnings(RestGetAction.TYPES_DEPRECATION_MESSAGE)
+>>>>>>> origin/1.2
         );
 
         assertEquals("index", getResponse.getIndex());
@@ -521,7 +529,11 @@ public class CrudIT extends OpenSearchRestHighLevelClientTestCase {
             multiGetRequest,
             highLevelClient()::mget,
             highLevelClient()::mgetAsync,
+<<<<<<< HEAD
             expectWarningsOnce(RestMultiGetAction.TYPES_DEPRECATION_MESSAGE)
+=======
+            expectWarnings(RestMultiGetAction.TYPES_DEPRECATION_MESSAGE)
+>>>>>>> origin/1.2
         );
         assertEquals(2, response.getResponses().length);
 
@@ -685,6 +697,7 @@ public class CrudIT extends OpenSearchRestHighLevelClientTestCase {
                 "OpenSearch exception [type=illegal_argument_exception, " + "reason=pipeline with id [missing] does not exist]",
                 exception.getMessage()
             );
+<<<<<<< HEAD
         }
         {
             OpenSearchStatusException exception = expectThrows(OpenSearchStatusException.class, () -> {
@@ -700,6 +713,8 @@ public class CrudIT extends OpenSearchRestHighLevelClientTestCase {
                     + " and [require_alias] request flag is [true] and [index] is not an alias]",
                 exception.getMessage()
             );
+=======
+>>>>>>> origin/1.2
         }
         {
             IndexRequest indexRequest = new IndexRequest("index").id("external_version_type");
@@ -940,6 +955,7 @@ public class CrudIT extends OpenSearchRestHighLevelClientTestCase {
                 "Update request cannot have different content types for doc [JSON] and upsert [YAML] documents",
                 exception.getMessage()
             );
+<<<<<<< HEAD
         }
         {
             OpenSearchException exception = expectThrows(OpenSearchException.class, () -> {
@@ -952,6 +968,8 @@ public class CrudIT extends OpenSearchRestHighLevelClientTestCase {
                 "OpenSearch exception [type=index_not_found_exception, reason=no such index [index] and [require_alias] request flag is [true] and [index] is not an alias]",
                 exception.getMessage()
             );
+=======
+>>>>>>> origin/1.2
         }
     }
 
@@ -971,7 +989,11 @@ public class CrudIT extends OpenSearchRestHighLevelClientTestCase {
             updateRequest,
             highLevelClient()::update,
             highLevelClient()::updateAsync,
+<<<<<<< HEAD
             expectWarningsOnce(RestUpdateAction.TYPES_DEPRECATION_MESSAGE)
+=======
+            expectWarnings(RestUpdateAction.TYPES_DEPRECATION_MESSAGE)
+>>>>>>> origin/1.2
         );
 
         assertEquals(RestStatus.OK, updateResponse.status());

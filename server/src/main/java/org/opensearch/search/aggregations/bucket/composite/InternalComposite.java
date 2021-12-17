@@ -100,7 +100,15 @@ public class InternalComposite extends InternalMultiBucketAggregation<InternalCo
         }
         this.reverseMuls = in.readIntArray();
         this.buckets = in.readList((input) -> new InternalBucket(input, sourceNames, formats, reverseMuls));
+<<<<<<< HEAD
         this.afterKey = in.readBoolean() ? new CompositeKey(in) : null;
+=======
+        if (in.getVersion().onOrAfter(LegacyESVersion.V_6_3_0)) {
+            this.afterKey = in.readBoolean() ? new CompositeKey(in) : null;
+        } else {
+            this.afterKey = buckets.size() > 0 ? buckets.get(buckets.size() - 1).key : null;
+        }
+>>>>>>> origin/1.2
         this.earlyTerminated = in.getVersion().onOrAfter(LegacyESVersion.V_7_6_0) ? in.readBoolean() : false;
     }
 

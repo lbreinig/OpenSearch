@@ -257,10 +257,17 @@ public class NestedObjectMapperTests extends OpenSearchSingleNodeTestCase {
                         .startObject()
                         .field("field2", "6")
                         .endObject()
+<<<<<<< HEAD
                         .endArray()
                         .endObject()
                         .endArray()
                         .endObject()
+=======
+                        .endArray()
+                        .endObject()
+                        .endArray()
+                        .endObject()
+>>>>>>> origin/1.2
                 ),
                 XContentType.JSON
             )
@@ -352,10 +359,17 @@ public class NestedObjectMapperTests extends OpenSearchSingleNodeTestCase {
                         .startObject()
                         .field("field2", "6")
                         .endObject()
+<<<<<<< HEAD
                         .endArray()
                         .endObject()
                         .endArray()
                         .endObject()
+=======
+                        .endArray()
+                        .endObject()
+                        .endArray()
+                        .endObject()
+>>>>>>> origin/1.2
                 ),
                 XContentType.JSON
             )
@@ -731,11 +745,19 @@ public class NestedObjectMapperTests extends OpenSearchSingleNodeTestCase {
                 .field("include_in_root", true)
                 .field("include_in_parent", true)
                 .endObject()
+<<<<<<< HEAD
                 .endObject()
                 .endObject()
                 .endObject()
                 .endObject()
                 .endObject()
+=======
+                .endObject()
+                .endObject()
+                .endObject()
+                .endObject()
+                .endObject()
+>>>>>>> origin/1.2
         );
         mapperService.merge(MapperService.SINGLE_MAPPING_NAME, new CompressedXContent(firstMapping), MergeReason.INDEX_TEMPLATE);
 
@@ -753,11 +775,19 @@ public class NestedObjectMapperTests extends OpenSearchSingleNodeTestCase {
                 .field("type", "nested")
                 .field("include_in_root", true)
                 .endObject()
+<<<<<<< HEAD
                 .endObject()
                 .endObject()
                 .endObject()
                 .endObject()
                 .endObject()
+=======
+                .endObject()
+                .endObject()
+                .endObject()
+                .endObject()
+                .endObject()
+>>>>>>> origin/1.2
         );
 
         mapperService.merge(MapperService.SINGLE_MAPPING_NAME, new CompressedXContent(secondMapping), MergeReason.INDEX_TEMPLATE);
@@ -934,11 +964,19 @@ public class NestedObjectMapperTests extends OpenSearchSingleNodeTestCase {
                 .startObject("properties")
                 .startObject("messages")
                 .field("type", "nested")
+<<<<<<< HEAD
                 .endObject()
                 .endObject()
                 .endObject()
                 .endObject()
                 .endObject()
+=======
+                .endObject()
+                .endObject()
+                .endObject()
+                .endObject()
+                .endObject()
+>>>>>>> origin/1.2
         ).mapperService();
         objectMapper = mapperService.getObjectMapper("comments.messages");
         assertFalse(objectMapper.parentObjectMapperAreNested(mapperService));
@@ -1131,6 +1169,78 @@ public class NestedObjectMapperTests extends OpenSearchSingleNodeTestCase {
         return false;
     }
 
+<<<<<<< HEAD
+=======
+    public void testReorderParentBWC() throws IOException {
+        String mapping = Strings.toString(
+            XContentFactory.jsonBuilder()
+                .startObject()
+                .startObject("type")
+                .startObject("properties")
+                .startObject("nested1")
+                .field("type", "nested")
+                .endObject()
+                .endObject()
+                .endObject()
+                .endObject()
+        );
+
+        Version bwcVersion = VersionUtils.randomVersionBetween(random(), LegacyESVersion.V_6_0_0, LegacyESVersion.V_6_4_0);
+        for (Version version : new Version[] { LegacyESVersion.V_6_5_0, bwcVersion }) {
+            DocumentMapper docMapper = createIndex(
+                "test-" + version,
+                Settings.builder().put(IndexMetadata.SETTING_INDEX_VERSION_CREATED.getKey(), version).build()
+            ).mapperService().documentMapperParser().parse("type", new CompressedXContent(mapping));
+
+            assertThat(docMapper.hasNestedObjects(), equalTo(true));
+            ObjectMapper nested1Mapper = docMapper.objectMappers().get("nested1");
+            assertThat(nested1Mapper.nested().isNested(), equalTo(true));
+
+            ParsedDocument doc = docMapper.parse(
+                new SourceToParse(
+                    "test",
+                    "type",
+                    "1",
+                    BytesReference.bytes(
+                        XContentFactory.jsonBuilder()
+                            .startObject()
+                            .field("field", "value")
+                            .startArray("nested1")
+                            .startObject()
+                            .field("field1", "1")
+                            .field("field2", "2")
+                            .endObject()
+                            .startObject()
+                            .field("field1", "3")
+                            .field("field2", "4")
+                            .endObject()
+                            .endArray()
+                            .endObject()
+                    ),
+                    XContentType.JSON
+                )
+            );
+
+            assertThat(doc.docs().size(), equalTo(3));
+            if (version.onOrAfter(LegacyESVersion.V_6_5_0)) {
+                assertThat(doc.docs().get(0).get(TypeFieldMapper.NAME), equalTo(nested1Mapper.nestedTypePathAsString()));
+                assertThat(doc.docs().get(0).get("nested1.field1"), equalTo("1"));
+                assertThat(doc.docs().get(0).get("nested1.field2"), equalTo("2"));
+                assertThat(doc.docs().get(1).get("nested1.field1"), equalTo("3"));
+                assertThat(doc.docs().get(1).get("nested1.field2"), equalTo("4"));
+                assertThat(doc.docs().get(2).get("field"), equalTo("value"));
+            } else {
+                assertThat(doc.docs().get(0).get(TypeFieldMapper.NAME), equalTo(nested1Mapper.nestedTypePathAsString()));
+                assertThat(doc.docs().get(0).get("nested1.field1"), equalTo("3"));
+                assertThat(doc.docs().get(0).get("nested1.field2"), equalTo("4"));
+                assertThat(doc.docs().get(1).get("nested1.field1"), equalTo("1"));
+                assertThat(doc.docs().get(1).get("nested1.field2"), equalTo("2"));
+                assertThat(doc.docs().get(2).get("field"), equalTo("value"));
+            }
+        }
+    }
+
+>>>>>>> origin/1.2
     public void testMergeNestedMappings() throws IOException {
         MapperService mapperService = createIndex(
             "index1",

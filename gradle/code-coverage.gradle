@@ -22,7 +22,10 @@ allprojects {
 def codeCoverageReportTask = tasks.register("codeCoverageReport", JacocoReport) {
   description = 'Generates aggregate report from all subprojects.'
   executionData.setFrom fileTree(dir: '.', include: '**/build/jacoco/*.exec')
+<<<<<<< HEAD
   dependsOn subprojects.findAll(s -> s.tasks.findByName('check') != null).check
+=======
+>>>>>>> origin/1.2
 }
 
 tasks.register("codeCoverageReportForUnitTest", JacocoReport) {
@@ -47,12 +50,19 @@ tasks.withType(JacocoReport).configureEach {
   def projectsWithJavaPlugin = subprojects.findAll { it.pluginManager.hasPlugin('java') }
   def projectsWithUnitTest = projectsWithJavaPlugin.findAll { it.tasks.findByName('test').enabled }
   def projectsWithIntegTest = projectsWithJavaPlugin.findAll {it.tasks.findByName('integTest')}
+<<<<<<< HEAD
   def projectsWithAsyncIntegTest = projectsWithJavaPlugin.findAll {it.tasks.findByName('asyncIntegTest')}
   def projectsWithInternalClusterTest = projectsWithJavaPlugin.findAll {it.tasks.findByName('internalClusterTest')}
   def projectsWithPooledInternalClusterTest = projectsWithJavaPlugin.findAll {it.tasks.findByName('pooledInternalClusterTest')}
   def projectsWithJavaRestTest = projectsWithJavaPlugin.findAll {it.tasks.findByName('javaRestTest')}
   def projectsWithYamlRestTest = projectsWithJavaPlugin.findAll {it.tasks.findByName('yamlRestTest')}
   def projectsWithIntegrationTest = projectsWithIntegTest + projectsWithAsyncIntegTest + projectsWithInternalClusterTest + projectsWithPooledInternalClusterTest + projectsWithJavaRestTest + projectsWithYamlRestTest
+=======
+  def projectsWithInternalClusterTest = projectsWithJavaPlugin.findAll {it.tasks.findByName('internalClusterTest')}
+  def projectsWithJavaRestTest = projectsWithJavaPlugin.findAll {it.tasks.findByName('javaRestTest')}
+  def projectsWithYamlRestTest = projectsWithJavaPlugin.findAll {it.tasks.findByName('yamlRestTest')}
+  def projectsWithIntegrationTest = projectsWithIntegTest + projectsWithInternalClusterTest + projectsWithJavaRestTest + projectsWithYamlRestTest
+>>>>>>> origin/1.2
   def projectsWithTest = projectsWithUnitTest + projectsWithIntegrationTest
 
   def selectedProjects
@@ -63,9 +73,13 @@ tasks.withType(JacocoReport).configureEach {
       break
     case "codeCoverageReportForIntegrationTest":
       dependsOn projectsWithIntegTest.integTest
+<<<<<<< HEAD
       dependsOn projectsWithAsyncIntegTest.asyncIntegTest
       dependsOn projectsWithInternalClusterTest.internalClusterTest
       dependsOn projectsWithPooledInternalClusterTest.pooledInternalClusterTest
+=======
+      dependsOn projectsWithInternalClusterTest.internalClusterTest
+>>>>>>> origin/1.2
       dependsOn projectsWithJavaRestTest.javaRestTest
       dependsOn projectsWithYamlRestTest.yamlRestTest
       selectedProjects = projectsWithIntegrationTest
@@ -73,6 +87,7 @@ tasks.withType(JacocoReport).configureEach {
     default:
       dependsOn projectsWithUnitTest.test
       dependsOn projectsWithIntegTest.integTest
+<<<<<<< HEAD
       dependsOn projectsWithAsyncIntegTest.asyncIntegTest
       dependsOn projectsWithInternalClusterTest.internalClusterTest
       dependsOn projectsWithPooledInternalClusterTest.pooledInternalClusterTest
@@ -82,14 +97,28 @@ tasks.withType(JacocoReport).configureEach {
       break
   }
   
+=======
+      dependsOn projectsWithInternalClusterTest.internalClusterTest
+      dependsOn projectsWithJavaRestTest.javaRestTest
+      dependsOn projectsWithYamlRestTest.yamlRestTest
+      selectedProjects = projectsWithTest
+      break
+  }
+>>>>>>> origin/1.2
   sourceDirectories.setFrom files(selectedProjects.sourceSets.main.allSource.srcDirs)
   classDirectories.setFrom files(selectedProjects.sourceSets.main.output)
 
   reports {
     // Code coverage report in HTML and CSV formats are on demand, in case they take extra disk space.
+<<<<<<< HEAD
     xml.getRequired().set(System.getProperty('tests.coverage.report.xml', 'true').toBoolean())
     html.getRequired().set(System.getProperty('tests.coverage.report.html', 'false').toBoolean())
     csv.getRequired().set(System.getProperty('tests.coverage.report.csv', 'false').toBoolean())
+=======
+    xml.enabled System.getProperty('tests.coverage.report.xml', 'true').toBoolean()
+    html.enabled System.getProperty('tests.coverage.report.html', 'false').toBoolean()
+    csv.enabled System.getProperty('tests.coverage.report.csv', 'false').toBoolean()
+>>>>>>> origin/1.2
   }
 }
 

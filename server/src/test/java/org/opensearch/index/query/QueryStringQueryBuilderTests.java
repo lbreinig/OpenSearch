@@ -1038,7 +1038,12 @@ public class QueryStringQueryBuilderTests extends AbstractQueryTestCase<QueryStr
         QueryShardContext context = createShardContext();
         QueryStringQueryBuilder queryBuilder = new QueryStringQueryBuilder(TEXT_FIELD_NAME + ":*");
         Query query = queryBuilder.toQuery(context);
+<<<<<<< HEAD
         if ((context.getMapperService().fieldType(TEXT_FIELD_NAME).getTextSearchInfo().hasNorms())) {
+=======
+        if (context.getIndexSettings().getIndexVersionCreated().onOrAfter(LegacyESVersion.V_6_1_0)
+            && (context.getMapperService().fieldType(TEXT_FIELD_NAME).getTextSearchInfo().hasNorms())) {
+>>>>>>> origin/1.2
             assertThat(query, equalTo(new ConstantScoreQuery(new NormsFieldExistsQuery(TEXT_FIELD_NAME))));
         } else {
             assertThat(query, equalTo(new ConstantScoreQuery(new TermQuery(new Term("_field_names", TEXT_FIELD_NAME)))));

@@ -315,6 +315,35 @@ public class SynonymsAnalysisTests extends OpenSearchTestCase {
                 tf.get(idxSettings, null, tf.getName(), settings).getSynonymFilter();
             }
         }
+<<<<<<< HEAD
+=======
+
+        Settings settings2 = Settings.builder()
+            .put(
+                IndexMetadata.SETTING_VERSION_CREATED,
+                VersionUtils.randomVersionBetween(
+                    random(),
+                    LegacyESVersion.V_6_0_0,
+                    VersionUtils.getPreviousVersion(LegacyESVersion.V_7_0_0)
+                )
+            )
+            .put("path.home", createTempDir().toString())
+            .putList("common_words", "a", "b")
+            .put("output_unigrams", "true")
+            .build();
+        IndexSettings idxSettings2 = IndexSettingsModule.newIndexSettings("index", settings2);
+
+        List<String> expectedWarnings = new ArrayList<>();
+        for (PreConfiguredTokenFilter tf : plugin.getPreConfiguredTokenFilters()) {
+            if (disallowedFilters.contains(tf.getName())) {
+                tf.get(idxSettings2, null, tf.getName(), settings2).getSynonymFilter();
+                expectedWarnings.add("Token filter [" + tf.getName() + "] will not be usable to parse synonyms after v7.0");
+            } else {
+                tf.get(idxSettings2, null, tf.getName(), settings2).getSynonymFilter();
+            }
+        }
+        assertWarnings(expectedWarnings.toArray(new String[0]));
+>>>>>>> origin/1.2
     }
 
     public void testDisallowedTokenFilters() throws IOException {
@@ -354,6 +383,61 @@ public class SynonymsAnalysisTests extends OpenSearchTestCase {
 
             assertEquals(factory, "Token filter [" + factory + "] cannot be used to parse synonyms", e.getMessage());
         }
+<<<<<<< HEAD
+=======
+
+        settings = Settings.builder()
+            .put(
+                IndexMetadata.SETTING_VERSION_CREATED,
+                VersionUtils.randomVersionBetween(
+                    random(),
+                    LegacyESVersion.V_6_0_0,
+                    VersionUtils.getPreviousVersion(LegacyESVersion.V_7_0_0)
+                )
+            )
+            .put("path.home", createTempDir().toString())
+            .putList("common_words", "a", "b")
+            .put("output_unigrams", "true")
+            .build();
+        idxSettings = IndexSettingsModule.newIndexSettings("index", settings);
+
+        List<String> expectedWarnings = new ArrayList<>();
+        for (String factory : disallowedFactories) {
+            TokenFilterFactory tff = plugin.getTokenFilters().get(factory).get(idxSettings, null, factory, settings);
+            TokenizerFactory tok = new KeywordTokenizerFactory(idxSettings, null, "keyword", settings);
+            SynonymTokenFilterFactory stff = new SynonymTokenFilterFactory(idxSettings, null, "synonym", settings);
+
+            stff.buildSynonymAnalyzer(tok, Collections.emptyList(), Collections.singletonList(tff), null);
+            expectedWarnings.add("Token filter [" + factory + "] will not be usable to parse synonyms after v7.0");
+        }
+
+        assertWarnings(expectedWarnings.toArray(new String[0]));
+
+        settings = Settings.builder()
+            .put(
+                IndexMetadata.SETTING_VERSION_CREATED,
+                VersionUtils.randomVersionBetween(
+                    random(),
+                    LegacyESVersion.V_6_0_0,
+                    VersionUtils.getPreviousVersion(LegacyESVersion.V_7_0_0)
+                )
+            )
+            .put("path.home", createTempDir().toString())
+            .put("preserve_original", "false")
+            .build();
+        idxSettings = IndexSettingsModule.newIndexSettings("index", settings);
+        TokenFilterFactory tff = plugin.getTokenFilters().get("multiplexer").get(idxSettings, null, "multiplexer", settings);
+        TokenizerFactory tok = new KeywordTokenizerFactory(idxSettings, null, "keyword", settings);
+        SynonymTokenFilterFactory stff = new SynonymTokenFilterFactory(idxSettings, null, "synonym", settings);
+
+        IllegalArgumentException e = expectThrows(
+            IllegalArgumentException.class,
+            () -> stff.buildSynonymAnalyzer(tok, Collections.emptyList(), Collections.singletonList(tff), null)
+        );
+
+        assertEquals("Token filter [multiplexer] cannot be used to parse synonyms unless [preserve_original] is [true]", e.getMessage());
+
+>>>>>>> origin/1.2
     }
 
     private void match(String analyzerName, String source, String target) throws IOException {

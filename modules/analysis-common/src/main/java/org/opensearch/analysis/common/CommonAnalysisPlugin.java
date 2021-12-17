@@ -384,6 +384,17 @@ public class CommonAnalysisPlugin extends Plugin implements AnalysisPlugin, Scri
     @Override
     public List<PreBuiltAnalyzerProviderFactory> getPreBuiltAnalyzerProviderFactories() {
         List<PreBuiltAnalyzerProviderFactory> analyzers = new ArrayList<>();
+<<<<<<< HEAD
+=======
+        // TODO remove in 8.0
+        analyzers.add(
+            new PreBuiltAnalyzerProviderFactory(
+                "standard_html_strip",
+                CachingStrategy.OPENSEARCH,
+                () -> new StandardHtmlStripAnalyzer(CharArraySet.EMPTY_SET)
+            )
+        );
+>>>>>>> origin/1.2
         analyzers.add(
             new PreBuiltAnalyzerProviderFactory(
                 "pattern",
@@ -450,6 +461,19 @@ public class CommonAnalysisPlugin extends Plugin implements AnalysisPlugin, Scri
     public List<PreConfiguredCharFilter> getPreConfiguredCharFilters() {
         List<PreConfiguredCharFilter> filters = new ArrayList<>();
         filters.add(PreConfiguredCharFilter.singleton("html_strip", false, HTMLStripCharFilter::new));
+<<<<<<< HEAD
+=======
+        filters.add(PreConfiguredCharFilter.openSearchVersion("htmlStrip", false, (reader, version) -> {
+            if (version.onOrAfter(LegacyESVersion.V_6_3_0)) {
+                deprecationLogger.deprecate(
+                    "htmlStrip_deprecation",
+                    "The [htmpStrip] char filter name is deprecated and will be removed in a future version. "
+                        + "Please change the filter name to [html_strip] instead."
+                );
+            }
+            return new HTMLStripCharFilter(reader);
+        }));
+>>>>>>> origin/1.2
         return filters;
     }
 
@@ -470,6 +494,27 @@ public class CommonAnalysisPlugin extends Plugin implements AnalysisPlugin, Scri
         );
         filters.add(PreConfiguredTokenFilter.singleton("czech_stem", false, CzechStemFilter::new));
         filters.add(PreConfiguredTokenFilter.singleton("decimal_digit", true, DecimalDigitFilter::new));
+<<<<<<< HEAD
+=======
+        filters.add(PreConfiguredTokenFilter.openSearchVersion("delimited_payload_filter", false, (input, version) -> {
+            if (version.onOrAfter(LegacyESVersion.V_7_0_0)) {
+                throw new IllegalArgumentException(
+                    "[delimited_payload_filter] is not supported for new indices, use [delimited_payload] instead"
+                );
+            }
+            if (version.onOrAfter(LegacyESVersion.V_6_2_0)) {
+                deprecationLogger.deprecate(
+                    "analysis_delimited_payload_filter",
+                    "Deprecated [delimited_payload_filter] used, replaced by [delimited_payload]"
+                );
+            }
+            return new DelimitedPayloadTokenFilter(
+                input,
+                DelimitedPayloadTokenFilterFactory.DEFAULT_DELIMITER,
+                DelimitedPayloadTokenFilterFactory.DEFAULT_ENCODER
+            );
+        }));
+>>>>>>> origin/1.2
         filters.add(
             PreConfiguredTokenFilter.singleton(
                 "delimited_payload",

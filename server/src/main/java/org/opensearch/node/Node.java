@@ -1075,7 +1075,14 @@ public class Node implements Closeable {
         );
         if (Assertions.ENABLED) {
             try {
+<<<<<<< HEAD
                 assert injector.getInstance(MetaStateService.class).loadFullState().v1().isEmpty();
+=======
+                if (DiscoveryModule.DISCOVERY_TYPE_SETTING.get(environment.settings())
+                    .equals(DiscoveryModule.ZEN_DISCOVERY_TYPE) == false) {
+                    assert injector.getInstance(MetaStateService.class).loadFullState().v1().isEmpty();
+                }
+>>>>>>> origin/1.2
                 final NodeMetadata nodeMetadata = NodeMetadata.FORMAT.loadLatestState(
                     logger,
                     NamedXContentRegistry.EMPTY,

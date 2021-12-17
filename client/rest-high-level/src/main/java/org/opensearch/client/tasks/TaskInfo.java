@@ -181,7 +181,10 @@ public class TaskInfo {
         return getStartTime() == taskInfo.getStartTime()
             && getRunningTimeNanos() == taskInfo.getRunningTimeNanos()
             && isCancellable() == taskInfo.isCancellable()
+<<<<<<< HEAD
             && isCancelled() == taskInfo.isCancelled()
+=======
+>>>>>>> origin/1.2
             && Objects.equals(getTaskId(), taskInfo.getTaskId())
             && Objects.equals(getType(), taskInfo.getType())
             && Objects.equals(getAction(), taskInfo.getAction())
@@ -201,7 +204,10 @@ public class TaskInfo {
             getStartTime(),
             getRunningTimeNanos(),
             isCancellable(),
+<<<<<<< HEAD
             isCancelled(),
+=======
+>>>>>>> origin/1.2
             getParentTaskId(),
             status,
             getHeaders()
@@ -228,8 +234,11 @@ public class TaskInfo {
             + runningTimeNanos
             + ", cancellable="
             + cancellable
+<<<<<<< HEAD
             + ", cancelled="
             + cancelled
+=======
+>>>>>>> origin/1.2
             + ", parentTaskId="
             + parentTaskId
             + ", status="

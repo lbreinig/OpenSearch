@@ -121,7 +121,11 @@ public class TransportInfo implements ReportingService.Info {
                 publishAddressString = hostString + '/' + publishAddress.toString();
             } else {
                 deprecationLogger.deprecate(
+<<<<<<< HEAD
                     "cname_in_publish_address_" + propertyName,
+=======
+                    "cname_in_publish_address",
+>>>>>>> origin/1.2
                     propertyName
                         + " was printed as [ip:port] instead of [hostname/ip:port]. "
                         + "This format is deprecated and will change to [hostname/ip:port] in a future version. "

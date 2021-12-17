@@ -1340,6 +1340,7 @@ public class Setting<T> implements ToXContentObject {
 
     public static Setting<Integer> intSetting(String key, int defaultValue, int minValue, Property... properties) {
         return intSetting(key, defaultValue, minValue, Integer.MAX_VALUE, properties);
+<<<<<<< HEAD
     }
 
     public static Setting<Integer> intSetting(String key, int defaultValue, int minValue, int maxValue, Property... properties) {
@@ -1373,6 +1374,41 @@ public class Setting<T> implements ToXContentObject {
         );
     }
 
+=======
+    }
+
+    public static Setting<Integer> intSetting(String key, int defaultValue, int minValue, int maxValue, Property... properties) {
+        return intSetting(key, defaultValue, minValue, maxValue, v -> {}, properties);
+    }
+
+    public static Setting<Integer> intSetting(
+        String key,
+        int defaultValue,
+        int minValue,
+        Validator<Integer> validator,
+        Property... properties
+    ) {
+        return intSetting(key, defaultValue, minValue, Integer.MAX_VALUE, validator, properties);
+    }
+
+    public static Setting<Integer> intSetting(
+        String key,
+        int defaultValue,
+        int minValue,
+        int maxValue,
+        Validator<Integer> validator,
+        Property... properties
+    ) {
+        return new Setting<>(
+            key,
+            Integer.toString(defaultValue),
+            (s) -> parseInt(s, minValue, maxValue, key, isFiltered(properties)),
+            validator,
+            properties
+        );
+    }
+
+>>>>>>> origin/1.2
     // Setting<Integer> with fallback
 
     public static Setting<Integer> intSetting(String key, Setting<Integer> fallbackSetting, Property... properties) {
@@ -1475,6 +1511,7 @@ public class Setting<T> implements ToXContentObject {
 
     public static Setting<Long> longSetting(String key, Setting<Long> fallbackSetting, long minValue, Property... properties) {
         return longSetting(key, fallbackSetting, minValue, Long.MAX_VALUE, properties);
+<<<<<<< HEAD
     }
 
     public static Setting<Long> longSetting(
@@ -1599,6 +1636,132 @@ public class Setting<T> implements ToXContentObject {
         );
     }
 
+=======
+    }
+
+    public static Setting<Long> longSetting(
+        String key,
+        Setting<Long> fallbackSetting,
+        long minValue,
+        long maxValue,
+        Property... properties
+    ) {
+        return longSetting(key, fallbackSetting, minValue, maxValue, v -> {}, properties);
+    }
+
+    public static Setting<Long> longSetting(
+        String key,
+        Setting<Long> fallbackSetting,
+        long minValue,
+        Validator<Long> validator,
+        Property... properties
+    ) {
+        return longSetting(key, fallbackSetting, minValue, Long.MAX_VALUE, validator, properties);
+    }
+
+    public static Setting<Long> longSetting(
+        String key,
+        Setting<Long> fallbackSetting,
+        long minValue,
+        long maxValue,
+        Validator<Long> validator,
+        Property... properties
+    ) {
+        return new Setting<>(
+            new SimpleKey(key),
+            fallbackSetting,
+            fallbackSetting::getRaw,
+            (s) -> parseLong(s, minValue, maxValue, key, isFiltered(properties)),
+            validator,
+            properties
+        );
+    }
+
+    // Double
+
+    private static double parseDouble(String s, double minValue, double maxValue, String key, boolean isFiltered) {
+        double value = Double.parseDouble(s);
+        if (value < minValue) {
+            String err = "Failed to parse value" + (isFiltered ? "" : " [" + s + "]") + " for setting [" + key + "] must be >= " + minValue;
+            throw new IllegalArgumentException(err);
+        }
+        if (value > maxValue) {
+            String err = "Failed to parse value" + (isFiltered ? "" : " [" + s + "]") + " for setting [" + key + "] must be <= " + maxValue;
+            throw new IllegalArgumentException(err);
+        }
+        return value;
+    }
+
+    // Setting<Double> with defaultValue
+
+    public static Setting<Double> doubleSetting(String key, double defaultValue, Property... properties) {
+        return doubleSetting(key, defaultValue, Double.MIN_VALUE, Double.MAX_VALUE, properties);
+    }
+
+    public static Setting<Double> doubleSetting(String key, double defaultValue, double minValue, Property... properties) {
+        return doubleSetting(key, defaultValue, minValue, Double.MAX_VALUE, properties);
+    }
+
+    public static Setting<Double> doubleSetting(String key, double defaultValue, double minValue, double maxValue, Property... properties) {
+        return doubleSetting(key, defaultValue, minValue, maxValue, v -> {}, properties);
+    }
+
+    public static Setting<Double> doubleSetting(
+        String key,
+        double defaultValue,
+        double minValue,
+        double maxValue,
+        Validator<Double> validator,
+        Property... properties
+    ) {
+        return new Setting<>(
+            key,
+            Double.toString(defaultValue),
+            (s) -> parseDouble(s, minValue, maxValue, key, isFiltered(properties)),
+            validator,
+            properties
+        );
+    }
+
+    // Setting<Double> with fallback
+
+    public static Setting<Double> doubleSetting(String key, Setting<Double> fallbackSetting, Property... properties) {
+        return doubleSetting(key, fallbackSetting, Double.MIN_VALUE, Double.MAX_VALUE, properties);
+    }
+
+    public static Setting<Double> doubleSetting(String key, Setting<Double> fallbackSetting, double minValue, Property... properties) {
+        return doubleSetting(key, fallbackSetting, minValue, Double.MAX_VALUE, properties);
+    }
+
+    public static Setting<Double> doubleSetting(
+        String key,
+        Setting<Double> fallbackSetting,
+        double minValue,
+        double maxValue,
+        Property... properties
+    ) {
+        return doubleSetting(key, fallbackSetting, minValue, maxValue, v -> {}, properties);
+    }
+
+    public static Setting<Double> doubleSetting(
+        String key,
+        Setting<Double> fallbackSetting,
+        double minValue,
+        double maxValue,
+        Validator<Double> validator,
+        Property... properties
+    ) {
+        return new Setting<>(
+            new SimpleKey(key),
+            fallbackSetting,
+            fallbackSetting::getRaw,
+            (s) -> parseDouble(s, minValue, maxValue, key, isFiltered(properties)),
+            validator,
+            properties
+        );
+    }
+
+>>>>>>> origin/1.2
     /// simpleString
 
     public static Setting<String> simpleString(String key, Property... properties) {

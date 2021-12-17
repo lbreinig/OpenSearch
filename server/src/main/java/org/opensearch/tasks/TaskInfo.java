@@ -95,6 +95,7 @@ public final class TaskInfo implements Writeable, ToXContentFragment {
         long startTime,
         long runningTimeNanos,
         boolean cancellable,
+<<<<<<< HEAD
         boolean cancelled,
         TaskId parentTaskId,
         Map<String, String> headers
@@ -102,6 +103,11 @@ public final class TaskInfo implements Writeable, ToXContentFragment {
         if (cancellable == false && cancelled == true) {
             throw new IllegalArgumentException("task cannot be cancelled");
         }
+=======
+        TaskId parentTaskId,
+        Map<String, String> headers
+    ) {
+>>>>>>> origin/1.2
         this.taskId = taskId;
         this.type = type;
         this.action = action;
@@ -270,7 +276,10 @@ public final class TaskInfo implements Writeable, ToXContentFragment {
         long startTime = (Long) a[i++];
         long runningTimeNanos = (Long) a[i++];
         boolean cancellable = (Boolean) a[i++];
+<<<<<<< HEAD
         boolean cancelled = a[i++] == Boolean.TRUE;
+=======
+>>>>>>> origin/1.2
         String parentTaskIdString = (String) a[i++];
         @SuppressWarnings("unchecked")
         Map<String, String> headers = (Map<String, String>) a[i++];
@@ -280,6 +289,7 @@ public final class TaskInfo implements Writeable, ToXContentFragment {
         }
         RawTaskStatus status = statusBytes == null ? null : new RawTaskStatus(statusBytes);
         TaskId parentTaskId = parentTaskIdString == null ? TaskId.EMPTY_TASK_ID : new TaskId(parentTaskIdString);
+<<<<<<< HEAD
         return new TaskInfo(
             id,
             type,
@@ -293,6 +303,9 @@ public final class TaskInfo implements Writeable, ToXContentFragment {
             parentTaskId,
             headers
         );
+=======
+        return new TaskInfo(id, type, action, description, status, startTime, runningTimeNanos, cancellable, parentTaskId, headers);
+>>>>>>> origin/1.2
     });
     static {
         // Note for the future: this has to be backwards and forwards compatible with all changes to the task storage format
@@ -331,7 +344,10 @@ public final class TaskInfo implements Writeable, ToXContentFragment {
             && Objects.equals(runningTimeNanos, other.runningTimeNanos)
             && Objects.equals(parentTaskId, other.parentTaskId)
             && Objects.equals(cancellable, other.cancellable)
+<<<<<<< HEAD
             && Objects.equals(cancelled, other.cancelled)
+=======
+>>>>>>> origin/1.2
             && Objects.equals(status, other.status)
             && Objects.equals(headers, other.headers);
     }

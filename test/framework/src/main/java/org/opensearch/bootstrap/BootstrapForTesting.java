@@ -167,9 +167,15 @@ public class BootstrapForTesting {
                         return opensearchPolicy.implies(domain, permission) || testFramework.implies(domain, permission);
                     }
                 });
+<<<<<<< HEAD
                 // Create access control context for mocking
                 PriviledgedMockMaker.createAccessControlContext();
                 System.setSecurityManager(SecureSM.createTestSecureSM(getTrustedHosts()));
+=======
+
+                PriviledgedMockMaker.createAccessControlContext();
+                System.setSecurityManager(SecureSM.createTestSecureSM());
+>>>>>>> origin/1.2
                 Security.selfTest();
 
                 // guarantee plugin classes are initialized first, in case they have one-time hacks.

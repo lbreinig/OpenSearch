@@ -44,6 +44,12 @@ import org.opensearch.index.analysis.Analysis;
 import org.opensearch.index.analysis.TokenFilterFactory;
 
 public class CommonGramsTokenFilterFactory extends AbstractTokenFilterFactory {
+<<<<<<< HEAD
+=======
+
+    private static final DeprecationLogger DEPRECATION_LOGGER = DeprecationLogger.getLogger(CommonGramsTokenFilterFactory.class);
+
+>>>>>>> origin/1.2
     private final CharArraySet words;
 
     private final boolean ignoreCase;
@@ -75,6 +81,19 @@ public class CommonGramsTokenFilterFactory extends AbstractTokenFilterFactory {
 
     @Override
     public TokenFilterFactory getSynonymFilter() {
+<<<<<<< HEAD
         throw new IllegalArgumentException("Token filter [" + name() + "] cannot be used to parse synonyms");
+=======
+        if (indexSettings.getIndexVersionCreated().onOrAfter(LegacyESVersion.V_7_0_0)) {
+            throw new IllegalArgumentException("Token filter [" + name() + "] cannot be used to parse synonyms");
+        } else {
+            DEPRECATION_LOGGER.deprecate(
+                "synonym_tokenfilters",
+                "Token filter [" + name() + "] will not be usable to parse synonyms after v7.0"
+            );
+        }
+
+        return this;
+>>>>>>> origin/1.2
     }
 }

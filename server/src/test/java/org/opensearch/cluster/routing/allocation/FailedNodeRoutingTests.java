@@ -252,7 +252,11 @@ public class FailedNodeRoutingTests extends OpenSearchAllocationTestCase {
             buildNewFakeTransportAddress(),
             Collections.emptyMap(),
             roles,
+<<<<<<< HEAD
             VersionUtils.randomIndexCompatibleVersion(random())
+=======
+            VersionUtils.randomVersionBetween(random(), LegacyESVersion.V_6_0_0_alpha1, null)
+>>>>>>> origin/1.2
         );
     }
 

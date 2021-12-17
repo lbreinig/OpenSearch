@@ -59,7 +59,10 @@ apply from: 'gradle/formatting.gradle'
 apply from: 'gradle/local-distribution.gradle'
 apply from: 'gradle/fips.gradle'
 apply from: 'gradle/run.gradle'
+<<<<<<< HEAD
 apply from: 'gradle/missing-javadoc.gradle'
+=======
+>>>>>>> origin/1.2
 apply from: 'gradle/code-coverage.gradle'
 
 // common maven publishing configuration
@@ -194,7 +197,11 @@ tasks.register("verifyVersions") {
  */
 
 boolean bwc_tests_enabled = true
+<<<<<<< HEAD
 /* place an issue link here when committing bwc changes */
+=======
+/* place a PR link here when committing bwc changes */
+>>>>>>> origin/1.2
 final String bwc_tests_disabled_issue = ""
 if (bwc_tests_enabled == false) {
   if (bwc_tests_disabled_issue.isEmpty()) {

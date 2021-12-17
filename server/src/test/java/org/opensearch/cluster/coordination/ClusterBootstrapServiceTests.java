@@ -189,6 +189,29 @@ public class ClusterBootstrapServiceTests extends OpenSearchTestCase {
             () -> false,
             vc -> { throw new AssertionError("should not be called"); }
         );
+<<<<<<< HEAD
+=======
+        transportService.start();
+        clusterBootstrapService.scheduleUnconfiguredBootstrap();
+        deterministicTaskQueue.runAllTasks();
+    }
+
+    public void testDoesNothingByDefaultIfZen1NodesDiscovered() {
+        final DiscoveryNode zen1Node = new DiscoveryNode(
+            "zen1",
+            buildNewFakeTransportAddress(),
+            singletonMap("zen1", "true"),
+            Collections.singleton(DiscoveryNodeRole.MASTER_ROLE),
+            Version.CURRENT
+        );
+        ClusterBootstrapService clusterBootstrapService = new ClusterBootstrapService(
+            Settings.EMPTY,
+            transportService,
+            () -> Stream.of(localNode, zen1Node).collect(Collectors.toSet()),
+            () -> false,
+            vc -> { throw new AssertionError("should not be called"); }
+        );
+>>>>>>> origin/1.2
         transportService.start();
         clusterBootstrapService.scheduleUnconfiguredBootstrap();
         deterministicTaskQueue.runAllTasks();
@@ -451,6 +474,33 @@ public class ClusterBootstrapServiceTests extends OpenSearchTestCase {
         deterministicTaskQueue.runAllTasks();
     }
 
+<<<<<<< HEAD
+=======
+    public void testDoesNotBootstrapsIfZen1NodesDiscovered() {
+        final DiscoveryNode zen1Node = new DiscoveryNode(
+            "zen1",
+            buildNewFakeTransportAddress(),
+            singletonMap("zen1", "true"),
+            Collections.singleton(DiscoveryNodeRole.MASTER_ROLE),
+            Version.CURRENT
+        );
+
+        ClusterBootstrapService clusterBootstrapService = new ClusterBootstrapService(
+            Settings.builder()
+                .putList(INITIAL_MASTER_NODES_SETTING.getKey(), localNode.getName(), otherNode1.getName(), otherNode2.getName())
+                .build(),
+            transportService,
+            () -> Stream.of(otherNode1, otherNode2, zen1Node).collect(Collectors.toList()),
+            () -> false,
+            vc -> { throw new AssertionError("should not be called"); }
+        );
+
+        transportService.start();
+        clusterBootstrapService.onFoundPeersUpdated();
+        deterministicTaskQueue.runAllTasks();
+    }
+
+>>>>>>> origin/1.2
     public void testRetriesBootstrappingOnException() {
         final AtomicLong bootstrappingAttempts = new AtomicLong();
         ClusterBootstrapService clusterBootstrapService = new ClusterBootstrapService(

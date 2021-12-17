@@ -160,7 +160,11 @@ public class ClientYamlTestSuiteTests extends AbstractClientYamlTestFragmentPars
             restTestSuite.getTestSections().get(1).getSkipSection().getReason(),
             equalTo("for newer versions the index name is always returned")
         );
+<<<<<<< HEAD
         assertThat(restTestSuite.getTestSections().get(1).getSkipSection().getLowerVersion(), equalTo(LegacyESVersion.fromString("6.0.0")));
+=======
+        assertThat(restTestSuite.getTestSections().get(1).getSkipSection().getLowerVersion(), equalTo(LegacyESVersion.V_6_0_0));
+>>>>>>> origin/1.2
         assertThat(restTestSuite.getTestSections().get(1).getSkipSection().getUpperVersion(), equalTo(Version.CURRENT));
         assertThat(restTestSuite.getTestSections().get(1).getExecutableSections().size(), equalTo(3));
         assertThat(restTestSuite.getTestSections().get(1).getExecutableSections().get(0), instanceOf(DoSection.class));

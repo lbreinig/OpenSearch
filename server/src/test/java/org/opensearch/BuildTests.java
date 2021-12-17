@@ -179,7 +179,11 @@ public class BuildTests extends OpenSearchTestCase {
         );
         assertNotEquals(build, differentSnapshot);
 
+<<<<<<< HEAD
         Build differentVersion = new Build(build.type(), build.hash(), build.date(), build.isSnapshot(), "0.1.2", build.getDistribution());
+=======
+        Build differentVersion = new Build(build.type(), build.hash(), build.date(), build.isSnapshot(), "1.2.3", build.getDistribution());
+>>>>>>> origin/1.2
         assertNotEquals(build, differentVersion);
     }
 
@@ -300,6 +304,12 @@ public class BuildTests extends OpenSearchTestCase {
         );
 
         final List<Version> versions = Version.getDeclaredVersions(LegacyESVersion.class);
+<<<<<<< HEAD
+=======
+        final Version pre63Version = randomFrom(
+            versions.stream().filter(v -> v.before(LegacyESVersion.V_6_3_0)).collect(Collectors.toList())
+        );
+>>>>>>> origin/1.2
         final Version post63Pre67Version = randomFrom(
             versions.stream()
                 .filter(v -> v.onOrAfter(LegacyESVersion.V_6_3_0) && v.before(LegacyESVersion.V_6_7_0))
@@ -317,6 +327,10 @@ public class BuildTests extends OpenSearchTestCase {
             versions.stream().filter(v -> v.onOrAfter(Version.V_1_0_0)).collect(Collectors.toList())
         );
 
+<<<<<<< HEAD
+=======
+        final WriteableBuild pre63 = copyWriteable(dockerBuild, writableRegistry(), WriteableBuild::new, pre63Version);
+>>>>>>> origin/1.2
         final WriteableBuild post63pre67 = copyWriteable(dockerBuild, writableRegistry(), WriteableBuild::new, post63Pre67Version);
         final WriteableBuild post67pre70 = copyWriteable(dockerBuild, writableRegistry(), WriteableBuild::new, post67Pre70Version);
         final WriteableBuild post70 = copyWriteable(dockerBuild, writableRegistry(), WriteableBuild::new, post70Version);

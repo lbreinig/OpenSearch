@@ -95,6 +95,7 @@ public class GetTaskResponseTests extends OpenSearchTestCase {
         Map<String, String> headers = randomBoolean()
             ? Collections.emptyMap()
             : Collections.singletonMap(randomAlphaOfLength(5), randomAlphaOfLength(5));
+<<<<<<< HEAD
         return new TaskInfo(
             taskId,
             type,
@@ -108,6 +109,9 @@ public class GetTaskResponseTests extends OpenSearchTestCase {
             parentTaskId,
             headers
         );
+=======
+        return new TaskInfo(taskId, type, action, description, status, startTime, runningTimeNanos, cancellable, parentTaskId, headers);
+>>>>>>> origin/1.2
     }
 
     private static TaskId randomTaskId() {

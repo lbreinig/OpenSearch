@@ -746,6 +746,16 @@ public class IndexRequest extends ReplicatedWriteRequest<IndexRequest> implement
         if (out.getVersion().before(LegacyESVersion.V_7_0_0)) {
             out.writeOptionalString(null); // _parent
         }
+<<<<<<< HEAD
+=======
+        if (out.getVersion().before(LegacyESVersion.V_6_0_0_alpha1)) {
+            // Serialize a fake timestamp. 5.x expect this value to be set by the #process method so we can't use null.
+            // On the other hand, indices created on 5.x do not index the timestamp field. Therefore passing a 0 (or any value) for
+            // the transport layer OK as it will be ignored.
+            out.writeOptionalString("0");
+            out.writeOptionalWriteable(null);
+        }
+>>>>>>> origin/1.2
         out.writeBytesReference(source);
         out.writeByte(opType.getId());
         out.writeLong(version);

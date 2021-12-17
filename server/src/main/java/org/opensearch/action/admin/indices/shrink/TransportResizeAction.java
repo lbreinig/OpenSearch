@@ -250,6 +250,16 @@ public class TransportResizeAction extends TransportMasterNodeAction<ResizeReque
 
     @Override
     protected String getMasterActionName(DiscoveryNode node) {
+<<<<<<< HEAD
         return super.getMasterActionName(node);
+=======
+        if (node.getVersion().onOrAfter(ResizeAction.COMPATIBILITY_VERSION)) {
+            return super.getMasterActionName(node);
+        } else {
+            // this is for BWC - when we send this to version that doesn't have ResizeAction.NAME registered
+            // we have to send to shrink instead.
+            return ShrinkAction.NAME;
+        }
+>>>>>>> origin/1.2
     }
 }

@@ -129,10 +129,17 @@ public class RootObjectMapperTests extends OpenSearchSingleNodeTestCase {
     public void testDynamicTemplates() throws Exception {
         String mapping = Strings.toString(
             XContentFactory.jsonBuilder()
+<<<<<<< HEAD
                 .startObject()
                 .startObject("type")
                 .startArray("dynamic_templates")
                 .startObject()
+=======
+                .startObject()
+                .startObject("type")
+                .startArray("dynamic_templates")
+                .startObject()
+>>>>>>> origin/1.2
                 .startObject("my_template")
                 .field("match_mapping_type", "string")
                 .startObject("mapping")
@@ -158,8 +165,13 @@ public class RootObjectMapperTests extends OpenSearchSingleNodeTestCase {
                 .startObject()
                 .startObject("type")
                 .field("dynamic_templates", Arrays.asList())
+<<<<<<< HEAD
                 .endObject()
                 .endObject()
+=======
+                .endObject()
+                .endObject()
+>>>>>>> origin/1.2
         );
         mapper = mapperService.merge("type", new CompressedXContent(mapping3), MergeReason.MAPPING_UPDATE);
         assertEquals(mapping3, mapper.mappingSource().toString());
@@ -168,9 +180,15 @@ public class RootObjectMapperTests extends OpenSearchSingleNodeTestCase {
     public void testDynamicTemplatesForIndexTemplate() throws IOException {
         String mapping = Strings.toString(
             XContentFactory.jsonBuilder()
+<<<<<<< HEAD
                 .startObject()
                 .startArray("dynamic_templates")
                 .startObject()
+=======
+                .startObject()
+                .startArray("dynamic_templates")
+                .startObject()
+>>>>>>> origin/1.2
                 .startObject("first_template")
                 .field("path_match", "first")
                 .startObject("mapping")
@@ -200,8 +218,13 @@ public class RootObjectMapperTests extends OpenSearchSingleNodeTestCase {
                 .startObject("field")
                 .field("type", "integer")
                 .endObject()
+<<<<<<< HEAD
                 .endObject()
                 .endObject()
+=======
+                .endObject()
+                .endObject()
+>>>>>>> origin/1.2
         );
         DocumentMapper mapper = mapperService.merge(
             MapperService.SINGLE_MAPPING_NAME,
@@ -219,9 +242,15 @@ public class RootObjectMapperTests extends OpenSearchSingleNodeTestCase {
         // Dynamic templates should be appended and deduplicated.
         mapping = Strings.toString(
             XContentFactory.jsonBuilder()
+<<<<<<< HEAD
                 .startObject()
                 .startArray("dynamic_templates")
                 .startObject()
+=======
+                .startObject()
+                .startArray("dynamic_templates")
+                .startObject()
+>>>>>>> origin/1.2
                 .startObject("third_template")
                 .field("path_match", "third")
                 .startObject("mapping")
@@ -274,8 +303,13 @@ public class RootObjectMapperTests extends OpenSearchSingleNodeTestCase {
                 .value("test_format")
                 .endArray()
                 .endArray()
+<<<<<<< HEAD
                 .endObject()
                 .endObject()
+=======
+                .endObject()
+                .endObject()
+>>>>>>> origin/1.2
         );
 
         DocumentMapperParser parser = createIndex("test").mapperService().documentMapperParser();
@@ -328,7 +362,11 @@ public class RootObjectMapperTests extends OpenSearchSingleNodeTestCase {
         DocumentMapper mapper = mapperService.merge("type", new CompressedXContent(Strings.toString(mapping)), MergeReason.MAPPING_UPDATE);
         assertThat(mapper.mappingSource().toString(), containsString("\"type\":\"string\""));
         assertWarnings(
+<<<<<<< HEAD
             "dynamic template [my_template1] has invalid content [{\"match_mapping_type\":\"string\",\"mapping\":{\"type\":"
+=======
+            "dynamic template [my_template] has invalid content [{\"match_mapping_type\":\"string\",\"mapping\":{\"type\":"
+>>>>>>> origin/1.2
                 + "\"string\"}}], caused by [No mapper found for type [string]]"
         );
     }
@@ -358,9 +396,15 @@ public class RootObjectMapperTests extends OpenSearchSingleNodeTestCase {
         DocumentMapper mapper = mapperService.merge("type", new CompressedXContent(Strings.toString(mapping)), MergeReason.MAPPING_UPDATE);
         assertThat(mapper.mappingSource().toString(), containsString("\"foo\":\"bar\""));
         assertWarnings(
+<<<<<<< HEAD
             "dynamic template [my_template2] has invalid content [{\"match_mapping_type\":\"string\",\"mapping\":{"
                 + "\"foo\":\"bar\",\"type\":\"keyword\"}}], "
                 + "caused by [unknown parameter [foo] on mapper [__dynamic__my_template2] of type [keyword]]"
+=======
+            "dynamic template [my_template] has invalid content [{\"match_mapping_type\":\"string\",\"mapping\":{"
+                + "\"foo\":\"bar\",\"type\":\"keyword\"}}], "
+                + "caused by [unknown parameter [foo] on mapper [__dynamic__my_template] of type [keyword]]"
+>>>>>>> origin/1.2
         );
     }
 
@@ -389,7 +433,11 @@ public class RootObjectMapperTests extends OpenSearchSingleNodeTestCase {
         DocumentMapper mapper = mapperService.merge("type", new CompressedXContent(Strings.toString(mapping)), MergeReason.MAPPING_UPDATE);
         assertThat(mapper.mappingSource().toString(), containsString("\"analyzer\":\"foobar\""));
         assertWarnings(
+<<<<<<< HEAD
             "dynamic template [my_template3] has invalid content [{\"match_mapping_type\":\"string\",\"mapping\":{"
+=======
+            "dynamic template [my_template] has invalid content [{\"match_mapping_type\":\"string\",\"mapping\":{"
+>>>>>>> origin/1.2
                 + "\"analyzer\":\"foobar\",\"type\":\"text\"}}], caused by [analyzer [foobar] has not been configured in mappings]"
         );
     }
@@ -465,6 +513,7 @@ public class RootObjectMapperTests extends OpenSearchSingleNodeTestCase {
             assertThat(mapper.mappingSource().toString(), containsString("\"foo\":\"bar\""));
             if (useMatchMappingType) {
                 assertWarnings(
+<<<<<<< HEAD
                     "dynamic template [my_template4] has invalid content [{\"match_mapping_type\":\"*\",\"mapping\":{"
                         + "\"foo\":\"bar\",\"type\":\"{dynamic_type}\"}}], "
                         + "caused by [unknown parameter [foo] on mapper [__dynamic__my_template4] of type [binary]]"
@@ -474,6 +523,17 @@ public class RootObjectMapperTests extends OpenSearchSingleNodeTestCase {
                     "dynamic template [my_template4] has invalid content [{\"match\":\"string_*\",\"mapping\":{"
                         + "\"foo\":\"bar\",\"type\":\"{dynamic_type}\"}}], "
                         + "caused by [unknown parameter [foo] on mapper [__dynamic__my_template4] of type [binary]]"
+=======
+                    "dynamic template [my_template] has invalid content [{\"match_mapping_type\":\"*\",\"mapping\":{"
+                        + "\"foo\":\"bar\",\"type\":\"{dynamic_type}\"}}], "
+                        + "caused by [unknown parameter [foo] on mapper [__dynamic__my_template] of type [binary]]"
+                );
+            } else {
+                assertWarnings(
+                    "dynamic template [my_template] has invalid content [{\"match\":\"string_*\",\"mapping\":{"
+                        + "\"foo\":\"bar\",\"type\":\"{dynamic_type}\"}}], "
+                        + "caused by [unknown parameter [foo] on mapper [__dynamic__my_template] of type [binary]]"
+>>>>>>> origin/1.2
                 );
             }
         }

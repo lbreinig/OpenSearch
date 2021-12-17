@@ -119,11 +119,18 @@ public class VersionTests extends OpenSearchTestCase {
     }
 
     public void testMinimumIndexCompatibilityVersion() {
+<<<<<<< HEAD
         // note: all Legacy compatibility support will be removed in OpenSearch 3.0
         assertEquals(LegacyESVersion.fromId(6000026), V_1_3_0.minimumIndexCompatibilityVersion());
         assertEquals(LegacyESVersion.fromId(7000099), Version.fromId(2000099).minimumIndexCompatibilityVersion());
         assertEquals(LegacyESVersion.fromId(7000099), Version.fromId(2010000).minimumIndexCompatibilityVersion());
         assertEquals(LegacyESVersion.fromId(7000099), Version.fromId(2000001).minimumIndexCompatibilityVersion());
+=======
+        assertEquals(Version.fromId(5000099), LegacyESVersion.V_6_0_0_beta1.minimumIndexCompatibilityVersion());
+        assertEquals(Version.fromId(2000099), Version.fromId(5000099).minimumIndexCompatibilityVersion());
+        assertEquals(Version.fromId(2000099), Version.fromId(5010000).minimumIndexCompatibilityVersion());
+        assertEquals(Version.fromId(2000099), Version.fromId(5000001).minimumIndexCompatibilityVersion());
+>>>>>>> origin/1.2
     }
 
     public void testVersionConstantPresent() {
@@ -181,7 +188,11 @@ public class VersionTests extends OpenSearchTestCase {
 
     public void testIndexCreatedVersion() {
         // an actual index has a IndexMetadata.SETTING_INDEX_UUID
+<<<<<<< HEAD
         final Version version = Version.V_1_0_0;
+=======
+        final LegacyESVersion version = LegacyESVersion.V_6_0_0_beta1;
+>>>>>>> origin/1.2
         assertEquals(
             version,
             Version.indexCreated(
@@ -196,6 +207,7 @@ public class VersionTests extends OpenSearchTestCase {
         assertThat(Version.fromString("1.2.0").minimumCompatibilityVersion(), equalTo(major));
         assertThat(Version.fromString("1.3.0").minimumCompatibilityVersion(), equalTo(major));
 
+<<<<<<< HEAD
         Version major2x = LegacyESVersion.fromString("7.10.0");
         assertThat(Version.fromString("2.0.0").minimumCompatibilityVersion(), equalTo(major2x));
         assertThat(Version.fromString("2.2.0").minimumCompatibilityVersion(), equalTo(major2x));
@@ -243,6 +255,68 @@ public class VersionTests extends OpenSearchTestCase {
         assertEquals(expected.major, actual.major);
         assertEquals(expected.minor, actual.minor);
         assertEquals(expected.revision, actual.revision);
+=======
+        Version major5x = Version.fromString("5.0.0");
+        assertThat(Version.fromString("5.0.0").minimumCompatibilityVersion(), equalTo(major5x));
+        assertThat(Version.fromString("5.2.0").minimumCompatibilityVersion(), equalTo(major5x));
+        assertThat(Version.fromString("5.3.0").minimumCompatibilityVersion(), equalTo(major5x));
+
+        Version major56x = LegacyESVersion.fromString("5.6.0");
+        assertThat(LegacyESVersion.V_6_5_0.minimumCompatibilityVersion(), equalTo(major56x));
+        assertThat(LegacyESVersion.V_6_3_1.minimumCompatibilityVersion(), equalTo(major56x));
+
+        // from 7.0 on we are supporting the latest minor of the previous major... this might fail once we add a new version ie. 5.x is
+        // released since we need to bump the supported minor in Version#minimumCompatibilityVersion()
+        Version lastVersion = LegacyESVersion.V_6_8_0; // TODO: remove this once min compat version is a constant instead of method
+        assertEquals(lastVersion.major, LegacyESVersion.V_7_0_0.minimumCompatibilityVersion().major);
+        assertEquals(
+            "did you miss to bump the minor in Version#minimumCompatibilityVersion()",
+            lastVersion.minor,
+            LegacyESVersion.V_7_0_0.minimumCompatibilityVersion().minor
+        );
+        assertEquals(0, LegacyESVersion.V_7_0_0.minimumCompatibilityVersion().revision);
+>>>>>>> origin/1.2
+    }
+
+    /** test opensearch min wire compatibility */
+    public void testOpenSearchMinCompatVersion() {
+        Version opensearchVersion = VersionUtils.randomOpenSearchVersion(random());
+        // opensearch 1.x minCompat is Legacy 6.8.0
+        // opensearch 2.x minCompat is Legacy 7.10.0
+        // opensearch 3.x minCompat is 1.{last minor version}.0
+        // until 3.0 is staged the following line will only return legacy versions
+        List<Version> candidates = opensearchVersion.major >= 3 ? VersionUtils.allOpenSearchVersions() : VersionUtils.allLegacyVersions();
+        int opensearchMajor = opensearchVersion.major;
+        int major = opensearchMajor - 1;
+        if (opensearchMajor == 1) {
+            major = 7;
+        } else if (opensearchMajor == 2) {
+            major = 8;
+        }
+        assertEquals(VersionUtils.lastFirstReleasedMinorFromMajor(candidates, major - 1), opensearchVersion.minimumCompatibilityVersion());
+    }
+
+    /** test opensearch min index compatibility */
+    public void testOpenSearchMinIndexCompatVersion() {
+        Version opensearchVersion = VersionUtils.randomOpenSearchVersion(random());
+        // opensearch 1.x minIndexCompat is Legacy 6.8.0
+        // opensearch 2.x minCompat is Legacy 7.10.0
+        // opensearch 3.x minCompat is 1.{last minor version}.0
+        // until 3.0 is staged the following line will only return legacy versions
+        List<Version> candidates = opensearchVersion.major >= 3 ? VersionUtils.allOpenSearchVersions() : VersionUtils.allLegacyVersions();
+        int opensearchMajor = opensearchVersion.major;
+        int major = opensearchMajor - 1;
+        if (opensearchMajor == 1) {
+            major = 7;
+        } else if (opensearchMajor == 2) {
+            major = 8;
+        }
+        Version expected = VersionUtils.getFirstVersionOfMajor(candidates, major - 1);
+        Version actual = opensearchVersion.minimumIndexCompatibilityVersion();
+        // since some legacy versions still support build (alpha, beta, RC) we check major minor revision only
+        assertEquals(expected.major, actual.major);
+        assertEquals(expected.minor, actual.minor);
+        assertEquals(expected.revision, actual.revision);
     }
 
     public void testToString() {
@@ -256,17 +330,28 @@ public class VersionTests extends OpenSearchTestCase {
     }
 
     public void testIsRc() {
+<<<<<<< HEAD
+=======
+        assertTrue(LegacyESVersion.fromString("2.0.0-rc1").isRC());
+        assertTrue(LegacyESVersion.fromString("1.0.0.RC1").isRC());
+>>>>>>> origin/1.2
         assertTrue(Version.fromString("1.0.0-rc1").isRC());
         assertTrue(Version.fromString("2.0.0.RC1").isRC());
 
         for (int i = 0; i < 25; i++) {
+<<<<<<< HEAD
             assertEquals(Version.fromString("5.0.0-rc" + i).id, Version.fromId(5000000 + i + 50).id);
             assertEquals("5.0.0-rc" + i, Version.fromId(5000000 + i + 50).toString());
+=======
+            assertEquals(LegacyESVersion.fromString("5.0.0-rc" + i).id, LegacyESVersion.fromId(5000000 + i + 50).id);
+            assertEquals("5.0.0-rc" + i, LegacyESVersion.fromId(5000000 + i + 50).toString());
+>>>>>>> origin/1.2
 
             assertEquals(Version.fromString("1.0.0-rc" + i).id, Version.fromId(135217728 + i + 50).id);
             assertEquals("1.0.0-rc" + i, Version.fromId(135217728 + i + 50).toString());
         }
     }
+<<<<<<< HEAD
 
     public void testIsBeta() {
         assertTrue(Version.fromString("1.0.0.Beta1").isBeta());
@@ -291,20 +376,74 @@ public class VersionTests extends OpenSearchTestCase {
         for (int i = 0; i < 25; i++) {
             assertEquals(Version.fromString("1.0.0-alpha" + i).id, Version.fromId((1000000 + i) ^ MASK).id);
             assertEquals("1.0.0-alpha" + i, Version.fromId((1000000 + i) ^ MASK).toString());
+=======
+
+    public void testIsBeta() {
+        assertTrue(LegacyESVersion.fromString("2.0.0-beta1").isBeta());
+        assertTrue(LegacyESVersion.fromString("1.0.0.Beta1").isBeta());
+        assertTrue(LegacyESVersion.fromString("0.90.0.Beta1").isBeta());
+        assertTrue(Version.fromString("1.0.0.Beta1").isBeta());
+        assertTrue(Version.fromString("2.0.0.beta1").isBeta());
+
+        for (int i = 0; i < 25; i++) {
+            assertEquals(LegacyESVersion.fromString("5.0.0-beta" + i).id, LegacyESVersion.fromId(5000000 + i + 25).id);
+            assertEquals("5.0.0-beta" + i, LegacyESVersion.fromId(5000000 + i + 25).toString());
+
+            assertEquals(Version.fromString("1.0.0-beta" + i).id, Version.fromId(135217728 + i + 25).id);
+            assertEquals("1.0.0-beta" + i, Version.fromId(135217728 + i + 25).toString());
+        }
+    }
+
+    public void testIsAlpha() {
+        assertTrue(new LegacyESVersion(5000001, org.apache.lucene.util.Version.LUCENE_7_0_0).isAlpha());
+        assertFalse(new LegacyESVersion(4000002, org.apache.lucene.util.Version.LUCENE_7_0_0).isAlpha());
+        assertTrue(new LegacyESVersion(4000002, org.apache.lucene.util.Version.LUCENE_7_0_0).isBeta());
+        assertTrue(LegacyESVersion.fromString("5.0.0-alpha14").isAlpha());
+        assertEquals(5000014, LegacyESVersion.fromString("5.0.0-alpha14").id);
+        assertTrue(LegacyESVersion.fromId(5000015).isAlpha());
+
+        assertEquals(135217742, Version.fromString("1.0.0-alpha14").id);
+        assertTrue(Version.fromString("1.0.0-alpha14").isAlpha());
+
+        for (int i = 0; i < 25; i++) {
+            assertEquals(LegacyESVersion.fromString("5.0.0-alpha" + i).id, LegacyESVersion.fromId(5000000 + i).id);
+            assertEquals("5.0.0-alpha" + i, LegacyESVersion.fromId(5000000 + i).toString());
+
+            assertEquals(Version.fromString("1.0.0-alpha" + i).id, Version.fromId(135217728 + i).id);
+            assertEquals("1.0.0-alpha" + i, Version.fromId(135217728 + i).toString());
+>>>>>>> origin/1.2
         }
     }
 
     public void testParseVersion() {
         final int iters = scaledRandomIntBetween(100, 1000);
         for (int i = 0; i < iters; i++) {
+<<<<<<< HEAD
             Version version = randomOpenSearchVersion(random());
+=======
+            Version version = randomVersion(random());
+            if (random().nextBoolean()) {
+                version = version.id < MASK
+                    ? new LegacyESVersion(version.id, version.luceneVersion)
+                    : new Version(version.id ^ MASK, version.luceneVersion);
+            }
+>>>>>>> origin/1.2
             Version parsedVersion = Version.fromString(version.toString());
             assertEquals(version, parsedVersion);
         }
 
+<<<<<<< HEAD
         expectThrows(IllegalArgumentException.class, () -> Version.fromString("5.0.0-alph2"));
         assertSame(Version.CURRENT, Version.fromString(Version.CURRENT.toString()));
         expectThrows(IllegalArgumentException.class, () -> Version.fromString("1.0.0-SNAPSHOT"));
+=======
+        expectThrows(IllegalArgumentException.class, () -> { Version.fromString("5.0.0-alph2"); });
+        assertSame(Version.CURRENT, Version.fromString(Version.CURRENT.toString()));
+
+        assertEquals(LegacyESVersion.fromString("2.0.0-SNAPSHOT"), LegacyESVersion.fromId(2000099));
+
+        expectThrows(IllegalArgumentException.class, () -> { LegacyESVersion.fromString("5.0.0-SNAPSHOT"); });
+>>>>>>> origin/1.2
     }
 
     public void testParseLenient() {
@@ -413,7 +552,11 @@ public class VersionTests extends OpenSearchTestCase {
         } else {
             currentOrNextMajorVersion = currentMajorVersion;
         }
+<<<<<<< HEAD
         final Version lastMinorFromPreviousMajor = VersionUtils.allReleasedVersions()
+=======
+        final Version lastMinorFromPreviousMajor = VersionUtils.allVersions()
+>>>>>>> origin/1.2
             .stream()
             .filter(v -> v.major == (currentOrNextMajorVersion.major == 1 ? 7 : currentOrNextMajorVersion.major - 1))
             .max(Version::compareTo)
@@ -427,7 +570,11 @@ public class VersionTests extends OpenSearchTestCase {
             Locale.ROOT,
             "[%s] should %s be compatible with [%s]",
             previousMinorVersion,
+<<<<<<< HEAD
             isCompatible ? "" : "not",
+=======
+            isCompatible ? "" : " not",
+>>>>>>> origin/1.2
             currentOrNextMajorVersion
         );
         assertThat(message, isCompatible(VersionUtils.getPreviousMinorVersion(), currentOrNextMajorVersion), equalTo(isCompatible));
@@ -450,7 +597,11 @@ public class VersionTests extends OpenSearchTestCase {
         assertThat(versionsByMinCompat, equalTo(allVersions()));
     }
 
+<<<<<<< HEAD
     public static boolean isCompatible(Version left, Version right) {
+=======
+    public boolean isCompatible(Version left, Version right) {
+>>>>>>> origin/1.2
         boolean result = left.isCompatible(right);
         assert result == right.isCompatible(left);
         return result;

@@ -69,6 +69,11 @@ public class JoinTaskExecutor implements ClusterStateTaskExecutor<JoinTaskExecut
     private final Logger logger;
     private final RerouteService rerouteService;
     private final TransportService transportService;
+<<<<<<< HEAD
+=======
+
+    private final int minimumMasterNodesOnLocalNode;
+>>>>>>> origin/1.2
 
     public static class Task {
 
@@ -266,6 +271,10 @@ public class JoinTaskExecutor implements ClusterStateTaskExecutor<JoinTaskExecut
         ClusterState tmpState = ClusterState.builder(currentState)
             .nodes(nodesBuilder)
             .blocks(ClusterBlocks.builder().blocks(currentState.blocks()).removeGlobalBlock(NoMasterBlockService.NO_MASTER_BLOCK_ID))
+<<<<<<< HEAD
+=======
+            .minimumMasterNodesOnPublishingMaster(minimumMasterNodesOnLocalNode)
+>>>>>>> origin/1.2
             .build();
         logger.trace("becomeMasterAndTrimConflictingNodes: {}", tmpState.nodes());
         allocationService.cleanCaches();

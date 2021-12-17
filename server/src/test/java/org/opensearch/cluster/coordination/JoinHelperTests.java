@@ -190,6 +190,16 @@ public class JoinHelperTests extends OpenSearchTestCase {
             ),
             is(Level.DEBUG)
         );
+<<<<<<< HEAD
+=======
+    }
+
+    public void testZen1JoinValidationRejectsMismatchedClusterUUID() {
+        assertJoinValidationRejectsMismatchedClusterUUID(
+            MembershipAction.DISCOVERY_JOIN_VALIDATE_ACTION_NAME,
+            "mixed-version cluster join validation on cluster state with a different cluster uuid"
+        );
+>>>>>>> origin/1.2
     }
 
     public void testJoinValidationRejectsMismatchedClusterUUID() {

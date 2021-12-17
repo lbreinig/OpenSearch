@@ -46,6 +46,12 @@ import org.opensearch.index.IndexSettings;
  * <p>The {@code unicodeSetFilter} attribute can be used to provide the UniCodeSet for filtering.</p>
  */
 public class IcuNormalizerTokenFilterFactory extends AbstractTokenFilterFactory implements NormalizingTokenFilterFactory {
+<<<<<<< HEAD
+=======
+
+    private static final DeprecationLogger deprecationLogger = DeprecationLogger.getLogger(IcuNormalizerTokenFilterFactory.class);
+
+>>>>>>> origin/1.2
     private final Normalizer2 normalizer;
 
     public IcuNormalizerTokenFilterFactory(IndexSettings indexSettings, Environment environment, String name, Settings settings) {
@@ -61,7 +67,21 @@ public class IcuNormalizerTokenFilterFactory extends AbstractTokenFilterFactory 
     }
 
     static Normalizer2 wrapWithUnicodeSetFilter(final IndexSettings indexSettings, final Normalizer2 normalizer, final Settings settings) {
+<<<<<<< HEAD
         String unicodeSetFilter = settings.get("unicode_set_filter");
+=======
+        String unicodeSetFilter = settings.get("unicodeSetFilter");
+        if (indexSettings.getIndexVersionCreated().onOrAfter(LegacyESVersion.V_7_0_0)) {
+            if (unicodeSetFilter != null) {
+                deprecationLogger.deprecate(
+                    "icu_normalizer_unicode_set_filter",
+                    "[unicodeSetFilter] has been deprecated in favor of [unicode_set_filter]"
+                );
+            } else {
+                unicodeSetFilter = settings.get("unicode_set_filter");
+            }
+        }
+>>>>>>> origin/1.2
         if (unicodeSetFilter != null) {
             UnicodeSet unicodeSet = new UnicodeSet(unicodeSetFilter);
 

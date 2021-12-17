@@ -58,7 +58,17 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 public class DateUtilsTests extends OpenSearchTestCase {
+<<<<<<< HEAD
     private static final Set<String> IGNORE = new HashSet<>(Arrays.asList("Pacific/Enderbury", "Pacific/Kanton", "Pacific/Niue"));
+=======
+    private static final Set<String> IGNORE = new HashSet<>(
+        Arrays.asList(
+            "Eire",
+            "Europe/Dublin", // dublin timezone in joda does not account for DST
+            "Asia/Qostanay" // this has been added in joda 2.10.2 but is not part of the JDK 12.0.1 tzdata yet
+        )
+    );
+>>>>>>> origin/1.2
 
     public void testTimezoneIds() {
         assertNull(DateUtils.dateTimeZoneToZoneId(null));

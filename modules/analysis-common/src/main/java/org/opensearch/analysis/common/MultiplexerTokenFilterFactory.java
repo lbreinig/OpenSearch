@@ -53,6 +53,12 @@ import java.util.List;
 import java.util.function.Function;
 
 public class MultiplexerTokenFilterFactory extends AbstractTokenFilterFactory {
+<<<<<<< HEAD
+=======
+
+    private static final DeprecationLogger DEPRECATION_LOGGER = DeprecationLogger.getLogger(MultiplexerTokenFilterFactory.class);
+
+>>>>>>> origin/1.2
     private List<String> filterNames;
     private final boolean preserveOriginal;
 
@@ -69,7 +75,24 @@ public class MultiplexerTokenFilterFactory extends AbstractTokenFilterFactory {
 
     @Override
     public TokenFilterFactory getSynonymFilter() {
+<<<<<<< HEAD
         throw new IllegalArgumentException("Token filter [" + name() + "] cannot be used to parse synonyms");
+=======
+        if (indexSettings.getIndexVersionCreated().onOrAfter(LegacyESVersion.V_7_0_0)) {
+            throw new IllegalArgumentException("Token filter [" + name() + "] cannot be used to parse synonyms");
+        } else {
+            if (preserveOriginal) {
+                DEPRECATION_LOGGER.deprecate(
+                    "synonym_tokenfilters",
+                    "Token filter [" + name() + "] will not be usable to parse synonyms after v7.0"
+                );
+                return IDENTITY_FILTER;
+            }
+            throw new IllegalArgumentException(
+                "Token filter [" + name() + "] cannot be used to parse synonyms unless [preserve_original] is [true]"
+            );
+        }
+>>>>>>> origin/1.2
     }
 
     @Override
@@ -124,7 +147,24 @@ public class MultiplexerTokenFilterFactory extends AbstractTokenFilterFactory {
 
             @Override
             public TokenFilterFactory getSynonymFilter() {
+<<<<<<< HEAD
                 throw new IllegalArgumentException("Token filter [" + name() + "] cannot be used to parse synonyms");
+=======
+                if (indexSettings.getIndexVersionCreated().onOrAfter(LegacyESVersion.V_7_0_0)) {
+                    throw new IllegalArgumentException("Token filter [" + name() + "] cannot be used to parse synonyms");
+                } else {
+                    if (preserveOriginal) {
+                        DEPRECATION_LOGGER.deprecate(
+                            "synonym_tokenfilters",
+                            "Token filter [" + name() + "] will not be usable to parse synonyms after v7.0"
+                        );
+                        return IDENTITY_FILTER;
+                    }
+                    throw new IllegalArgumentException(
+                        "Token filter [" + name() + "] cannot be used to parse synonyms unless [preserve_original] is [true]"
+                    );
+                }
+>>>>>>> origin/1.2
             }
 
             @Override

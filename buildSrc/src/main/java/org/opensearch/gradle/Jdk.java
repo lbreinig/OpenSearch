@@ -49,7 +49,11 @@ import java.util.regex.Pattern;
 public class Jdk implements Buildable, Iterable<File> {
 
     private static final List<String> ALLOWED_ARCHITECTURES = Collections.unmodifiableList(Arrays.asList("aarch64", "x64"));
+<<<<<<< HEAD
     private static final List<String> ALLOWED_VENDORS = Collections.unmodifiableList(Arrays.asList("adoptium", "adoptopenjdk", "openjdk"));
+=======
+    private static final List<String> ALLOWED_VENDORS = Collections.unmodifiableList(Arrays.asList("adoptopenjdk", "openjdk"));
+>>>>>>> origin/1.2
     private static final List<String> ALLOWED_PLATFORMS = Collections.unmodifiableList(
         Arrays.asList("darwin", "freebsd", "linux", "mac", "windows")
     );

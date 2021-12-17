@@ -207,6 +207,18 @@ public class MetadataCreateIndexServiceTests extends OpenSearchTestCase {
 
     public void testNumberOfShards() {
         {
+<<<<<<< HEAD
+=======
+            final Version versionCreated = VersionUtils.randomVersionBetween(
+                random(),
+                LegacyESVersion.V_6_0_0_alpha1,
+                VersionUtils.getPreviousVersion(LegacyESVersion.V_7_0_0)
+            );
+            final Settings.Builder indexSettingsBuilder = Settings.builder().put(SETTING_VERSION_CREATED, versionCreated);
+            assertThat(MetadataCreateIndexService.getNumberOfShards(indexSettingsBuilder), equalTo(5));
+        }
+        {
+>>>>>>> origin/1.2
             final Version versionCreated = VersionUtils.randomVersionBetween(random(), LegacyESVersion.V_7_0_0, Version.CURRENT);
             final Settings.Builder indexSettingsBuilder = Settings.builder().put(SETTING_VERSION_CREATED, versionCreated);
             assertThat(MetadataCreateIndexService.getNumberOfShards(indexSettingsBuilder), equalTo(1));
@@ -665,7 +677,11 @@ public class MetadataCreateIndexServiceTests extends OpenSearchTestCase {
 
             double ratio = numRoutingShards / randomNumShards;
             int intRatio = (int) ratio;
+<<<<<<< HEAD
             assertEquals(ratio, intRatio, 0.0d);
+=======
+            assertEquals(ratio, (double) (intRatio), 0.0d);
+>>>>>>> origin/1.2
             assertTrue(1 < ratio);
             assertTrue(ratio <= 1024);
             assertEquals(0, intRatio % 2);

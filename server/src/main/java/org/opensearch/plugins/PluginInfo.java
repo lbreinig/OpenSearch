@@ -165,6 +165,14 @@ public class PluginInfo implements Writeable, ToXContentObject {
         this.classname = in.readString();
         if (in.getVersion().onOrAfter(Version.V_1_1_0)) {
             customFolderName = in.readString();
+<<<<<<< HEAD
+=======
+        } else {
+            customFolderName = this.name;
+        }
+        if (in.getVersion().onOrAfter(LegacyESVersion.V_6_2_0)) {
+            extendedPlugins = in.readStringList();
+>>>>>>> origin/1.2
         } else {
             customFolderName = this.name;
         }
@@ -195,6 +203,12 @@ public class PluginInfo implements Writeable, ToXContentObject {
             } else {
                 out.writeString(name);
             }
+<<<<<<< HEAD
+=======
+        }
+        if (out.getVersion().onOrAfter(LegacyESVersion.V_6_2_0)) {
+            out.writeStringCollection(extendedPlugins);
+>>>>>>> origin/1.2
         }
         out.writeStringCollection(extendedPlugins);
         out.writeBoolean(hasNativeController);
@@ -295,7 +309,11 @@ public class PluginInfo implements Writeable, ToXContentObject {
             }
         }
 
+<<<<<<< HEAD
         if (opensearchVersion.before(LegacyESVersion.V_6_3_0) && opensearchVersion.onOrAfter(LegacyESVersion.fromId(6000027))) {
+=======
+        if (opensearchVersion.before(LegacyESVersion.V_6_3_0) && opensearchVersion.onOrAfter(LegacyESVersion.V_6_0_0_beta2)) {
+>>>>>>> origin/1.2
             propsMap.remove("requires.keystore");
         }
 

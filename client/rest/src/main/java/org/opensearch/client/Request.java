@@ -94,12 +94,15 @@ public final class Request {
         }
     }
 
+<<<<<<< HEAD
     /**
      * Add query parameters using the provided map of key value pairs.
      *
      * @param paramSource a map of key value pairs where the key is the url parameter.
      * @throws IllegalArgumentException if a parameter with that name has already been set.
      */
+=======
+>>>>>>> origin/1.2
     public void addParameters(Map<String, String> paramSource) {
         paramSource.forEach(this::addParameter);
     }

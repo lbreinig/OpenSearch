@@ -692,6 +692,7 @@ public class FailedShardsRoutingTests extends OpenSearchAllocationTestCase {
         clusterState = ClusterState.builder(clusterState)
             .nodes(
                 DiscoveryNodes.builder(clusterState.nodes())
+<<<<<<< HEAD
                     .add(
                         newNode(
                             "node3-old",
@@ -704,6 +705,10 @@ public class FailedShardsRoutingTests extends OpenSearchAllocationTestCase {
                             VersionUtils.randomVersionBetween(random(), Version.CURRENT.minimumIndexCompatibilityVersion(), null)
                         )
                     )
+=======
+                    .add(newNode("node3-6.x", VersionUtils.randomVersionBetween(random(), LegacyESVersion.V_6_0_0_alpha1, null)))
+                    .add(newNode("node4-6.x", VersionUtils.randomVersionBetween(random(), LegacyESVersion.V_6_0_0_alpha1, null)))
+>>>>>>> origin/1.2
             )
             .build();
 

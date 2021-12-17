@@ -192,7 +192,11 @@ public class LegacyGeoShapeFieldMapper extends AbstractShapeGeometryFieldMapper<
                 throw new OpenSearchParseException("Field parameter [{}] is not supported for [{}] field type", fieldName, CONTENT_TYPE);
             }
             DEPRECATION_LOGGER.deprecate(
+<<<<<<< HEAD
                 "geo_mapper_field_parameter_" + fieldName,
+=======
+                "geo_mapper_field_parameter",
+>>>>>>> origin/1.2
                 "Field parameter [{}] is deprecated and will be removed in a future version.",
                 fieldName
             );

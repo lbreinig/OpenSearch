@@ -773,6 +773,14 @@ public class BootstrapChecksTests extends AbstractBootstrapCheckTestCase {
     public void testDiscoveryConfiguredCheck() throws NodeValidationException {
         final List<BootstrapCheck> checks = Collections.singletonList(new BootstrapChecks.DiscoveryConfiguredCheck());
 
+<<<<<<< HEAD
+=======
+        final BootstrapContext zen1Context = createTestContext(
+            Settings.builder().put(DiscoveryModule.DISCOVERY_TYPE_SETTING.getKey(), ZEN_DISCOVERY_TYPE).build(),
+            Metadata.EMPTY_METADATA
+        );
+
+>>>>>>> origin/1.2
         final BootstrapContext zen2Context = createTestContext(
             Settings.builder().put(DiscoveryModule.DISCOVERY_TYPE_SETTING.getKey(), ZEN2_DISCOVERY_TYPE).build(),
             Metadata.EMPTY_METADATA
@@ -793,6 +801,14 @@ public class BootstrapChecksTests extends AbstractBootstrapCheckTestCase {
             checks
         );
 
+<<<<<<< HEAD
+=======
+        assertThat(
+            expectThrows(NodeValidationException.class, () -> BootstrapChecks.check(zen1Context, true, checks)),
+            hasToString(containsString("discovery type [legacy-zen-for-testing-only-do-not-use] is unsuitable for production use"))
+        );
+
+>>>>>>> origin/1.2
         final NodeValidationException e = expectThrows(
             NodeValidationException.class,
             () -> BootstrapChecks.check(zen2Context, true, checks)
@@ -818,5 +834,12 @@ public class BootstrapChecksTests extends AbstractBootstrapCheckTestCase {
         ensureChecksPass.accept(Settings.builder().putList(ClusterBootstrapService.INITIAL_MASTER_NODES_SETTING.getKey()));
         ensureChecksPass.accept(Settings.builder().putList(DiscoveryModule.DISCOVERY_SEED_PROVIDERS_SETTING.getKey()));
         ensureChecksPass.accept(Settings.builder().putList(SettingsBasedSeedHostsProvider.DISCOVERY_SEED_HOSTS_SETTING.getKey()));
+<<<<<<< HEAD
+=======
+        ensureChecksPass.accept(Settings.builder().putList(DiscoveryModule.LEGACY_DISCOVERY_HOSTS_PROVIDER_SETTING.getKey()));
+        ensureChecksPass.accept(
+            Settings.builder().putList(SettingsBasedSeedHostsProvider.LEGACY_DISCOVERY_ZEN_PING_UNICAST_HOSTS_SETTING.getKey())
+        );
+>>>>>>> origin/1.2
     }
 }

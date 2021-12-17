@@ -77,24 +77,44 @@ public class PreBuiltAnalyzerTests extends OpenSearchSingleNodeTestCase {
     public void testThatInstancesAreTheSameAlwaysForKeywordAnalyzer() {
         assertThat(
             PreBuiltAnalyzers.KEYWORD.getAnalyzer(Version.CURRENT),
+<<<<<<< HEAD
             is(PreBuiltAnalyzers.KEYWORD.getAnalyzer(Version.CURRENT.minimumIndexCompatibilityVersion()))
+=======
+            is(PreBuiltAnalyzers.KEYWORD.getAnalyzer(LegacyESVersion.V_6_0_0))
+>>>>>>> origin/1.2
         );
     }
 
     public void testThatInstancesAreCachedAndReused() {
         assertSame(PreBuiltAnalyzers.STANDARD.getAnalyzer(Version.CURRENT), PreBuiltAnalyzers.STANDARD.getAnalyzer(Version.CURRENT));
+<<<<<<< HEAD
         // same opensearch version should be cached
         Version v = VersionUtils.randomVersion(random());
         assertSame(PreBuiltAnalyzers.STANDARD.getAnalyzer(v), PreBuiltAnalyzers.STANDARD.getAnalyzer(v));
         assertNotSame(
             PreBuiltAnalyzers.STANDARD.getAnalyzer(Version.CURRENT),
             PreBuiltAnalyzers.STANDARD.getAnalyzer(VersionUtils.randomPreviousCompatibleVersion(random(), Version.CURRENT))
+=======
+        // same es version should be cached
+        assertSame(
+            PreBuiltAnalyzers.STANDARD.getAnalyzer(LegacyESVersion.V_6_2_1),
+            PreBuiltAnalyzers.STANDARD.getAnalyzer(LegacyESVersion.V_6_2_1)
+        );
+        assertNotSame(
+            PreBuiltAnalyzers.STANDARD.getAnalyzer(LegacyESVersion.V_6_0_0),
+            PreBuiltAnalyzers.STANDARD.getAnalyzer(LegacyESVersion.V_6_0_1)
+>>>>>>> origin/1.2
         );
 
         // Same Lucene version should be cached:
         assertSame(
+<<<<<<< HEAD
             PreBuiltAnalyzers.STOP.getAnalyzer(LegacyESVersion.fromId(6020199)),
             PreBuiltAnalyzers.STOP.getAnalyzer(LegacyESVersion.fromId(6020299))
+=======
+            PreBuiltAnalyzers.STOP.getAnalyzer(LegacyESVersion.V_6_2_1),
+            PreBuiltAnalyzers.STOP.getAnalyzer(LegacyESVersion.V_6_2_2)
+>>>>>>> origin/1.2
         );
     }
 

@@ -45,6 +45,10 @@ dependencies {
   api "org.apache.lucene:lucene-codecs:${versions.lucene}"
   api "commons-logging:commons-logging:${versions.commonslogging}"
   api "commons-codec:commons-codec:${versions.commonscodec}"
+<<<<<<< HEAD
+=======
+  api "org.elasticsearch:mocksocket:${versions.mocksocket}"
+>>>>>>> origin/1.2
   api "org.mockito:mockito-core:${versions.mockito}"
   api "net.bytebuddy:byte-buddy:${versions.bytebuddy}"
   api "org.objenesis:objenesis:${versions.objenesis}"

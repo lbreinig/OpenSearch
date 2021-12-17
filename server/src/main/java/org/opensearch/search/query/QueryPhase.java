@@ -168,10 +168,14 @@ public class QueryPhase {
         aggregationPhase.execute(searchContext);
 
         if (searchContext.getProfilers() != null) {
+<<<<<<< HEAD
             ProfileShardResult shardResults = SearchProfileShardResults.buildShardResults(
                 searchContext.getProfilers(),
                 searchContext.request()
             );
+=======
+            ProfileShardResult shardResults = SearchProfileShardResults.buildShardResults(searchContext.getProfilers());
+>>>>>>> origin/1.2
             searchContext.queryResult().profileResults(shardResults);
         }
     }

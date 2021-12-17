@@ -84,6 +84,17 @@ public class NoMasterBlockServiceTests extends OpenSearchTestCase {
             IllegalArgumentException.class,
             () -> createService(Settings.builder().put(NO_MASTER_BLOCK_SETTING.getKey(), "unknown").build())
         );
+<<<<<<< HEAD
+=======
+    }
+
+    public void testRejectsInvalidLegacySetting() {
+        expectThrows(
+            IllegalArgumentException.class,
+            () -> createService(Settings.builder().put(LEGACY_NO_MASTER_BLOCK_SETTING.getKey(), "unknown").build())
+        );
+        assertDeprecatedWarningEmitted();
+>>>>>>> origin/1.2
     }
 
     public void testSettingCanBeUpdated() {

@@ -178,7 +178,11 @@ public class DynamicTemplate implements ToXContentObject {
         public abstract String defaultMappingType();
     }
 
+<<<<<<< HEAD
     public static DynamicTemplate parse(String name, Map<String, Object> conf) throws MapperParsingException {
+=======
+    public static DynamicTemplate parse(String name, Map<String, Object> conf, Version indexVersionCreated) throws MapperParsingException {
+>>>>>>> origin/1.2
         String match = null;
         String pathMatch = null;
         String unmatch = null;
@@ -219,11 +223,30 @@ public class DynamicTemplate implements ToXContentObject {
 
         XContentFieldType xcontentFieldType = null;
         if (matchMappingType != null && matchMappingType.equals("*") == false) {
+<<<<<<< HEAD
             xcontentFieldType = XContentFieldType.fromString(matchMappingType);
+=======
+            try {
+                xcontentFieldType = XContentFieldType.fromString(matchMappingType);
+            } catch (IllegalArgumentException e) {
+                if (indexVersionCreated.onOrAfter(LegacyESVersion.V_6_0_0_alpha1)) {
+                    throw e;
+                } else {
+                    deprecationLogger.deprecate(
+                        "invalid_mapping_type",
+                        "match_mapping_type [" + matchMappingType + "] is invalid and will be ignored: " + e.getMessage()
+                    );
+                    // this template is on an unknown type so it will never match anything
+                    // null indicates that the template should be ignored
+                    return null;
+                }
+            }
+>>>>>>> origin/1.2
         }
 
         final MatchType matchType = MatchType.fromString(matchPattern);
 
+<<<<<<< HEAD
         // Validate the pattern
         for (String regex : new String[] { pathMatch, match, pathUnmatch, unmatch }) {
             if (regex == null) {
@@ -236,6 +259,22 @@ public class DynamicTemplate implements ToXContentObject {
                     "Pattern [" + regex + "] of type [" + matchType + "] is invalid. Cannot create dynamic template [" + name + "].",
                     e
                 );
+=======
+        if (indexVersionCreated.onOrAfter(LegacyESVersion.V_6_3_0)) {
+            // Validate that the pattern
+            for (String regex : new String[] { pathMatch, match, pathUnmatch, unmatch }) {
+                if (regex == null) {
+                    continue;
+                }
+                try {
+                    matchType.matches(regex, "");
+                } catch (IllegalArgumentException e) {
+                    throw new IllegalArgumentException(
+                        "Pattern [" + regex + "] of type [" + matchType + "] is invalid. Cannot create dynamic template [" + name + "].",
+                        e
+                    );
+                }
+>>>>>>> origin/1.2
             }
         }
 

@@ -313,6 +313,7 @@ public final class OpenSearchNodesSniffer implements NodesSniffer {
      * The supported host schemes.
      */
     public enum Scheme {
+<<<<<<< HEAD
         /**
          * The HTTP host scheme.
          */
@@ -321,6 +322,9 @@ public final class OpenSearchNodesSniffer implements NodesSniffer {
         /**
          * The HTTPS host scheme.
          */
+=======
+        HTTP("http"),
+>>>>>>> origin/1.2
         HTTPS("https");
 
         private final String name;

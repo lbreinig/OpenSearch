@@ -295,6 +295,7 @@ final class QueryAnalyzer {
             }
         }
 
+<<<<<<< HEAD
         int msm = 0;
         boolean verified = conjunctionsWithUnknowns.size() == conjunctions.size();
         boolean matchAllDocs = true;
@@ -333,6 +334,61 @@ final class QueryAnalyzer {
                         verified = false;
                     }
                 }
+=======
+            int msm = 0;
+            boolean verified = conjunctionsWithUnknowns.size() == conjunctions.size();
+            boolean matchAllDocs = true;
+            Set<QueryExtraction> extractions = new HashSet<>();
+            Set<String> seenRangeFields = new HashSet<>();
+            for (Result result : conjunctions) {
+
+                int resultMsm = result.minimumShouldMatch;
+                for (QueryExtraction queryExtraction : result.extractions) {
+                    if (queryExtraction.range != null) {
+                        // In case of range queries each extraction does not simply increment the
+                        // minimum_should_match for that percolator query like for a term based extraction,
+                        // so that can lead to more false positives for percolator queries with range queries
+                        // than term based queries.
+                        // This is because the way number fields are extracted from the document to be
+                        // percolated. Per field a single range is extracted and if a percolator query has two or
+                        // more range queries on the same field, then the minimum should match can be higher than clauses
+                        // in the CoveringQuery. Therefore right now the minimum should match is only incremented once per
+                        // number field when processing the percolator query at index time.
+                        // For multiple ranges within a single extraction (ie from an existing conjunction or disjunction)
+                        // then this will already have been taken care of, so we only check against fieldnames from
+                        // previously processed extractions, and don't add to the seenRangeFields list until all
+                        // extractions from this result are processed
+                        if (seenRangeFields.contains(queryExtraction.range.fieldName)) {
+                            resultMsm = Math.max(0, resultMsm - 1);
+                            verified = false;
+                        }
+                    } else {
+                        // In case that there are duplicate term query extractions we need to be careful with
+                        // incrementing msm, because that could lead to valid matches not becoming candidate matches:
+                        // query: (field:val1 AND field:val2) AND (field:val2 AND field:val3)
+                        // doc: field: val1 val2 val3
+                        // So lets be protective and decrease the msm:
+                        if (extractions.contains(queryExtraction)) {
+                            resultMsm = Math.max(0, resultMsm - 1);
+                            verified = false;
+                        }
+                    }
+                }
+                msm += resultMsm;
+
+                // add range fields from this Result to the seenRangeFields set so that minimumShouldMatch is correctly
+                // calculated for subsequent Results
+                result.extractions.stream().map(e -> e.range).filter(Objects::nonNull).map(e -> e.fieldName).forEach(seenRangeFields::add);
+
+                if (result.verified == false
+                    // If some inner extractions are optional, the result can't be verified
+                    || result.minimumShouldMatch < result.extractions.size()) {
+                    verified = false;
+
+                }
+                matchAllDocs &= result.matchAllDocs;
+                extractions.addAll(result.extractions);
+>>>>>>> origin/1.2
             }
             msm += resultMsm;
 
@@ -340,11 +396,18 @@ final class QueryAnalyzer {
             // calculated for subsequent Results
             result.extractions.stream().map(e -> e.range).filter(Objects::nonNull).map(e -> e.fieldName).forEach(seenRangeFields::add);
 
+<<<<<<< HEAD
             if (result.verified == false
                 // If some inner extractions are optional, the result can't be verified
                 || result.minimumShouldMatch < result.extractions.size()) {
                 verified = false;
 
+=======
+        } else {
+            Result bestClause = null;
+            for (Result result : conjunctions) {
+                bestClause = selectBestResult(result, bestClause);
+>>>>>>> origin/1.2
             }
             matchAllDocs &= result.matchAllDocs;
             extractions.addAll(result.extractions);
@@ -413,10 +476,17 @@ final class QueryAnalyzer {
         boolean matchAllDocs = numMatchAllClauses > 0 && numMatchAllClauses >= requiredShouldClauses;
 
         int msm = 0;
+<<<<<<< HEAD
         // Having ranges would mean we need to juggle with the msm and that complicates this logic a lot,
         // so for now lets not do it.
         if (hasRangeExtractions == false) {
 
+=======
+        if (version.onOrAfter(LegacyESVersion.V_6_1_0) &&
+        // Having ranges would mean we need to juggle with the msm and that complicates this logic a lot,
+        // so for now lets not do it.
+            hasRangeExtractions == false) {
+>>>>>>> origin/1.2
             // Figure out what the combined msm is for this disjunction:
             // (sum the lowest required clauses, otherwise we're too strict and queries may not match)
             clauses = clauses.stream().filter(val -> val > 0).sorted().collect(Collectors.toList());

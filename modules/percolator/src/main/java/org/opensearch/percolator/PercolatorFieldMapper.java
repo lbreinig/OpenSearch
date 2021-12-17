@@ -412,12 +412,30 @@ public class PercolatorFieldMapper extends ParametrizedFieldMapper {
 
     static void createQueryBuilderField(Version indexVersion, BinaryFieldMapper qbField, QueryBuilder queryBuilder, ParseContext context)
         throws IOException {
+<<<<<<< HEAD
         try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
             try (OutputStreamStreamOutput out = new OutputStreamStreamOutput(stream)) {
                 out.setVersion(indexVersion);
                 out.writeNamedWriteable(queryBuilder);
                 byte[] queryBuilderAsBytes = stream.toByteArray();
                 qbField.parse(context.createExternalValueContext(queryBuilderAsBytes));
+=======
+        if (indexVersion.onOrAfter(LegacyESVersion.V_6_0_0_beta2)) {
+            try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
+                try (OutputStreamStreamOutput out = new OutputStreamStreamOutput(stream)) {
+                    out.setVersion(indexVersion);
+                    out.writeNamedWriteable(queryBuilder);
+                    byte[] queryBuilderAsBytes = stream.toByteArray();
+                    qbField.parse(context.createExternalValueContext(queryBuilderAsBytes));
+                }
+            }
+        } else {
+            try (XContentBuilder builder = XContentFactory.contentBuilder(QUERY_BUILDER_CONTENT_TYPE)) {
+                queryBuilder.toXContent(builder, new MapParams(Collections.emptyMap()));
+                builder.flush();
+                byte[] queryBuilderAsBytes = BytesReference.toBytes(BytesReference.bytes(builder));
+                context.doc().add(new BinaryDocValuesField(qbField.name(), new BytesRef(queryBuilderAsBytes)));
+>>>>>>> origin/1.2
             }
         }
     }

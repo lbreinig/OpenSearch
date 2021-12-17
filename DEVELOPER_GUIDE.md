@@ -1,9 +1,21 @@
+<<<<<<< HEAD
+=======
+# Developer Guide
+
+So you want to contribute code to OpenSearch? Excellent! We're glad you're here. Here's what you need to do.
+
+>>>>>>> origin/1.2
 - [Developer Guide](#developer-guide)
   - [Getting Started](#getting-started)
     - [Git Clone OpenSearch Repo](#git-clone-opensearch-repo)
     - [Install Prerequisites](#install-prerequisites)
+<<<<<<< HEAD
       - [JDK 11](#jdk-11)
       - [JDK 8 and 14](#jdk-8-and-14)
+=======
+      - [JDK 14](#jdk-14)
+      - [JDK 8 and 11](#jdk-8-and-11)
+>>>>>>> origin/1.2
       - [Runtime JDK](#runtime-jdk)
       - [Windows](#windows)
       - [Docker](#docker)
@@ -18,7 +30,10 @@
     - [`libs`](#libs)
     - [`modules`](#modules)
     - [`plugins`](#plugins)
+<<<<<<< HEAD
     - [`sandbox`](#sandbox)
+=======
+>>>>>>> origin/1.2
     - [`qa`](#qa)
     - [`server`](#server)
     - [`test`](#test)
@@ -34,6 +49,7 @@
       - [testImplementation](#testimplementation)
   - [Misc](#misc)
     - [git-secrets](#git-secrets)
+<<<<<<< HEAD
       - [Installation](#installation)
       - [Configuration](#configuration)
   - [Components](#components)
@@ -49,6 +65,9 @@
 # Developer Guide
 
 So you want to contribute code to OpenSearch? Excellent! We're glad you're here. Here's what you need to do.
+=======
+  - [Submitting Changes](#submitting-changes)
+>>>>>>> origin/1.2
 
 ## Getting Started
 
@@ -62,11 +81,28 @@ Fork [opensearch-project/OpenSearch](https://github.com/opensearch-project/OpenS
 
 OpenSearch builds using Java 11 at a minimum. This means you must have a JDK 11 installed with the environment variable `JAVA_HOME` referencing the path to Java home for your JDK 11 installation, e.g. `JAVA_HOME=/usr/lib/jvm/jdk-11`.
 
+<<<<<<< HEAD
 Download Java 11 from [here](https://adoptium.net/releases.html?variant=openjdk11).
 
 #### JDK 8 and 14
 
 To run the full suite of tests, download and install [JDK 8](https://adoptium.net/releases.html?variant=openjdk8) and [JDK 14](https://jdk.java.net/archive/) and set `JAVA8_HOME`, `JAVA11_HOME`, and `JAVA14_HOME`. They are required by the [backwards compatibility test](./TESTING.md#testing-backwards-compatibility).
+=======
+One easy way to get Java 14 on *nix is to use [sdkman](https://sdkman.io/). 
+
+```bash
+curl -s "https://get.sdkman.io" | bash
+source ~/.sdkman/bin/sdkman-init.sh
+sdk install java 14.0.2-open
+sdk use java 14.0.2-open
+```
+
+Download Java 14 from [here](https://adoptium.net/releases.html?variant=openjdk14).
+
+#### JDK 8 and 11
+
+To run the full suite of tests, download and install [JDK 8](https://adoptium.net/releases.html?variant=openjdk8) and [11](https://adoptium.net/releases.html?variant=openjdk11) and set `JAVA8_HOME`, `JAVA11_HOME`, and `JAVA14_HOME`. They are required by the [backwards compatibility test](./TESTING.md#testing-backwards-compatibility).
+>>>>>>> origin/1.2
 
 #### Runtime JDK
 
@@ -80,7 +116,11 @@ On Windows, set `_JAVA_OPTIONS: -Xmx4096M`. You may also need to set `LongPathsE
 
 Download and install [Docker](https://docs.docker.com/install/), required for building OpenSearch artifacts, and executing certain test suites.
 
+<<<<<<< HEAD
 On Windows, [use Docker Desktop 3.6](https://docs.docker.com/desktop/windows/release-notes/3.x/). See [OpenSearch#1425](https://github.com/opensearch-project/OpenSearch/issues/1425) for workarounds and issues with Docker Desktop 4.1.1.
+=======
+On Windows, uncheck support for Hyper-V during installation, run `"C:\Program Files\Docker\Docker\DockerCli.exe" -SwitchDaemon` to fix the ` In the default daemon configuration on Windows, the docker client must be run with elevated privileges to connect.` error, run Docker Desktop once, review and accept license agreement, and ensure that the Docker daemon is running.
+>>>>>>> origin/1.2
 
 ### Run Tests
 
@@ -183,12 +223,15 @@ You can now import the OpenSearch project into Eclipse as follows.
 3. In the subsequent dialog, if JDK 11 is not set as default JRE, please make sure to check **[Override workspace settings]**, keep **[Gradle Wrapper]** and provide the correct path to JDK11 using **[Java Home]** property under **[Advanced Options]**. Otherwise, you may run into cryptic import failures and only top level project is going to be imported.
 4. In the subsequent dialog, you should see **[Gradle project structure]** populated, please click **[Finish]** to complete the import
 
+<<<<<<< HEAD
 **Note:** it may look non-intuitive why one needs to use Gradle wrapper and then import existing Gradle project (in general, **File > Import -> Existing Gradle Project** should be enough). Practically, as it stands now, Eclipse Buildship plugin does not import OpenSearch project dependencies correctly but does work in conjunction with Gradle wrapper.
 
 ## Project Layout
 
 This repository is split into many top level directories. The most important ones are:
 
+=======
+>>>>>>> origin/1.2
 ### `distribution`
 
 Builds our tar and zip archives and our rpm and deb packages.

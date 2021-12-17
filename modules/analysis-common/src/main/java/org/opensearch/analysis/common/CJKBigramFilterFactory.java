@@ -105,7 +105,18 @@ public final class CJKBigramFilterFactory extends AbstractTokenFilterFactory {
     @Override
     public TokenFilterFactory getSynonymFilter() {
         if (outputUnigrams) {
+<<<<<<< HEAD
             throw new IllegalArgumentException("Token filter [" + name() + "] cannot be used to parse synonyms");
+=======
+            if (indexSettings.getIndexVersionCreated().onOrAfter(LegacyESVersion.V_7_0_0)) {
+                throw new IllegalArgumentException("Token filter [" + name() + "] cannot be used to parse synonyms");
+            } else {
+                DEPRECATION_LOGGER.deprecate(
+                    "synonym_tokenfilters",
+                    "Token filter [" + name() + "] will not be usable to parse synonyms after v7.0"
+                );
+            }
+>>>>>>> origin/1.2
         }
         return this;
     }
