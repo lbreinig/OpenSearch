@@ -55,3 +55,6 @@ testfixtures_shared/
 
 # These are generated from .ci/jobs.t
 .ci/jobs/
+
+.ci/
+.github/
